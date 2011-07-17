@@ -59,7 +59,7 @@ package com.behindcurtain3
 			{
 				if (chatbox.text != "")
 				{
-					chatRoom.sendMessage("CHAT_MESSAGE", true, null, chatbox.text);
+					chatRoom.sendMessage(Messages.CHAT, true, null, chatbox.text);
 					chatbox.text = "";
 				}
 			}
@@ -81,7 +81,7 @@ package com.behindcurtain3
 			var modules:RoomModules = new RoomModules();
 			modules.addModule("com.behindcurtain3.schismTD.schismTDModule", "class");
 			chatRoom = reactor.getRoomManager().createRoom("schismTD", null, null, modules);
-			chatRoom.addMessageListener("CHAT_MESSAGE", chatMessageListener);
+			chatRoom.addMessageListener(Messages.CHAT, chatMessageListener);
 			chatRoom.join();
 			
 		}

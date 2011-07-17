@@ -12,7 +12,7 @@ package com.behindcurtain3
 	public class Main extends Engine
 	{
 		protected var world:GameWorld;
-		public function Main():void 
+		public function Main():void //epic comment 
 		{
 			super(640, 480, 60, false);
 			

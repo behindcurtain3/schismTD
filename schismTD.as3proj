@@ -14,6 +14,7 @@
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
     <class path="src" />
+    <class path="..\..\ChevyRay-FlashPunk" />
   </classpaths>
   <!-- Build options -->
   <build>
@@ -47,7 +48,7 @@
   </includeLibraries>
   <!-- SWC Libraries -->
   <libraryPaths>
-    <!-- example: <element path="..." /> -->
+    <element path="Reactor_1.0.2.1146_Release.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>

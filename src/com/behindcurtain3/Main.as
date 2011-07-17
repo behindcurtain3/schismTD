@@ -4,6 +4,7 @@ package com.behindcurtain3
 	import net.flashpunk.FP;
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.utils.Key;
+	import net.flashpunk.World;
 	
 	/**
 	 * ...
@@ -11,12 +12,12 @@ package com.behindcurtain3
 	 */
 	public class Main extends Engine
 	{
-		protected var world:GameWorld;
-		public function Main():void //epic comment 
+		protected var world:World;
+		public function Main():void
 		{
 			super(640, 480, 60, false);
 			
-			world = new GameWorld();
+			world = new MenuWorld();
 			FP.world = world;
 		}
 		
@@ -25,17 +26,7 @@ package com.behindcurtain3
 			if (Input.pressed(Key.M))
 			{
 				FP.volume = 0;
-			}
-			
-			if (world.gameOver)
-			{
-				if (Input.mousePressed)
-				{
-					world = new GameWorld();
-					FP.world = world;
-				}
-			}
-			
+			}			
 			
 			super.update();
 		}

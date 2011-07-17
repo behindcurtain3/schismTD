@@ -1,0 +1,34 @@
+<project>
+	<name>Bury The Dead</name>
+	<settings>
+		<defaultWidth>640</defaultWidth>
+		<defaultHeight>480</defaultHeight>
+		<workingDirectory>../gfx</workingDirectory>
+	</settings>
+	<values>
+		<string name="title" default="Level Display Title" />
+		<text name="description" default="Level Description" />
+		<integer name="difficulty" default="1" min="1" max="5" />
+		
+	</values>
+	<tilesets>
+		<tileset name="tiles" image="Tilesheet.png" tileHeight="16" tileWidth="16" />
+	</tilesets>
+	<objects>
+		<object name="player_start" image="player_start.png" height="16" width="16" limit="1" />
+		<object name="spawn" image="spawn_point.png" height="16" width="16">
+			<values>
+				<number name="spawn_rate" min="1.0" max="20.0" default="12.0" />
+				<boolean name="spawn_skeletons" default="true" />
+				<boolean name="spawn_zombies" default="true" />
+				<boolean name="spawn_bats" default="false" />
+			</values>
+		</object>
+	</objects>
+	<layers>
+		<tiles name="ground" gridSize="16"/>
+		<tiles name="scenery" gridSize="16"/>
+		<objects name="objects" gridSize="16"/>
+		<grid name="collisions" gridSize="4" exportAsObjects="true" color="#88BBBBBB" />
+	</layers>
+</project>

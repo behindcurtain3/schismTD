@@ -22,12 +22,7 @@ package com.behindcurtain3
 		}
 		
 		override public function update():void
-		{
-			if (Input.pressed(Key.M))
-			{
-				FP.volume = 0;
-			}			
-			
+		{	
 			super.update();
 		}
 		

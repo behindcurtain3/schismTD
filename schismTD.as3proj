@@ -15,6 +15,7 @@
   <classpaths>
     <class path="src" />
     <class path="..\..\ChevyRay-FlashPunk" />
+    <class path="..\..\PinkUI" />
   </classpaths>
   <!-- Build options -->
   <build>

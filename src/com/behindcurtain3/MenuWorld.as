@@ -11,8 +11,6 @@ package com.behindcurtain3
 	import punk.ui.PunkTextArea;
 	import punk.ui.PunkTextField;
 	import punk.ui.PunkToggleButton;
-
-
 	
 	/**
 	 * ...

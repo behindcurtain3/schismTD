@@ -4,11 +4,7 @@ package com.behindcurtain3
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.utils.Key;
 	import net.flashpunk.World;
-	import net.user1.reactor.IClient;
-	import net.user1.reactor.Reactor;
-	import net.user1.reactor.ReactorEvent;
-	import net.user1.reactor.Room;
-	import net.user1.reactor.RoomModules;
+	
 	import punk.ui.PunkTextArea;
 	import punk.ui.PunkTextField;
 
@@ -23,8 +19,8 @@ package com.behindcurtain3
 		protected var chatbox:PunkTextField;
 		protected var status:PunkTextArea;
 		protected var statusLabel:PunkLabel;
-		protected var reactor:Reactor;
-		protected var chatRoom:Room;
+		//protected var reactor:Reactor;
+		//protected var chatRoom:Room;
 	 
 		public function GameWorld ()
 		{
@@ -40,15 +36,12 @@ package com.behindcurtain3
 			statusLabel = new PunkLabel("Connecting to server...", 10, FP.screen.height / 2 - 25, FP.screen.width - 20, 50);
 			add(statusLabel);
 			
-			reactor = new Reactor();
-			reactor.addEventListener(ReactorEvent.READY, readyListener);
-			reactor.addEventListener(ReactorEvent.CLOSE, closeListener);
-			reactor.connect("localhost", 9100);
+			
 		}
 		
 		override public function end():void
 		{
-			reactor.disconnect();
+			//reactor.disconnect();
 			removeAll();
 			super.end();
 		}
@@ -59,7 +52,7 @@ package com.behindcurtain3
 			{
 				if (chatbox.text != "")
 				{
-					chatRoom.sendMessage(Messages.CHAT, true, null, chatbox.text);
+					//chatRoom.sendMessage(Messages.CHAT, true, null, chatbox.text);
 					chatbox.text = "";
 				}
 			}
@@ -70,13 +63,14 @@ package com.behindcurtain3
 			}
 			super.update();
 		}
-	 
+		/*
 		protected function readyListener(e:ReactorEvent):void 
 		{
 			status.visible = true;
 			chatbox.visible = true;
 			statusLabel.text = "Connected to Union";
 			trace("Connected to Union");
+			
 			
 			var modules:RoomModules = new RoomModules();
 			modules.addModule("com.behindcurtain3.schismTD.schismTDModule", "class");
@@ -85,7 +79,7 @@ package com.behindcurtain3
 			chatRoom.join();
 			
 		}
-		
+		/*
 		protected function closeListener(e:ReactorEvent):void
 		{
 			statusLabel.text = "Disconnected";
@@ -93,6 +87,7 @@ package com.behindcurtain3
 			status.visible = false;
 		}
 	 
+		
 		protected function chatMessageListener (fromClient:IClient,	messageText:String):void {
 			if (fromClient != null)
 			{
@@ -105,5 +100,6 @@ package com.behindcurtain3
 				status.text += "\n" + messageText;
 			}
 		}
+		*/
 	}
 }

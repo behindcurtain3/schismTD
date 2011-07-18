@@ -4,7 +4,7 @@
   <output>
     <movie disabled="False" />
     <movie input="" />
-    <movie path="bin\ZombiesInvadeAgain.swf" />
+    <movie path="bin\schismTD.swf" />
     <movie fps="60" />
     <movie width="640" />
     <movie height="480" />
@@ -14,8 +14,6 @@
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
     <class path="src" />
-    <class path="..\..\ChevyRay-FlashPunk" />
-    <class path="..\..\PinkUI" />
   </classpaths>
   <!-- Build options -->
   <build>

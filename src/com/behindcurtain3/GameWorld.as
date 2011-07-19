@@ -2,6 +2,10 @@ package com.behindcurtain3
 {
 	import flash.display.ActionScriptVersion;
 	import net.flashpunk.FP;
+	import net.flashpunk.graphics.Text;
+	import net.flashpunk.Tween;
+	import net.flashpunk.tweens.misc.VarTween;
+	import net.flashpunk.utils.Ease;
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.utils.Key;
 	import net.flashpunk.World;
@@ -20,7 +24,8 @@ package com.behindcurtain3
 	{
 		protected var chatbox:PunkTextField;
 		protected var status:PunkTextArea;
-		protected var statusLabel:PunkLabel;
+		//protected var statusLabel:PunkLabel;
+		protected var statusText:Text;
 		
 		protected var client:Client;
 		protected var connection:Connection;
@@ -36,8 +41,8 @@ package com.behindcurtain3
 			chatbox.visible = false;
 			add(chatbox);
 			
-			statusLabel = new PunkLabel("Connecting to server...", FP.screen.width / 2 - 100, FP.screen.height / 2 - 25, FP.screen.width - 20, 50);
-			add(statusLabel);
+			statusText = new Text("Connecting to server...", 10, 10, FP.screen.width - 20, 50);
+			addGraphic(statusText);
 			
 			PlayerIO.connect(
 				FP.stage,								//Referance to stage
@@ -118,7 +123,7 @@ package com.behindcurtain3
 			
 			status.visible = true;
 			chatbox.visible = true;
-			statusLabel.visible = false;
+			statusText.text = "";
 			
 			connection.addMessageHandler(Messages.CHAT, function(m:Message, s:String) {
 				addToChat(s);
@@ -130,6 +135,31 @@ package com.behindcurtain3
 			
 			connection.addMessageHandler(Messages.PLAYER_LEFT, function(m:Message, i:int) {
 				addToChat("Player #" + i + " has left");
+			});
+			
+			connection.addMessageHandler(Messages.MATCH_READY, function(m:Message) {
+				addToChat("Match ready to begin!");
+			});
+			
+			connection.addMessageHandler(Messages.MATCH_STARTED, function(m:Message) {
+				addToChat("Matched started!");
+			});
+			
+			connection.addMessageHandler(Messages.MATCH_FINISHED, function(m:Message) {
+				addToChat("Matched finished!");
+			});
+			
+			connection.addMessageHandler(Messages.GAME_COUNTDOWN, function(m:Message, i:int) {
+				statusText.alpha = 1;
+				statusText.text = "Starting in ... " + Math.ceil(i / 1000) + " seconds";
+			});
+			
+			connection.addMessageHandler(Messages.GAME_START, function(m:Message) {
+				addToChat("Game started!");
+				statusText.text = "Begin!";
+				var ft:VarTween = new VarTween();
+				ft.tween(statusText, "alpha", 0, 2.5, Ease.expoIn);
+				addTween(ft, true);
 			});
 			
 			connection.addDisconnectHandler(function() {

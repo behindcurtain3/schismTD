@@ -1,4 +1,4 @@
-package com.behindcurtain3 
+package com.behindcurtain3
 {
 	import net.flashpunk.FP;
 	import net.flashpunk.utils.Input;

@@ -1,15 +1,17 @@
-package com.behindcurtain3 
+package com.behindcurtain3
 {
+	import flash.display.ActionScriptVersion;
 	import net.flashpunk.FP;
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.utils.Key;
 	import net.flashpunk.World;
+	import playerio.*;
 	
 	import punk.ui.PunkTextArea;
 	import punk.ui.PunkTextField;
 
 	import punk.ui.PunkLabel;
-
+	
 	/**
 	 * ...
 	 * @author Justin Brown
@@ -19,8 +21,9 @@ package com.behindcurtain3
 		protected var chatbox:PunkTextField;
 		protected var status:PunkTextArea;
 		protected var statusLabel:PunkLabel;
-		//protected var reactor:Reactor;
-		//protected var chatRoom:Room;
+		
+		protected var client:Client;
+		protected var connection:Connection;
 	 
 		public function GameWorld ()
 		{
@@ -33,15 +36,28 @@ package com.behindcurtain3
 			chatbox.visible = false;
 			add(chatbox);
 			
-			statusLabel = new PunkLabel("Connecting to server...", 10, FP.screen.height / 2 - 25, FP.screen.width - 20, 50);
+			statusLabel = new PunkLabel("Connecting to server...", FP.screen.width / 2 - 100, FP.screen.height / 2 - 25, FP.screen.width - 20, 50);
 			add(statusLabel);
 			
+			PlayerIO.connect(
+				FP.stage,								//Referance to stage
+				"schismtd-3r3otmhvkki9ixublwca",		//Game id (Get your own at playerio.com. 1: Create user, 2:Goto admin pannel, 3:Create game, 4: Copy game id inside the "")
+				"public",							//Connection id, default is public
+				"GuestUser",						//Username
+				"",									//User auth. Can be left blank if authentication is disabled on connection
+				null,								//Current PartnerPay partner.
+				handleConnect,						//Function executed on successful connect
+				handleError							//Function executed if we recive an error
+			); 
 			
 		}
 		
 		override public function end():void
 		{
-			//reactor.disconnect();
+			if (connection != null)
+			{
+				connection.disconnect();
+			}
 			removeAll();
 			super.end();
 		}
@@ -52,54 +68,85 @@ package com.behindcurtain3
 			{
 				if (chatbox.text != "")
 				{
-					//chatRoom.sendMessage(Messages.CHAT, true, null, chatbox.text);
+					connection.send(Messages.CHAT, chatbox.text);
 					chatbox.text = "";
 				}
 			}
 			
 			if (Input.pressed(Key.ESCAPE))
 			{
-				FP.world = new MenuWorld();
+				disconnect();
 			}
 			super.update();
 		}
-		/*
-		protected function readyListener(e:ReactorEvent):void 
+		
+		private function disconnect():void
 		{
+			addToChat("Disconnected");
+			
+			if(connection != null)
+				connection.disconnect();
+				
+			FP.world = new MenuWorld();
+		}
+		
+		private function handleConnect(c:Client):void
+		{
+			trace("Sucessfully connected to player.io");
+			
+			client = c;
+			
+			//Set developmentsever (Comment out to connect to your server online)
+			client.multiplayer.developmentServer = "127.0.0.1:8184";
+			
+			//Create pr join the room test
+			client.multiplayer.createJoinRoom(
+				"schismTD",							//Room id. If set to null a random roomid is used
+				"schismTD",							//The game type started on the server
+				true,								//Should the room be visible in the lobby?
+				{},									//Room data. This data is returned to lobby list. Variabels can be modifed on the server
+				{},									//User join data
+				handleJoin,							//Function executed on successful joining of the room
+				handleError							//Function executed if we got a join error
+			);
+		}
+		
+		private function handleJoin(c:Connection):void
+		{
+			addToChat("Connected");
+			connection = c;
+			
 			status.visible = true;
 			chatbox.visible = true;
-			statusLabel.text = "Connected to Union";
-			trace("Connected to Union");
+			statusLabel.visible = false;
 			
+			connection.addMessageHandler(Messages.CHAT, function(m:Message, s:String) {
+				addToChat(s);
+			});
 			
-			var modules:RoomModules = new RoomModules();
-			modules.addModule("com.behindcurtain3.schismTD.schismTDModule", "class");
-			chatRoom = reactor.getRoomManager().createRoom("schismTD", null, null, modules);
-			chatRoom.addMessageListener(Messages.CHAT, chatMessageListener);
-			chatRoom.join();
+			connection.addMessageHandler(Messages.PLAYER_JOINED, function(m:Message, i:int) {
+				addToChat("Player #" + i + " has joined");
+			});
 			
+			connection.addMessageHandler(Messages.PLAYER_LEFT, function(m:Message, i:int) {
+				addToChat("Player #" + i + " has left");
+			});
+			
+			connection.addDisconnectHandler(function() {
+				disconnect();
+			});
 		}
-		/*
-		protected function closeListener(e:ReactorEvent):void
-		{
-			statusLabel.text = "Disconnected";
-			chatbox.visible = false;
-			status.visible = false;
-		}
-	 
 		
-		protected function chatMessageListener (fromClient:IClient,	messageText:String):void {
-			if (fromClient != null)
-			{
-				trace(fromClient.getClientID() + " says: " + messageText + "\n");
-				status.text += "\n" + fromClient.getClientID() + " says: " + messageText;
-			}
-			else
-			{
-				trace(messageText);
-				status.text += "\n" + messageText;
-			}
+		private function handleError(error:PlayerIOError):void
+		{
+			addToChat(error.message);		
+			disconnect();
 		}
-		*/
+		
+		public function addToChat(s:String):void
+		{
+			status.text += "\n" + s;
+		}
+		
 	}
 }

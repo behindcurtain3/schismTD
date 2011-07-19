@@ -6,6 +6,9 @@ package com.behindcurtain3
 	 */
 	public class Assets 
 	{		
+		// Board
+		[Embed(source =  '../../../assets/Board/board-main.png')] public static const GFX_BOARD:Class;
+		
 		// Character Sprites
 		//[Embed(source = '../../../assets/gfx/Sprite_Skeleton.png')]	public static const SKELETON_GFX:Class;
 

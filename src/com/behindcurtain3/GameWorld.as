@@ -2,6 +2,7 @@ package com.behindcurtain3
 {
 	import flash.display.ActionScriptVersion;
 	import net.flashpunk.FP;
+	import net.flashpunk.graphics.Image;
 	import net.flashpunk.graphics.Text;
 	import net.flashpunk.Tween;
 	import net.flashpunk.tweens.misc.VarTween;
@@ -22,22 +23,31 @@ package com.behindcurtain3
 	 */
 	public class GameWorld extends World 
 	{
+		// UI
 		protected var chatbox:PunkTextField;
-		protected var status:PunkTextArea;
-		//protected var statusLabel:PunkLabel;
+		private var console:Array = new Array();
 		protected var statusText:Text;
 		
+		private var consoleDisplayTime:Number = 5;
+		
+		// Gfx
+		protected var board:Image;
+		
+		// Networking
 		protected var client:Client;
 		protected var connection:Connection;
 	 
 		public function GameWorld ()
 		{
-			// Setup UI
-			status = new PunkTextArea("", 10, FP.screen.height / 2 + 35, FP.screen.width - 20, 200);
-			status.visible = false;
-			add(status);
+			// Setup gfx
+			board = new Image(Assets.GFX_BOARD);
+			board.x = 0;
+			board.y = 0;
+			board.scale = 0.2;
+			board.alpha = 0;
+			addGraphic(board);
 			
-			chatbox = new PunkTextField("", 10, FP.screen.height / 2 + 25, FP.screen.width - 20);
+			chatbox = new PunkTextField("", 10, FP.screen.height - 30, FP.screen.width - 20);
 			chatbox.visible = false;
 			add(chatbox);
 			
@@ -121,40 +131,46 @@ package com.behindcurtain3
 			addToChat("Connected");
 			connection = c;
 			
-			status.visible = true;
 			chatbox.visible = true;
 			statusText.text = "";
 			
-			connection.addMessageHandler(Messages.CHAT, function(m:Message, s:String) {
+			connection.addMessageHandler(Messages.CHAT, function(m:Message, s:String):void {
 				addToChat(s);
 			});
 			
-			connection.addMessageHandler(Messages.PLAYER_JOINED, function(m:Message, i:int) {
+			connection.addMessageHandler(Messages.PLAYER_JOINED, function(m:Message, i:int):void {
 				addToChat("Player #" + i + " has joined");
 			});
 			
-			connection.addMessageHandler(Messages.PLAYER_LEFT, function(m:Message, i:int) {
+			connection.addMessageHandler(Messages.PLAYER_LEFT, function(m:Message, i:int):void {
 				addToChat("Player #" + i + " has left");
 			});
 			
-			connection.addMessageHandler(Messages.MATCH_READY, function(m:Message) {
+			connection.addMessageHandler(Messages.MATCH_READY, function(m:Message):void {
 				addToChat("Match ready to begin!");
 			});
 			
-			connection.addMessageHandler(Messages.MATCH_STARTED, function(m:Message) {
+			connection.addMessageHandler(Messages.MATCH_STARTED, function(m:Message):void {
 				addToChat("Matched started!");
+				
+				var vt:VarTween = new VarTween();
+				vt.tween(board, "alpha", 1, 2.5, Ease.expoOut);
+				addTween(vt, true);
 			});
 			
-			connection.addMessageHandler(Messages.MATCH_FINISHED, function(m:Message) {
+			connection.addMessageHandler(Messages.MATCH_FINISHED, function(m:Message):void {
 				addToChat("Matched finished!");
+				var vt:VarTween = new VarTween();
+				vt.tween(board, "alpha", 0, 1.5, Ease.expoOut);
+				addTween(vt, true);
 			});
 			
-			connection.addMessageHandler(Messages.GAME_COUNTDOWN, function(m:Message, i:int) {
+			connection.addMessageHandler(Messages.GAME_COUNTDOWN, function(m:Message, i:int):void {
 				statusText.alpha = 1;
-				statusText.text = "Starting in ... " + Math.ceil(i / 1000) + " seconds";
+				statusText.text = "Starting in ... " + Math.ceil(i / 1000);
 			});
 			
-			connection.addMessageHandler(Messages.GAME_START, function(m:Message) {
+			connection.addMessageHandler(Messages.GAME_START, function(m:Message):void {
 				addToChat("Game started!");
 				statusText.text = "Begin!";
 				var ft:VarTween = new VarTween();
@@ -162,7 +178,7 @@ package com.behindcurtain3
 				addTween(ft, true);
 			});
 			
-			connection.addDisconnectHandler(function() {
+			connection.addDisconnectHandler(function():void {
 				disconnect();
 			});
 		}
@@ -175,7 +191,19 @@ package com.behindcurtain3
 		
 		public function addToChat(s:String):void
 		{
-			status.text += "\n" + s;
+			var t:Text = new Text(s, 10, FP.screen.height - 100, FP.screen.width - 20, 20);
+			var vt:VarTween = new VarTween();
+			vt.tween(t, "alpha", 0, consoleDisplayTime, Ease.quadIn);
+			
+			addGraphic(t);
+			addTween(vt);
+			
+			for each(var text:Text in console)
+			{
+				text.y -= 20;
+			}
+			
+			console.push(t);
 		}
 		
 	}

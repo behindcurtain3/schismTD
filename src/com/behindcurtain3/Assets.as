@@ -7,7 +7,11 @@ package com.behindcurtain3
 	public class Assets 
 	{		
 		// Board
-		[Embed(source =  '../../../assets/Board/board-main.png')] public static const GFX_BOARD:Class;
+		[Embed(source = '../../../assets/Board/board-main.png')] public static const GFX_BOARD:Class;
+		
+		// Towers
+		[Embed(source = '../../../assets/Tower Tiles/Tile-Basic-Tower.png')] public static const GFX_TOWER_BASIC:Class;
+		
 		
 		// Character Sprites
 		//[Embed(source = '../../../assets/gfx/Sprite_Skeleton.png')]	public static const SKELETON_GFX:Class;

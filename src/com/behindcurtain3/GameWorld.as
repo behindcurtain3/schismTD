@@ -48,11 +48,8 @@ package com.behindcurtain3
 		{
 			// Setup gfx
 			board = new Image(Assets.GFX_BOARD);
-			board.x = 0;
-			board.y = 0;
-			board.scale = 0.2;
 			board.alpha = 0;
-			addGraphic(board, 10);
+			addGraphic(board, 10, 0, 43);
 			
 			chatbox = new PunkTextField("", 10, FP.screen.height - 30, FP.screen.width - 20);
 			chatbox.visible = false;
@@ -108,7 +105,8 @@ package com.behindcurtain3
 					
 					if (connection != null)
 					{
-						connection.send(Messages.GAME_PLACE_WALL, dragStart.x, dragStart.y, dragEnd.x, dragEnd.y);
+						//connection.send(Messages.GAME_PLACE_WALL, dragStart.x, dragStart.y, dragEnd.x, dragEnd.y);
+						connection.send(Messages.GAME_PLACE_TOWER, dragEnd.x, dragEnd.y);
 					}
 					
 					dragStart = null;
@@ -120,14 +118,14 @@ package com.behindcurtain3
 			{
 				disconnect();
 			}
-
+			/*
 			var walls:Array = new Array();
 			this.getClass(Wall, walls);
 			for each(var w:Wall in walls)
 			{
 				Draw.linePlus(w.Start.x, w.Start.y, w.End.x, w.End.y, 0xFFFFFF, 1, 3);
 			}
-			
+			*/
 			
 			super.update();
 		}

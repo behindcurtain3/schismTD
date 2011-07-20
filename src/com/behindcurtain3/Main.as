@@ -15,7 +15,7 @@ package com.behindcurtain3
 		protected var world:World;
 		public function Main():void
 		{
-			super(640, 480, 60, false);
+			super(800, 600, 30, false);
 			
 			world = new MenuWorld();
 			FP.world = world;

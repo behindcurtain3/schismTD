@@ -25,6 +25,10 @@ package com.behindcurtain3
         public static const GAME_PLACE_WALL:String = "game_place_wall";
         public static const GAME_REMOVE_WALL:String = "game_remove_wall";
         public static const GAME_INVALID_WALL:String = "game_invalid_wall";
+		
+		public static const GAME_PLACE_TOWER:String = "game_place_tower";
+        public static const GAME_REMOVE_TOWER:String = "game_remove_tower";
+        public static const GAME_INVALID_TOWER:String = "game_invalid_tower";
 	}
 
 }

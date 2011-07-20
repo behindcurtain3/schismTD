@@ -40,6 +40,7 @@ package com.behindcurtain3
 		
 		// Game
 		private var gameActive:Boolean = false;
+		private var gameCountdown:int = 0;
 		private var dragStart:Point = null;
 		private var dragEnd:Point = null;
 	 
@@ -198,8 +199,13 @@ package com.behindcurtain3
 				addTween(vt, true);
 			});
 			
-			connection.addMessageHandler(Messages.GAME_COUNTDOWN, function(m:Message, i:int):void {
-				addToChat("Starting in ... " + Math.ceil(i / 1000), 1.5);
+			connection.addMessageHandler(Messages.GAME_COUNTDOWN, function(m:Message, i:Number):void {
+				i = Math.ceil(i / 1000);
+				if (i != gameCountdown)
+				{
+					addToChat("Starting in ... " + i, 1.5);
+					gameCountdown = i;
+				}
 			});
 			
 			connection.addMessageHandler(Messages.GAME_START, function(m:Message):void {

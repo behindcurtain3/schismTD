@@ -1,11 +1,13 @@
 package com.behindcurtain3
 {
 	import flash.display.ActionScriptVersion;
+	import flash.geom.Point;
 	import net.flashpunk.FP;
 	import net.flashpunk.graphics.Image;
 	import net.flashpunk.graphics.Text;
 	import net.flashpunk.Tween;
 	import net.flashpunk.tweens.misc.VarTween;
+	import net.flashpunk.utils.Draw;
 	import net.flashpunk.utils.Ease;
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.utils.Key;
@@ -26,7 +28,6 @@ package com.behindcurtain3
 		// UI
 		protected var chatbox:PunkTextField;
 		private var console:Array = new Array();
-		protected var statusText:Text;
 		
 		private var consoleDisplayTime:Number = 5;
 		
@@ -36,6 +37,11 @@ package com.behindcurtain3
 		// Networking
 		protected var client:Client;
 		protected var connection:Connection;
+		
+		// Game
+		private var gameActive:Boolean = false;
+		private var dragStart:Point = null;
+		private var dragEnd:Point = null;
 	 
 		public function GameWorld ()
 		{
@@ -45,14 +51,13 @@ package com.behindcurtain3
 			board.y = 0;
 			board.scale = 0.2;
 			board.alpha = 0;
-			addGraphic(board);
+			addGraphic(board, 10);
 			
 			chatbox = new PunkTextField("", 10, FP.screen.height - 30, FP.screen.width - 20);
 			chatbox.visible = false;
 			add(chatbox);
 			
-			statusText = new Text("Connecting to server...", 10, 10, FP.screen.width - 20, 50);
-			addGraphic(statusText);
+			addToChat("Connecting...");
 			
 			PlayerIO.connect(
 				FP.stage,								//Referance to stage
@@ -87,28 +92,57 @@ package com.behindcurtain3
 					chatbox.text = "";
 				}
 			}
+
+			if (gameActive)
+			{
+			
+				if (Input.mousePressed)
+				{
+					dragStart = new Point(Input.mouseX, Input.mouseY);
+				}
+				
+				if (Input.mouseReleased)
+				{
+					dragEnd = new Point(Input.mouseX, Input.mouseY);
+					
+					if (connection != null)
+					{
+						connection.send(Messages.GAME_PLACE_WALL, dragStart.x, dragStart.y, dragEnd.x, dragEnd.y);
+					}
+					
+					dragStart = null;
+					dragEnd = null;
+				}
+			}
 			
 			if (Input.pressed(Key.ESCAPE))
 			{
 				disconnect();
 			}
+
+			var walls:Array = new Array();
+			this.getClass(Wall, walls);
+			for each(var w:Wall in walls)
+			{
+				Draw.linePlus(w.Start.x, w.Start.y, w.End.x, w.End.y, 0xFFFFFF, 1, 3);
+			}
+			
+			
 			super.update();
 		}
 		
-		private function disconnect():void
+		private function disconnect(message:String = ""):void
 		{
 			addToChat("Disconnected");
 			
 			if(connection != null)
 				connection.disconnect();
 				
-			FP.world = new MenuWorld();
+			FP.world = new MenuWorld(message);
 		}
 		
 		private function handleConnect(c:Client):void
 		{
-			trace("Sucessfully connected to player.io");
-			
 			client = c;
 			
 			//Set developmentsever (Comment out to connect to your server online)
@@ -132,7 +166,6 @@ package com.behindcurtain3
 			connection = c;
 			
 			chatbox.visible = true;
-			statusText.text = "";
 			
 			connection.addMessageHandler(Messages.CHAT, function(m:Message, s:String):void {
 				addToChat(s);
@@ -166,34 +199,43 @@ package com.behindcurtain3
 			});
 			
 			connection.addMessageHandler(Messages.GAME_COUNTDOWN, function(m:Message, i:int):void {
-				statusText.alpha = 1;
-				statusText.text = "Starting in ... " + Math.ceil(i / 1000);
+				addToChat("Starting in ... " + Math.ceil(i / 1000), 1.5);
 			});
 			
 			connection.addMessageHandler(Messages.GAME_START, function(m:Message):void {
-				addToChat("Game started!");
-				statusText.text = "Begin!";
-				var ft:VarTween = new VarTween();
-				ft.tween(statusText, "alpha", 0, 2.5, Ease.expoIn);
-				addTween(ft, true);
+				addToChat("Game started!");				
+				gameActive = true;
+			});
+			
+			connection.addMessageHandler(Messages.GAME_FINISHED, function(m:Message):void {
+				gameActive = false;
+			});
+			
+			connection.addMessageHandler(Messages.GAME_PLACE_WALL, function(m:Message, x1:int, y1:int, x2:int, y2:int):void {
+				addToChat("Place wall at (" + x1 + "," + y1 + ") to (" + x2 + "," + y2 + ")");
+				add(new Wall(new Point(x1, y1), new Point(x2, y2)));
+			});
+			
+			connection.addMessageHandler(Messages.GAME_INVALID_WALL, function(m:Message, x1:int, y1:int, x2:int, y2:int):void {
+				addToChat("Invalid wall placement!");
 			});
 			
 			connection.addDisconnectHandler(function():void {
-				disconnect();
+				disconnect("Connection to server lost");
 			});
 		}
 		
 		private function handleError(error:PlayerIOError):void
 		{
 			addToChat(error.message);		
-			disconnect();
+			disconnect(error.message);
 		}
 		
-		public function addToChat(s:String):void
+		public function addToChat(s:String, time:Number = 4):void
 		{
-			var t:Text = new Text(s, 10, FP.screen.height - 100, FP.screen.width - 20, 20);
+			var t:Text = new Text(s, 10, FP.screen.height - 60, FP.screen.width - 20, 20);
 			var vt:VarTween = new VarTween();
-			vt.tween(t, "alpha", 0, consoleDisplayTime, Ease.quadIn);
+			vt.tween(t, "alpha", 0, time, Ease.quadIn);
 			
 			addGraphic(t);
 			addTween(vt);

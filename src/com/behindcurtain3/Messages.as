@@ -19,6 +19,12 @@ package com.behindcurtain3
 		public static const GAME_COUNTDOWN:String = "game_countdown"; // Countdown status at start of each game
         public static const GAME_START:String = "game_start";
         public static const GAME_FINISHED:String = "game_finish";
+		public static const GAME_MANA:String = "game_mana";
+        public static const GAME_LIFE:String = "game_life";
+
+        public static const GAME_PLACE_WALL:String = "game_place_wall";
+        public static const GAME_REMOVE_WALL:String = "game_remove_wall";
+        public static const GAME_INVALID_WALL:String = "game_invalid_wall";
 	}
 
 }

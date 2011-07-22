@@ -5,6 +5,7 @@ package com.behindcurtain3
 	import net.flashpunk.FP;
 	import net.flashpunk.graphics.Image;
 	import net.flashpunk.graphics.Text;
+	import net.flashpunk.Sfx;
 	import net.flashpunk.Tween;
 	import net.flashpunk.tweens.misc.VarTween;
 	import net.flashpunk.utils.Draw;
@@ -33,6 +34,9 @@ package com.behindcurtain3
 		
 		// Gfx
 		protected var board:Image;
+		
+		// Sfx
+		protected var sfx_invalid:Sfx = new Sfx(Assets.SFX_INVALID);
 		
 		// Networking
 		protected var client:Client;
@@ -222,6 +226,12 @@ package com.behindcurtain3
 			
 			connection.addMessageHandler(Messages.GAME_INVALID_WALL, function(m:Message, x1:int, y1:int, x2:int, y2:int):void {
 				addToChat("Invalid wall placement!");
+				sfx_invalid.play();
+			});
+			
+			connection.addMessageHandler(Messages.GAME_INVALID_TOWER, function(m:Message, x:int, y:int):void {
+				addToChat("Invalid tower placement!");
+				sfx_invalid.play();
 			});
 			
 			connection.addDisconnectHandler(function():void {

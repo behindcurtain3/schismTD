@@ -25,16 +25,21 @@ package com.behindcurtain3
 		
 		override public function update():void 
 		{
+			if (world == null)
+				return;
+			
 			var mx:int = Input.mouseX;
 			var my:int = Input.mouseY;
 			
 			var cells:Array = new Array();
-			if(world != null)
-				world.getClass(Cell, cells);
+			world.getClass(Cell, cells);
 			
 			var hit:Boolean = false;
 			for each(var c:Cell in cells)
 			{
+				if (!c.isOurs())
+					continue;
+				
 				if (mx >= c.x && mx <= c.x + width && my >= c.y && my <= c.y + height)
 				{
 					hit = true;

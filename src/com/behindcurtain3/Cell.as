@@ -12,10 +12,12 @@ package com.behindcurtain3
 	public class Cell extends Entity
 	{
 		private var index:int;
+		private var isPlayers:Boolean = false;
 		
-		public function Cell(i:int, _x:int, _y:int, w:int, h:int) 
+		public function Cell(i:int, _x:int, _y:int, w:int, h:int, mine:Boolean) 
 		{
 			index = i;
+			isPlayers = mine;
 			
 			super.x = _x;
 			super.y = _y;
@@ -31,6 +33,11 @@ package com.behindcurtain3
 		public function getIndex():int
 		{
 			return index;
+		}
+		
+		public function isOurs():Boolean
+		{
+			return isPlayers;
 		}
 		
 	}

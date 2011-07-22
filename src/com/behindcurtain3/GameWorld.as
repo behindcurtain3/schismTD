@@ -231,8 +231,8 @@ package com.behindcurtain3
 				
 			});
 			
-			connection.addMessageHandler(Messages.GAME_ADD_CELL, function(m:Message, i:int, x:int, y:int, w:int, h:int):void {
-				var c:Cell = new Cell(i, x, y, w, h);
+			connection.addMessageHandler(Messages.GAME_ADD_CELL, function(m:Message, i:int, x:int, y:int, w:int, h:int, mine:Boolean):void {
+				var c:Cell = new Cell(i, x, y, w, h, mine);
 				add(c);
 			});
 			

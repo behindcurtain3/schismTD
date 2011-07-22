@@ -125,14 +125,6 @@ package com.behindcurtain3
 			{
 				disconnect();
 			}
-			/*
-			var walls:Array = new Array();
-			this.getClass(Wall, walls);
-			for each(var w:Wall in walls)
-			{
-				Draw.linePlus(w.Start.x, w.Start.y, w.End.x, w.End.y, 0xFFFFFF, 1, 3);
-			}
-			*/
 			
 			super.update();
 		}
@@ -226,9 +218,11 @@ package com.behindcurtain3
 				removeList(getCells());
 				removeList(getCreeps());
 				
-				remove(glow);
 				if (glow != null)
+				{
+					remove(glow);
 					glow = null;
+				}
 				
 			});
 			

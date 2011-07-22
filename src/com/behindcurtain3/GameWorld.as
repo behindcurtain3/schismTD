@@ -224,6 +224,7 @@ package com.behindcurtain3
 				gameActive = false;
 				
 				removeList(getCells());
+				removeList(getCreeps());
 				
 				remove(glow);
 				if (glow != null)
@@ -261,6 +262,26 @@ package com.behindcurtain3
 				sfx_invalid.play();
 			});
 			
+			connection.addMessageHandler(Messages.GAME_CREEP_ADD, function(m:Message, id:String, x:int, y:int, sp:int):void {
+				add(new Creep(id, x, y, sp));
+			});
+			
+			connection.addMessageHandler(Messages.GAME_CREEP_REMOVE, function(m:Message, id:String):void {
+				for each(var cr:Creep in getCreeps())
+				{
+					if (cr.ID == id)
+						remove(cr);
+				}
+			});
+			
+			connection.addMessageHandler(Messages.GAME_CREEP_UPDATE, function(m:Message, id:String, x:int, y:int, mx:int, my:int):void {
+				for each(var cr:Creep in getCreeps())
+				{
+					if (cr.ID == id)
+						cr.updatePositionFromServer(x, y, mx, my);
+				}
+			});
+			
 			connection.addDisconnectHandler(function():void {
 				disconnect("Connection to server lost");
 			});
@@ -295,6 +316,14 @@ package com.behindcurtain3
 			getClass(Cell, cells);
 				
 			return cells;
+		}
+		
+		public function getCreeps():Array
+		{
+			var c:Array = new Array();
+			getClass(Creep, c);
+				
+			return c;
 		}
 		
 	}

@@ -31,6 +31,10 @@ package com.behindcurtain3
 		public static const GAME_PLACE_TOWER:String = "game_place_tower";
         public static const GAME_REMOVE_TOWER:String = "game_remove_tower";
         public static const GAME_INVALID_TOWER:String = "game_invalid_tower";
+		
+		public static const GAME_CREEP_ADD:String = "game_creep_add";
+        public static const GAME_CREEP_REMOVE:String = "game_creep_remove";
+        public static const GAME_CREEP_UPDATE:String = "game_creep_update";
 	}
 
 }

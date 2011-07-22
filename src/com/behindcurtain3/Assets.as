@@ -12,6 +12,9 @@ package com.behindcurtain3
 		// Towers
 		[Embed(source = '../../../assets/Tower Tiles/Basic-Tower.png')] public static const GFX_TOWER_BASIC:Class;
 		
+		// Creeps
+		[Embed(source = '../../../assets/Creeps/Pig.png')] public static const GFX_CREEP_PIG:Class;
+		
 		// Sounds
 		[Embed(source = '../../../assets/sfx/invalid.mp3')] public static const SFX_INVALID:Class;
 		

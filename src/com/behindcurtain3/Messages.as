@@ -21,6 +21,8 @@ package com.behindcurtain3
         public static const GAME_FINISHED:String = "game_finish";
 		public static const GAME_MANA:String = "game_mana";
         public static const GAME_LIFE:String = "game_life";
+		
+		public static const GAME_ADD_CELL:String = "game_add_cell";
 
         public static const GAME_PLACE_WALL:String = "game_place_wall";
         public static const GAME_REMOVE_WALL:String = "game_remove_wall";

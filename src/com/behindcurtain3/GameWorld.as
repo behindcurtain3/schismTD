@@ -26,6 +26,8 @@ package com.behindcurtain3
 	 */
 	public class GameWorld extends World 
 	{
+		public var Mode:int = BuildMode.NONE;
+		
 		// UI
 		protected var chatbox:PunkTextField;
 		private var console:Array = new Array();
@@ -47,6 +49,7 @@ package com.behindcurtain3
 		private var gameCountdown:int = 0;
 		private var dragStart:Point = null;
 		private var dragEnd:Point = null;
+		private var glow:Glow = null;
 	 
 		public function GameWorld ()
 		{
@@ -107,7 +110,7 @@ package com.behindcurtain3
 				{
 					dragEnd = new Point(Input.mouseX, Input.mouseY);
 					
-					if (connection != null)
+					if (connection != null && glow.graphic.visible == true)
 					{
 						//connection.send(Messages.GAME_PLACE_WALL, dragStart.x, dragStart.y, dragEnd.x, dragEnd.y);
 						connection.send(Messages.GAME_PLACE_TOWER, dragEnd.x, dragEnd.y);
@@ -213,10 +216,24 @@ package com.behindcurtain3
 			connection.addMessageHandler(Messages.GAME_START, function(m:Message):void {
 				addToChat("Game started!");				
 				gameActive = true;
+				glow = new Glow();
+				add(glow);
 			});
 			
 			connection.addMessageHandler(Messages.GAME_FINISHED, function(m:Message):void {
 				gameActive = false;
+				
+				removeList(getCells());
+				
+				remove(glow);
+				if (glow != null)
+					glow = null;
+				
+			});
+			
+			connection.addMessageHandler(Messages.GAME_ADD_CELL, function(m:Message, i:int, x:int, y:int, w:int, h:int):void {
+				var c:Cell = new Cell(i, x, y, w, h);
+				add(c);
 			});
 			
 			connection.addMessageHandler(Messages.GAME_PLACE_WALL, function(m:Message, x1:int, y1:int, x2:int, y2:int):void {
@@ -227,6 +244,16 @@ package com.behindcurtain3
 			connection.addMessageHandler(Messages.GAME_INVALID_WALL, function(m:Message, x1:int, y1:int, x2:int, y2:int):void {
 				addToChat("Invalid wall placement!");
 				sfx_invalid.play();
+			});
+			
+			connection.addMessageHandler(Messages.GAME_PLACE_TOWER, function(m:Message, i:int, type:String):void {				
+				for each(var tc:Cell in getCells())
+				{
+					if (tc.getIndex() == i)
+					{
+						tc.assignGfx(Assets.GFX_TOWER_BASIC);
+					}
+				}
 			});
 			
 			connection.addMessageHandler(Messages.GAME_INVALID_TOWER, function(m:Message, x:int, y:int):void {
@@ -260,6 +287,14 @@ package com.behindcurtain3
 			}
 			
 			console.push(t);
+		}
+		
+		public function getCells():Array
+		{
+			var cells:Array = new Array();
+			getClass(Cell, cells);
+				
+			return cells;
 		}
 		
 	}

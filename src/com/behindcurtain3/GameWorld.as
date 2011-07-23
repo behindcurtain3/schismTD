@@ -26,6 +26,8 @@ package com.behindcurtain3
 	 */
 	public class GameWorld extends World 
 	{
+		public var Mode:int = BuildMode.NONE;
+		
 		// UI
 		protected var chatbox:PunkTextField;
 		private var console:Array = new Array();
@@ -47,6 +49,7 @@ package com.behindcurtain3
 		private var gameCountdown:int = 0;
 		private var dragStart:Point = null;
 		private var dragEnd:Point = null;
+		private var glow:Glow = null;
 	 
 		public function GameWorld ()
 		{
@@ -107,7 +110,7 @@ package com.behindcurtain3
 				{
 					dragEnd = new Point(Input.mouseX, Input.mouseY);
 					
-					if (connection != null)
+					if (connection != null && glow.graphic.visible == true)
 					{
 						//connection.send(Messages.GAME_PLACE_WALL, dragStart.x, dragStart.y, dragEnd.x, dragEnd.y);
 						connection.send(Messages.GAME_PLACE_TOWER, dragEnd.x, dragEnd.y);
@@ -122,14 +125,6 @@ package com.behindcurtain3
 			{
 				disconnect();
 			}
-			/*
-			var walls:Array = new Array();
-			this.getClass(Wall, walls);
-			for each(var w:Wall in walls)
-			{
-				Draw.linePlus(w.Start.x, w.Start.y, w.End.x, w.End.y, 0xFFFFFF, 1, 3);
-			}
-			*/
 			
 			super.update();
 		}
@@ -213,10 +208,27 @@ package com.behindcurtain3
 			connection.addMessageHandler(Messages.GAME_START, function(m:Message):void {
 				addToChat("Game started!");				
 				gameActive = true;
+				glow = new Glow();
+				add(glow);
 			});
 			
 			connection.addMessageHandler(Messages.GAME_FINISHED, function(m:Message):void {
 				gameActive = false;
+				
+				removeList(getCells());
+				removeList(getCreeps());
+				
+				if (glow != null)
+				{
+					remove(glow);
+					glow = null;
+				}
+				
+			});
+			
+			connection.addMessageHandler(Messages.GAME_ADD_CELL, function(m:Message, i:int, x:int, y:int, w:int, h:int, mine:Boolean):void {
+				var c:Cell = new Cell(i, x, y, w, h, mine);
+				add(c);
 			});
 			
 			connection.addMessageHandler(Messages.GAME_PLACE_WALL, function(m:Message, x1:int, y1:int, x2:int, y2:int):void {
@@ -229,9 +241,39 @@ package com.behindcurtain3
 				sfx_invalid.play();
 			});
 			
+			connection.addMessageHandler(Messages.GAME_PLACE_TOWER, function(m:Message, i:int, type:String):void {				
+				for each(var tc:Cell in getCells())
+				{
+					if (tc.getIndex() == i)
+					{
+						tc.assignGfx(Assets.GFX_TOWER_BASIC);
+					}
+				}
+			});
+			
 			connection.addMessageHandler(Messages.GAME_INVALID_TOWER, function(m:Message, x:int, y:int):void {
 				addToChat("Invalid tower placement!");
 				sfx_invalid.play();
+			});
+			
+			connection.addMessageHandler(Messages.GAME_CREEP_ADD, function(m:Message, id:String, x:int, y:int, sp:int):void {
+				add(new Creep(id, x, y, sp));
+			});
+			
+			connection.addMessageHandler(Messages.GAME_CREEP_REMOVE, function(m:Message, id:String):void {
+				for each(var cr:Creep in getCreeps())
+				{
+					if (cr.ID == id)
+						remove(cr);
+				}
+			});
+			
+			connection.addMessageHandler(Messages.GAME_CREEP_UPDATE, function(m:Message, id:String, x:int, y:int, mx:int, my:int):void {
+				for each(var cr:Creep in getCreeps())
+				{
+					if (cr.ID == id)
+						cr.updatePositionFromServer(x, y, mx, my);
+				}
 			});
 			
 			connection.addDisconnectHandler(function():void {
@@ -260,6 +302,22 @@ package com.behindcurtain3
 			}
 			
 			console.push(t);
+		}
+		
+		public function getCells():Array
+		{
+			var cells:Array = new Array();
+			getClass(Cell, cells);
+				
+			return cells;
+		}
+		
+		public function getCreeps():Array
+		{
+			var c:Array = new Array();
+			getClass(Creep, c);
+				
+			return c;
 		}
 		
 	}

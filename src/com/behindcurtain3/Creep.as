@@ -18,8 +18,7 @@ package com.behindcurtain3
 		
 		public var ID:String;
 		
-		public var Speed:int;
-		
+		public var Speed:int;		
 		
 		public function Creep(s:String, _x:int, _y:int, sp:int) 
 		{

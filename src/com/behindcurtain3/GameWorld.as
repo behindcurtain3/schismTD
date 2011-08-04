@@ -53,10 +53,12 @@ package com.behindcurtain3
 	 
 		public function GameWorld ()
 		{
+			FP.volume = 0.1;
+			
 			// Setup gfx
 			board = new Image(Assets.GFX_BOARD);
 			board.alpha = 0;
-			addGraphic(board, 10, 0, 43);
+			addGraphic(board, 10, 0, 0);
 			
 			chatbox = new PunkTextField("", 10, FP.screen.height - 30, FP.screen.width - 20);
 			chatbox.visible = false;
@@ -268,7 +270,7 @@ package com.behindcurtain3
 				}
 			});
 			
-			connection.addMessageHandler(Messages.GAME_CREEP_UPDATE, function(m:Message, id:String, x:int, y:int, mx:int, my:int):void {
+			connection.addMessageHandler(Messages.GAME_CREEP_UPDATE_POSITION, function(m:Message, id:String, x:int, y:int, mx:int, my:int):void {
 				for each(var cr:Creep in getCreeps())
 				{
 					if (cr.ID == id)

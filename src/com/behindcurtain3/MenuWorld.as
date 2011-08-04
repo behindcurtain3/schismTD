@@ -25,6 +25,8 @@ package com.behindcurtain3
 		public function MenuWorld (error:String = "")
 		{
 			add(new PunkButton(FP.screen.width / 2 - 100, FP.screen.height / 2 - 25, 200, 100, "Play Now", onPlayNow)); 
+			add(new PunkButton(FP.screen.width / 2 - 100, FP.screen.height / 2 + 100, 200, 75, "Manage Account", onPlayNow)); 
+			addGraphic(new Text(Assets.VERSION, 0, FP.screen.height - 15, 50, 15));
 			
 			if (error != "")
 			{

@@ -34,7 +34,7 @@ package com.behindcurtain3
 		
 		public static const GAME_CREEP_ADD:String = "game_creep_add";
         public static const GAME_CREEP_REMOVE:String = "game_creep_remove";
-        public static const GAME_CREEP_UPDATE:String = "game_creep_update";
+        public static const GAME_CREEP_UPDATE_POSITION:String = "game_creep_update_position";
 	}
 
 }

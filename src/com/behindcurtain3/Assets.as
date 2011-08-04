@@ -6,8 +6,10 @@ package com.behindcurtain3
 	 */
 	public class Assets 
 	{		
+		public static const VERSION:String = "v0.01";
+		
 		// Board
-		[Embed(source = '../../../assets/Board/board-main.png')] public static const GFX_BOARD:Class;
+		[Embed(source = '../../../assets/Board/Board.png')] public static const GFX_BOARD:Class;
 		
 		// Towers
 		[Embed(source = '../../../assets/Tower Tiles/Basic-Tower.png')] public static const GFX_TOWER_BASIC:Class;

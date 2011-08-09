@@ -38,36 +38,23 @@ package com.behindcurtain3
 		{
 			if (MovingTo != null)
 			{
-				var d:Number = Math.abs(Center.x - MovingTo.x) + Math.abs(Center.y - MovingTo.y);
+				var velocity:Number = Speed * FP.elapsed;
 				
-				if (d > 2)
-				{
-					if (Math.abs(Center.x - MovingTo.x) >= 2)
-					{
-						if(Center.x < MovingTo.x)
-							x += Speed * FP.elapsed;
-						else
-							x -= Speed * FP.elapsed;
-							
-						Center.x = x + img.width / 2;
-					}
-					if (Math.abs(Center.y - MovingTo.y) >= 2)
-					{
-						if(Center.y < MovingTo.y)
-							y += Speed * FP.elapsed;
-						else
-							y -= Speed * FP.elapsed;
-							
-						Center.y = y + img.height / 2;
-					}
-					
-					
-				}
+				var movement:Vector2 = new Vector2(Center.x, Center.y);
+				movement.minus(new Vector2(MovingTo.x, MovingTo.y));
+				movement.normalize();
+				movement.times(velocity);
+				
+				x -= movement.x;
+				y -= movement.y;	
+				Center.x = x + img.width / 2;
+				Center.y = y + img.height / 2;
 			}
 			
 			super.update();
 		}
 		
+		// x & y sent from server are the center of the creep
 		public function updatePositionFromServer(_x:int, _y:int, mx:int, my:int):void
 		{
 			x = _x - img.width / 2;

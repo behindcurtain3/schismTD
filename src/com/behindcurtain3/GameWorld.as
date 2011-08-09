@@ -1,6 +1,7 @@
 package com.behindcurtain3
 {
 	import flash.display.ActionScriptVersion;
+	import flash.events.TextEvent;
 	import flash.geom.Point;
 	import net.flashpunk.FP;
 	import net.flashpunk.graphics.Image;
@@ -31,6 +32,10 @@ package com.behindcurtain3
 		// UI
 		protected var chatbox:PunkTextField;
 		private var console:Array = new Array();
+		protected var whiteHealthUI:Text;
+		protected var whiteManaUI:Text;
+		protected var blackHealthUI:Text;
+		protected var blackManaUI:Text;
 		
 		private var consoleDisplayTime:Number = 5;
 		
@@ -50,6 +55,13 @@ package com.behindcurtain3
 		private var dragStart:Point = null;
 		private var dragEnd:Point = null;
 		private var glow:Glow = null;
+		private var blackId:int;
+		private var whiteId:int;
+		
+		private var blackHealth:int = 0;
+		private var blackMana:int = 0;
+		private var whiteHealth:int = 0;
+		private var whiteMana:int = 0;
 	 
 		public function GameWorld ()
 		{
@@ -102,6 +114,11 @@ package com.behindcurtain3
 
 			if (gameActive)
 			{
+				whiteHealthUI.text = "Health: " + whiteHealth;
+				whiteManaUI.text = "Chi: " + whiteMana;
+				blackHealthUI.text = "Health: " + blackHealth;
+				blackManaUI.text = "Chi: " + blackMana;
+				
 			
 				if (Input.mousePressed)
 				{
@@ -165,7 +182,19 @@ package com.behindcurtain3
 			addToChat("Connected");
 			connection = c;
 			
+			// Setup UI
 			chatbox.visible = true;
+			
+			whiteHealthUI = new Text("Life:", 5, 5, 100, 25);
+			whiteManaUI = new Text("Mana:", 105, 5, 100, 25);
+			addGraphic(whiteHealthUI);
+			addGraphic(whiteManaUI);
+			
+			blackHealthUI = new Text("Life:", FP.screen.width - 200, FP.screen.height - 30, 100, 25);
+			blackManaUI = new Text("Mana:", FP.screen.width - 95, FP.screen.height - 30, 100, 25);
+			addGraphic(blackHealthUI);
+			addGraphic(blackManaUI);
+			
 			
 			connection.addMessageHandler(Messages.CHAT, function(m:Message, s:String):void {
 				addToChat(s);
@@ -183,7 +212,9 @@ package com.behindcurtain3
 				addToChat("Match ready to begin!");
 			});
 			
-			connection.addMessageHandler(Messages.MATCH_STARTED, function(m:Message):void {
+			connection.addMessageHandler(Messages.MATCH_STARTED, function(m:Message, id1:int, id2:int):void {
+				blackId = id1;
+				whiteId = id2;
 				addToChat("Matched started!");
 				
 				var vt:VarTween = new VarTween();
@@ -276,6 +307,20 @@ package com.behindcurtain3
 					if (cr.ID == id)
 						cr.updatePositionFromServer(x, y, mx, my);
 				}
+			});
+			
+			connection.addMessageHandler(Messages.GAME_LIFE, function(m:Message, id:int, value:int):void {
+				if (id == blackId)
+					blackHealth = value;
+				else
+					whiteHealth = value;
+			});
+			
+			connection.addMessageHandler(Messages.GAME_MANA, function(m:Message, id:int, value:int):void {
+				if (id == blackId)
+					blackMana = value;
+				else
+					whiteMana = value;
 			});
 			
 			connection.addDisconnectHandler(function():void {

@@ -4,8 +4,6 @@ package com.behindcurtain3
 	 * ...
 	 * @author Justin Brown
 	 */
-	package com.behindcurtain3 
-{
 	import flash.display.BitmapData;
 	import flash.geom.Point;
 	import net.flashpunk.Entity;
@@ -19,39 +17,27 @@ package com.behindcurtain3
 	public class Projectile extends Entity 
 	{
 		private var speed:Number;
-		private var dmg:Number;
-		private var target:Point;
+		private var target:Creep;
+		public var id:String;
 		
-		public function Projectile(_x:Number, _y:Number, _t:Point, damage:Number = 50) 
+		public function Projectile(_id:String, _x:Number, _y:Number, _v:Number, _t:Creep) 
 		{
+			id = _id;
 			x = _x;
 			y = _y;
 			
-			target = _t;
-			
-			graphic = new Image(new BitmapData(1, 1));
-			setHitbox(1,1);
+			graphic = new Image(new BitmapData(5, 5));
+			setHitbox(5,5);
 			type = "bullet"
 			
-			speed = 250;
-			dmg = damage;
+			speed = _v;
+			target = _t;
 		}
 		
 		override public function update():void
 		{
-			var v:Number = speed * FP.elapsed;
-			moveTowards(target.x, target.y, v);
-			
-			if (y < 0 || y > FP.height || x < 0 || x > FP.width)
-			{
-				destroy();
-			}
-			
-			if (collide("scenery", x, y))
-			{
-				destroy();
-			}
-			
+			var velocity:Number = speed * FP.elapsed;			
+			moveTowards(target.Center.x, target.Center.y, velocity);
 			super.update();
 		}
 		
@@ -60,14 +46,6 @@ package com.behindcurtain3
 			if(this.world != null)
 				this.world.remove(this);
 		}
-		
-		public function Damage():Number
-		{
-			return dmg;
-		}
 	}
 
 }
-
-}
-

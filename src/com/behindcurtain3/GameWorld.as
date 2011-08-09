@@ -250,6 +250,7 @@ package com.behindcurtain3
 				
 				removeList(getCells());
 				removeList(getCreeps());
+				removeList(getProjectiles());
 				
 				if (glow != null)
 				{
@@ -297,7 +298,10 @@ package com.behindcurtain3
 				for each(var cr:Creep in getCreeps())
 				{
 					if (cr.ID == id)
+					{
 						remove(cr);
+						break;
+					}
 				}
 			});
 			
@@ -305,7 +309,10 @@ package com.behindcurtain3
 				for each(var cr:Creep in getCreeps())
 				{
 					if (cr.ID == id)
+					{
 						cr.updatePositionFromServer(x, y, mx, my);
+						break;
+					}
 				}
 			});
 			
@@ -321,6 +328,34 @@ package com.behindcurtain3
 					blackMana = value;
 				else
 					whiteMana = value;
+			});
+			
+			connection.addMessageHandler(Messages.GAME_PROJECTILE_ADD, function(m:Message, id:String, x:Number, y:Number, v:Number, crID:String):void {
+				var creep:Creep = null;
+				for each(var cr:Creep in getCreeps())
+				{
+					if (cr.ID == crID)
+					{
+						creep = cr;
+						break;
+					}					
+				}
+				
+				if (creep != null)
+				{
+					add(new Projectile(id, x, y, v, creep));					
+				}				
+			});
+			
+			connection.addMessageHandler(Messages.GAME_PROJECTILE_REMOVE, function(m:Message, id:String):void {				
+				for each(var p:Projectile in getProjectiles())
+				{
+					if (p.id == id)
+					{
+						p.destroy();
+					}
+				}
+				
 			});
 			
 			connection.addDisconnectHandler(function():void {
@@ -365,6 +400,13 @@ package com.behindcurtain3
 			getClass(Creep, c);
 				
 			return c;
+		}
+		
+		public function getProjectiles():Array
+		{
+			var p:Array = new Array();
+			getClass(Projectile, p);
+			return p;
 		}
 		
 	}

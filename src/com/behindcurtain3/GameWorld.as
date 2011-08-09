@@ -3,6 +3,7 @@ package com.behindcurtain3
 	import flash.display.ActionScriptVersion;
 	import flash.events.TextEvent;
 	import flash.geom.Point;
+	import net.flashpunk.Entity;
 	import net.flashpunk.FP;
 	import net.flashpunk.graphics.Image;
 	import net.flashpunk.graphics.Text;
@@ -57,6 +58,7 @@ package com.behindcurtain3
 		private var glow:Glow = null;
 		private var blackId:int;
 		private var whiteId:int;
+		public var objectSelected:Entity = null;
 		
 		private var blackHealth:int = 0;
 		private var blackMana:int = 0;
@@ -70,9 +72,9 @@ package com.behindcurtain3
 			// Setup gfx
 			board = new Image(Assets.GFX_BOARD);
 			board.alpha = 0;
-			addGraphic(board, 10, 0, 0);
+			addGraphic(board, 100, 0, 0);
 			
-			chatbox = new PunkTextField("", 10, FP.screen.height - 30, FP.screen.width - 20);
+			chatbox = new PunkTextField("", 10, FP.screen.height - 30, 200);
 			chatbox.visible = false;
 			add(chatbox);
 			
@@ -89,6 +91,9 @@ package com.behindcurtain3
 				handleError							//Function executed if we recive an error
 			); 
 			
+			
+			Input.define("Chat", Key.T);
+			Input.define("Send", Key.ENTER);
 		}
 		
 		override public function end():void
@@ -103,15 +108,27 @@ package com.behindcurtain3
 		
 		override public function update():void
 		{
-			if (Input.pressed(Key.ENTER))
+			if (chatbox.visible)
 			{
-				if (chatbox.text != "")
+				if (Input.pressed("Send"))
 				{
-					connection.send(Messages.CHAT, chatbox.text);
-					chatbox.text = "";
+					if (chatbox.text != "")
+					{
+						connection.send(Messages.CHAT, chatbox.text);
+						chatbox.text = "";
+					}
+					chatbox.visible = false;
+				}
+			}
+			else
+			{
+				if (Input.pressed("Chat"))
+				{
+					chatbox.visible = true;
 				}
 			}
 
+				
 			if (gameActive)
 			{
 				whiteHealthUI.text = "Health: " + whiteHealth;
@@ -129,12 +146,28 @@ package com.behindcurtain3
 				{
 					dragEnd = new Point(Input.mouseX, Input.mouseY);
 					
-					if (connection != null && glow.graphic.visible == true)
+					// Check if something exists
+					var cell:Cell = collidePoint("cell", dragEnd.x, dragEnd.y) as Cell;
+						
+					if (cell != null)
 					{
-						//connection.send(Messages.GAME_PLACE_WALL, dragStart.x, dragStart.y, dragEnd.x, dragEnd.y);
-						connection.send(Messages.GAME_PLACE_TOWER, dragEnd.x, dragEnd.y);
+						if (!cell.hasTower)
+						{
+							if (objectSelected == null)
+							{
+								if (connection != null && glow.graphic.visible == true)
+								{
+									connection.send(Messages.GAME_PLACE_TOWER, dragEnd.x, dragEnd.y);
+								}
+							}
+							objectSelected = null;
+						}
+						else
+						{
+							objectSelected = cell;
+						}
 					}
-					
+
 					dragStart = null;
 					dragEnd = null;
 				}
@@ -175,6 +208,7 @@ package com.behindcurtain3
 				handleJoin,							//Function executed on successful joining of the room
 				handleError							//Function executed if we got a join error
 			);
+			
 		}
 		
 		private function handleJoin(c:Connection):void
@@ -183,7 +217,7 @@ package com.behindcurtain3
 			connection = c;
 			
 			// Setup UI
-			chatbox.visible = true;
+			chatbox.visible = false;
 			
 			whiteHealthUI = new Text("Life:", 5, 5, 100, 25);
 			whiteManaUI = new Text("Mana:", 105, 5, 100, 25);
@@ -311,6 +345,17 @@ package com.behindcurtain3
 					if (cr.ID == id)
 					{
 						cr.updatePositionFromServer(x, y, mx, my);
+						break;
+					}
+				}
+			});
+			
+			connection.addMessageHandler(Messages.GAME_CREEP_UPDATE_LIFE, function(m:Message, id:String, value:int):void {
+				for each(var cr:Creep in getCreeps())
+				{
+					if (cr.ID == id)
+					{
+						cr.updateLife(value);
 						break;
 					}
 				}

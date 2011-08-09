@@ -18,7 +18,9 @@ package com.behindcurtain3
 		
 		public var ID:String;
 		
-		public var Speed:int;		
+		public var Speed:int;
+		public var life:int = -1;
+		public var startingLife:int;
 		
 		public function Creep(s:String, _x:int, _y:int, sp:int) 
 		{
@@ -28,10 +30,15 @@ package com.behindcurtain3
 			img = new Image(Assets.GFX_CREEP_PIG);
 			x = _x - img.width / 2;
 			y = _y - img.height / 2 ;
+			width = img.width;
+			height = img.height;
+			setHitbox(width, height);
+			type = "creep";
 			
 			Center = new Point(_x, _y);
 			
 			graphic = img;
+			layer = 10;
 		}
 		
 		override public function update():void 
@@ -49,6 +56,11 @@ package com.behindcurtain3
 				y -= movement.y;	
 				Center.x = x + img.width / 2;
 				Center.y = y + img.height / 2;
+				
+				if (life != -1)
+				{
+					img.alpha = (life / startingLife) + 0.25;
+				}
 			}
 			
 			super.update();
@@ -62,6 +74,15 @@ package com.behindcurtain3
 			
 			Center = new Point(_x, _y);			
 			MovingTo = new Point(mx, my);
+		}
+		
+		public function updateLife(value:int):void
+		{
+			if (life == -1)
+			{
+				startingLife = value;
+			}
+			life = value;
 		}
 	}
 

@@ -27,6 +27,7 @@ package com.behindcurtain3
 			y = _y;
 			
 			graphic = new Image(new BitmapData(5, 5));
+			layer = 2;
 			setHitbox(5,5);
 			type = "bullet"
 			

@@ -94,6 +94,8 @@ package com.behindcurtain3
 			
 			Input.define("Chat", Key.T);
 			Input.define("Send", Key.ENTER);
+			Input.define("Upgrade1", Key.DIGIT_1, Key.NUMPAD_1);
+			Input.define("Upgrade2", Key.DIGIT_2, Key.NUMPAD_2);
 		}
 		
 		override public function end():void
@@ -128,15 +130,17 @@ package com.behindcurtain3
 				}
 			}
 
-				
-			if (gameActive)
+			// Update UI
+			if (connection != null)
 			{
 				whiteHealthUI.text = "Health: " + whiteHealth;
 				whiteManaUI.text = "Chi: " + whiteMana;
 				blackHealthUI.text = "Health: " + blackHealth;
 				blackManaUI.text = "Chi: " + blackMana;
+			}
 				
-			
+			if (gameActive)
+			{
 				if (Input.mousePressed)
 				{
 					dragStart = new Point(Input.mouseX, Input.mouseY);
@@ -170,6 +174,19 @@ package com.behindcurtain3
 
 					dragStart = null;
 					dragEnd = null;
+				}
+				
+				if (objectSelected != null)
+				{
+					if (Input.pressed("Upgrade1"))
+					{
+						connection.send(Messages.GAME_UPGRADE_TOWER, objectSelected.centerX, objectSelected.centerY, 1);
+					}
+					else if (Input.pressed("Upgrade2"))
+					{
+						connection.send(Messages.GAME_UPGRADE_TOWER, objectSelected.centerX, objectSelected.centerY, 2);
+					}
+					
 				}
 			}
 			
@@ -272,14 +289,17 @@ package com.behindcurtain3
 				}
 			});
 			
-			connection.addMessageHandler(Messages.GAME_START, function(m:Message):void {
-				addToChat("Game started!");				
+			connection.addMessageHandler(Messages.GAME_ACTIVATE, function(m:Message):void {
 				gameActive = true;
 				glow = new Glow();
 				add(glow);
 			});
 			
-			connection.addMessageHandler(Messages.GAME_FINISHED, function(m:Message):void {
+			connection.addMessageHandler(Messages.GAME_START, function(m:Message):void {
+				addToChat("Game started!");				
+			});
+			
+			connection.addMessageHandler(Messages.GAME_FINISHED, function(m:Message, id:int):void {
 				gameActive = false;
 				
 				removeList(getCells());
@@ -290,6 +310,20 @@ package com.behindcurtain3
 				{
 					remove(glow);
 					glow = null;
+				}
+				
+				if (id == -1)
+				{
+					// Draw
+					addToChat("Game is drawn!", 10);
+				}
+				else if (id == blackId)
+				{
+					addToChat("Black wins!", 10);
+				}
+				else if (id == whiteId)
+				{
+					addToChat("White wins!", 10);
 				}
 				
 			});
@@ -334,6 +368,14 @@ package com.behindcurtain3
 					if (cr.ID == id)
 					{
 						remove(cr);
+						
+						for each(var p:Projectile in getProjectiles())
+						{
+							if (p.target == cr)
+							{
+								remove(p);
+							}
+						}						
 						break;
 					}
 				}

@@ -17,6 +17,7 @@ package com.behindcurtain3
 		
 		// game
 		public static const GAME_COUNTDOWN:String = "game_countdown"; // Countdown status at start of each game
+		public static const GAME_ACTIVATE:String = "game_activate";
         public static const GAME_START:String = "game_start";
         public static const GAME_FINISHED:String = "game_finish";
 		public static const GAME_MANA:String = "game_mana";
@@ -31,6 +32,7 @@ package com.behindcurtain3
 		public static const GAME_PLACE_TOWER:String = "game_place_tower";
         public static const GAME_REMOVE_TOWER:String = "game_remove_tower";
         public static const GAME_INVALID_TOWER:String = "game_invalid_tower";
+		public static const GAME_UPGRADE_TOWER:String = "game_upgrade_tower";
 		
 		public static const GAME_CREEP_ADD:String = "game_creep_add";
         public static const GAME_CREEP_REMOVE:String = "game_creep_remove";

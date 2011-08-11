@@ -17,7 +17,7 @@ package com.behindcurtain3
 	public class Projectile extends Entity 
 	{
 		private var speed:Number;
-		private var target:Creep;
+		public var target:Creep;
 		public var id:String;
 		
 		public function Projectile(_id:String, _x:Number, _y:Number, _v:Number, _t:Creep) 
@@ -39,6 +39,12 @@ package com.behindcurtain3
 		{
 			var velocity:Number = speed * FP.elapsed;			
 			moveTowards(target.Center.x, target.Center.y, velocity);
+			
+			if (collideRect(x, y, target.x, target.y, target.width, target.height))
+			{
+				destroy();
+			}			
+			
 			super.update();
 		}
 		

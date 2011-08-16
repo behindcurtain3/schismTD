@@ -64,6 +64,9 @@ package com.behindcurtain3
 		private var blackMana:int = 0;
 		private var whiteHealth:int = 0;
 		private var whiteMana:int = 0;
+		
+		private var blackPath:Array;
+		private var whitePath:Array;
 	 
 		public function GameWorld ()
 		{
@@ -333,16 +336,6 @@ package com.behindcurtain3
 				add(c);
 			});
 			
-			connection.addMessageHandler(Messages.GAME_PLACE_WALL, function(m:Message, x1:int, y1:int, x2:int, y2:int):void {
-				addToChat("Place wall at (" + x1 + "," + y1 + ") to (" + x2 + "," + y2 + ")");
-				add(new Wall(new Point(x1, y1), new Point(x2, y2)));
-			});
-			
-			connection.addMessageHandler(Messages.GAME_INVALID_WALL, function(m:Message, x1:int, y1:int, x2:int, y2:int):void {
-				addToChat("Invalid wall placement!");
-				sfx_invalid.play();
-			});
-			
 			connection.addMessageHandler(Messages.GAME_PLACE_TOWER, function(m:Message, i:int, type:String):void {				
 				for each(var tc:Cell in getCells())
 				{
@@ -358,8 +351,11 @@ package com.behindcurtain3
 				sfx_invalid.play();
 			});
 			
-			connection.addMessageHandler(Messages.GAME_CREEP_ADD, function(m:Message, id:String, x:int, y:int, sp:int):void {
-				add(new Creep(id, x, y, sp));
+			connection.addMessageHandler(Messages.GAME_CREEP_ADD, function(m:Message, id:String, pId:int, x:int, y:int, sp:int):void {
+				if(pId == blackId)
+					add(new Creep(id, pId, x, y, sp, blackPath));
+				else if (pId == whiteId)
+					add(new Creep(id, pId, x, y, sp, whitePath));
 			});
 			
 			connection.addMessageHandler(Messages.GAME_CREEP_REMOVE, function(m:Message, id:String):void {
@@ -380,7 +376,7 @@ package com.behindcurtain3
 					}
 				}
 			});
-			
+			/*
 			connection.addMessageHandler(Messages.GAME_CREEP_UPDATE_POSITION, function(m:Message, id:String, x:int, y:int, mx:int, my:int):void {
 				for each(var cr:Creep in getCreeps())
 				{
@@ -390,7 +386,7 @@ package com.behindcurtain3
 						break;
 					}
 				}
-			});
+			}); */
 			
 			connection.addMessageHandler(Messages.GAME_CREEP_UPDATE_LIFE, function(m:Message, id:String, value:int):void {
 				for each(var cr:Creep in getCreeps())
@@ -445,9 +441,52 @@ package com.behindcurtain3
 				
 			});
 			
+			connection.addMessageHandler(Messages.GAME_ALL_CREEPS_PATH, updatePaths);
+			connection.addMessageHandler(Messages.GAME_CREEP_PATH, updateSinglePath);
+			
 			connection.addDisconnectHandler(function():void {
 				disconnect("Connection to server lost");
 			});
+		}
+		
+		private function updatePaths(m:Message):void
+		{
+			var newPath:Array = new Array();
+			
+			for (var i:int = 1; i < m.length; i++)
+			{
+				newPath.push(m.getInt(i));
+			}
+			
+			trace(newPath);
+			
+			if (blackId == m.getInt(0))
+			{
+				blackPath = newPath;
+			}
+			else if (whiteId == m.getInt(0))
+			{
+				whitePath = newPath;
+			}
+		}
+		
+		private function updateSinglePath(m:Message):void
+		{
+			var newPath:Array = new Array();
+			
+			for (var i:int = 1; i < m.length; i++)
+			{
+				newPath.push(m.getInt(i));
+			}
+			
+			for each(var c:Creep in getCreeps())
+			{
+				if (c.ID == m.getString(0))
+				{
+					c.updatePath(newPath);
+					trace(c.ID + ": " + newPath);
+				}
+			}
 		}
 		
 		private function handleError(error:PlayerIOError):void

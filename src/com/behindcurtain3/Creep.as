@@ -13,18 +13,21 @@ package com.behindcurtain3
 	{
 		protected var img:Image;
 		
-		public var MovingTo:Point = null;
+		public var MovingTo:Cell = null;
 		public var Center:Point;
 		
 		public var ID:String;
+		public var player:int;
+		public var path:Array;
 		
 		public var Speed:int;
 		public var life:int = -1;
 		public var startingLife:int;
 		
-		public function Creep(s:String, _x:int, _y:int, sp:int) 
+		public function Creep(s:String, pId:int, _x:int, _y:int, sp:int, _path:Array) 
 		{
-			ID = s;			
+			ID = s;		
+			player = pId;
 			Speed = sp;
 			
 			img = new Image(Assets.GFX_CREEP_PIG);
@@ -39,11 +42,17 @@ package com.behindcurtain3
 			
 			graphic = img;
 			layer = 10;
+			
+			updatePath(_path);
 		}
 		
 		override public function update():void 
 		{
-			if (MovingTo != null)
+			if (MovingTo == null)
+			{
+				//
+			}
+			else
 			{
 				var velocity:Number = Speed * FP.elapsed;
 				
@@ -67,6 +76,7 @@ package com.behindcurtain3
 		}
 		
 		// x & y sent from server are the center of the creep
+		/*
 		public function updatePositionFromServer(_x:int, _y:int, mx:int, my:int):void
 		{
 			x = _x - img.width / 2;
@@ -74,7 +84,7 @@ package com.behindcurtain3
 			
 			Center = new Point(_x, _y);			
 			MovingTo = new Point(mx, my);
-		}
+		}*/
 		
 		public function updateLife(value:int):void
 		{
@@ -83,6 +93,12 @@ package com.behindcurtain3
 				startingLife = value;
 			}
 			life = value;
+		}
+		
+		public function updatePath(path:Array):void
+		{
+			
+			
 		}
 	}
 

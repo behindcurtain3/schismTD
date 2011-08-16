@@ -353,9 +353,9 @@ package com.behindcurtain3
 			
 			connection.addMessageHandler(Messages.GAME_CREEP_ADD, function(m:Message, id:String, pId:int, x:int, y:int, sp:int):void {
 				if(pId == blackId)
-					add(new Creep(id, pId, x, y, sp, blackPath));
-				else if (pId == whiteId)
 					add(new Creep(id, pId, x, y, sp, whitePath));
+				else if (pId == whiteId)
+					add(new Creep(id, pId, x, y, sp, blackPath));
 			});
 			
 			connection.addMessageHandler(Messages.GAME_CREEP_REMOVE, function(m:Message, id:String):void {
@@ -376,17 +376,6 @@ package com.behindcurtain3
 					}
 				}
 			});
-			/*
-			connection.addMessageHandler(Messages.GAME_CREEP_UPDATE_POSITION, function(m:Message, id:String, x:int, y:int, mx:int, my:int):void {
-				for each(var cr:Creep in getCreeps())
-				{
-					if (cr.ID == id)
-					{
-						cr.updatePositionFromServer(x, y, mx, my);
-						break;
-					}
-				}
-			}); */
 			
 			connection.addMessageHandler(Messages.GAME_CREEP_UPDATE_LIFE, function(m:Message, id:String, value:int):void {
 				for each(var cr:Creep in getCreeps())
@@ -455,10 +444,11 @@ package com.behindcurtain3
 			
 			for (var i:int = 1; i < m.length; i++)
 			{
-				newPath.push(m.getInt(i));
+				var cell:Cell = getCell(m.getInt(i));
+				
+				if (cell != null)
+					newPath.push(cell);
 			}
-			
-			trace(newPath);
 			
 			if (blackId == m.getInt(0))
 			{
@@ -476,7 +466,12 @@ package com.behindcurtain3
 			
 			for (var i:int = 1; i < m.length; i++)
 			{
-				newPath.push(m.getInt(i));
+				var cell:Cell = getCell(m.getInt(i));
+				
+				if (cell != null)
+				{
+					newPath.push(cell);
+				}
 			}
 			
 			for each(var c:Creep in getCreeps())
@@ -484,7 +479,6 @@ package com.behindcurtain3
 				if (c.ID == m.getString(0))
 				{
 					c.updatePath(newPath);
-					trace(c.ID + ": " + newPath);
 				}
 			}
 		}
@@ -510,6 +504,19 @@ package com.behindcurtain3
 			}
 			
 			console.push(t);
+		}
+		
+		public function getCell(index:int):Cell
+		{
+			var cells:Array = getCells();
+			
+			for each(var cell:Cell in cells)
+			{
+				if (cell.getIndex() == index)
+					return cell;
+			}
+			
+			return null;
 		}
 		
 		public function getCells():Array

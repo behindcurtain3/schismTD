@@ -45,6 +45,11 @@ package com.behindcurtain3
 			return isPlayers;
 		}
 		
+		override public function toString():String 
+		{
+			return getIndex().toString();
+		}
+		
 	}
 
 }

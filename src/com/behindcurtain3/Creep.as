@@ -14,7 +14,6 @@ package com.behindcurtain3
 		protected var img:Image;
 		
 		public var MovingTo:Cell = null;
-		public var Center:Point;
 		
 		public var ID:String;
 		public var player:int;
@@ -38,8 +37,6 @@ package com.behindcurtain3
 			setHitbox(width, height);
 			type = "creep";
 			
-			Center = new Point(_x, _y);
-			
 			graphic = img;
 			layer = 10;
 			
@@ -48,23 +45,41 @@ package com.behindcurtain3
 		
 		override public function update():void 
 		{
-			if (MovingTo == null)
+			if (path.length > 0)
 			{
-				//
-			}
-			else
-			{
+				if (MovingTo == null)
+				{
+					MovingTo = path[0];
+				}
+				
+				var d:Number = getDistance(MovingTo);
+				
+				if (d <= 3)
+				{
+					path.reverse();
+					path.pop();
+					path.reverse();
+					
+					if (path.length == 0)
+					{
+						// Creep has arrived
+					}
+					else
+					{
+						MovingTo = path[0];
+					}
+				}
+				
+				// Move the creep
 				var velocity:Number = Speed * FP.elapsed;
 				
-				var movement:Vector2 = new Vector2(Center.x, Center.y);
-				movement.minus(new Vector2(MovingTo.x, MovingTo.y));
+				var movement:Vector2 = new Vector2(centerX, centerY);
+				movement.minus(new Vector2(MovingTo.centerX, MovingTo.centerY));
 				movement.normalize();
 				movement.times(velocity);
 				
 				x -= movement.x;
 				y -= movement.y;	
-				Center.x = x + img.width / 2;
-				Center.y = y + img.height / 2;
 				
 				if (life != -1)
 				{
@@ -75,17 +90,6 @@ package com.behindcurtain3
 			super.update();
 		}
 		
-		// x & y sent from server are the center of the creep
-		/*
-		public function updatePositionFromServer(_x:int, _y:int, mx:int, my:int):void
-		{
-			x = _x - img.width / 2;
-			y = _y - img.height / 2 ;
-			
-			Center = new Point(_x, _y);			
-			MovingTo = new Point(mx, my);
-		}*/
-		
 		public function updateLife(value:int):void
 		{
 			if (life == -1)
@@ -95,10 +99,15 @@ package com.behindcurtain3
 			life = value;
 		}
 		
-		public function updatePath(path:Array):void
+		public function updatePath(_path:Array):void
 		{
-			
-			
+			this.path = _path.slice();
+			this.MovingTo = path[0];			
+		}
+		
+		public function getDistance(cell:Cell):Number
+		{
+			return Math.abs(cell.centerX - centerX) + Math.abs(cell.centerY - centerY);
 		}
 	}
 

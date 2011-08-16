@@ -5,7 +5,7 @@
     <movie disabled="False" />
     <movie input="" />
     <movie path="bin\schismTD.swf" />
-    <movie fps="60" />
+    <movie fps="25" />
     <movie width="800" />
     <movie height="600" />
     <movie version="11" />

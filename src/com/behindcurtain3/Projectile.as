@@ -38,7 +38,7 @@ package com.behindcurtain3
 		override public function update():void
 		{
 			var velocity:Number = speed * FP.elapsed;			
-			moveTowards(target.Center.x, target.Center.y, velocity);
+			moveTowards(target.centerX, target.centerY, velocity);
 			
 			if (collideRect(x, y, target.x, target.y, target.width, target.height))
 			{

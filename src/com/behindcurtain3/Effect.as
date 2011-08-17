@@ -10,7 +10,6 @@ package com.behindcurtain3
 	{
 		public var type:String = "base";
 		public var entity:Entity;
-		public var finished:Boolean = false;
 		public var duration:Number;
 		protected var durationPosition:Number;
 		
@@ -19,11 +18,17 @@ package com.behindcurtain3
 		{
 			entity = e;
 			duration = d;
+			durationPosition = 0;
 		}
 		
 		public function apply():void
 		{
 			durationPosition += FP.elapsed;
+		}
+		
+		public function finished():Boolean
+		{
+			return durationPosition >= duration;
 		}
 		
 	}

@@ -18,7 +18,7 @@ package com.behindcurtain3
 			{
 				effects[i].apply();
 				
-				if (effects[i].finished)
+				if (effects[i].finished())
 				{
 					effects.splice(i, 1);
 				}

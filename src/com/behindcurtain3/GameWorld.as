@@ -441,8 +441,7 @@ package com.behindcurtain3
 						switch(type)
 						{
 							case "slow":
-								creep.addEffect(new SlowEffect(creep, duration));
-								trace(type + " " + duration.toString());
+								creep.addEffect(new SlowEffect(creep, duration / 1000));
 								break;
 						}
 					}

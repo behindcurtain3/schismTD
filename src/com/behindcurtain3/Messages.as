@@ -40,6 +40,7 @@ package com.behindcurtain3
 		public static const GAME_ALL_CREEPS_PATH:String = "game_all_creeps_path";
         public static const GAME_CREEP_UPDATE_POSITION:String = "game_creep_update_position";
 		public static const GAME_CREEP_UPDATE_LIFE:String = "game_creep_update_life";
+		public static const GAME_CREEP_EFFECT:String = "game_creep_effect";
 		
 		public static const GAME_PROJECTILE_ADD:String = "game_projectile_add";
         public static const GAME_PROJECTILE_REMOVE:String = "game_projectile_remove";

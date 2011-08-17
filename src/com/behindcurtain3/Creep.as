@@ -9,7 +9,7 @@ package com.behindcurtain3
 	 * ...
 	 * @author Justin Brown
 	 */
-	public class Creep extends Entity 
+	public class Creep extends EffectEntity
 	{
 		protected var img:Image;
 		
@@ -20,6 +20,8 @@ package com.behindcurtain3
 		public var path:Array;
 		
 		public var Speed:int;
+		public var effectedSpeed:int;
+		
 		public var life:int = -1;
 		public var startingLife:int;
 		
@@ -47,6 +49,13 @@ package com.behindcurtain3
 		{
 			if (path.length > 0)
 			{
+				// Reset values
+				effectedSpeed = Speed;
+				
+				// Apply effects
+				applyEffects();
+				
+				
 				if (MovingTo == null)
 				{
 					MovingTo = path[0];
@@ -71,7 +80,7 @@ package com.behindcurtain3
 				}
 				
 				// Move the creep
-				var velocity:Number = Speed * FP.elapsed;
+				var velocity:Number = effectedSpeed * FP.elapsed;
 				
 				var movement:Vector2 = new Vector2(centerX, centerY);
 				movement.minus(new Vector2(MovingTo.centerX, MovingTo.centerY));

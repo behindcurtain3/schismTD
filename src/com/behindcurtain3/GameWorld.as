@@ -97,8 +97,8 @@ package com.behindcurtain3
 			
 			Input.define("Chat", Key.T);
 			Input.define("Send", Key.ENTER);
-			Input.define("Upgrade1", Key.DIGIT_1, Key.NUMPAD_1);
-			Input.define("Upgrade2", Key.DIGIT_2, Key.NUMPAD_2);
+			Input.define("Upgrade1", Key.A, Key.LEFT);
+			Input.define("Upgrade2", Key.D, Key.RIGHT);
 		}
 		
 		override public function end():void
@@ -171,7 +171,10 @@ package com.behindcurtain3
 						}
 						else
 						{
-							objectSelected = cell;
+							if (cell.isOurs())
+							{
+								objectSelected = cell;
+							}
 						}
 					}
 
@@ -428,6 +431,22 @@ package com.behindcurtain3
 					}
 				}
 				
+			});
+			
+			connection.addMessageHandler(Messages.GAME_CREEP_EFFECT, function(m:Message, id:String, type:String, duration:int):void {
+				for each(var creep:Creep in getCreeps())
+				{
+					if (creep.ID == id)
+					{
+						switch(type)
+						{
+							case "slow":
+								creep.addEffect(new SlowEffect(creep, duration));
+								trace(type + " " + duration.toString());
+								break;
+						}
+					}
+				}
 			});
 			
 			connection.addMessageHandler(Messages.GAME_ALL_CREEPS_PATH, updatePaths);

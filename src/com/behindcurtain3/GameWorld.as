@@ -99,6 +99,7 @@ package com.behindcurtain3
 			Input.define("Send", Key.ENTER);
 			Input.define("Upgrade1", Key.A, Key.LEFT);
 			Input.define("Upgrade2", Key.D, Key.RIGHT);
+			Input.define("Sell", Key.S, Key.DOWN);
 		}
 		
 		override public function end():void
@@ -191,6 +192,10 @@ package com.behindcurtain3
 					else if (Input.pressed("Upgrade2"))
 					{
 						connection.send(Messages.GAME_UPGRADE_TOWER, objectSelected.centerX, objectSelected.centerY, 2);
+					}
+					else if (Input.pressed("Sell"))
+					{
+						connection.send(Messages.GAME_SELL_TOWER, objectSelected.centerX, objectSelected.centerY);
 					}
 					
 				}
@@ -345,6 +350,19 @@ package com.behindcurtain3
 					if (tc.getIndex() == i)
 					{
 						tc.assignGfx(Assets.GFX_TOWER_BASIC);
+					}
+				}
+			});
+			
+			connection.addMessageHandler(Messages.GAME_REMOVE_TOWER, function(m:Message, index:int):void {
+				for each(var tc:Cell in getCells())
+				{
+					if (tc.getIndex() == index)
+					{
+						if (objectSelected == tc)
+							objectSelected = null;
+						tc.graphic = null;
+						tc.hasTower = false;
 					}
 				}
 			});

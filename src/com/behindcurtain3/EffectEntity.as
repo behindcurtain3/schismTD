@@ -11,9 +11,7 @@ package com.behindcurtain3
 		public var effects:Array = new Array();
 		
 		public function applyEffects():void
-		{
-			
-			
+		{			
 			for (var i:int = effects.length - 1; i >= 0; i--)
 			{
 				effects[i].apply();

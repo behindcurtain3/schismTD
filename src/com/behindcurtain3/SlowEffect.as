@@ -16,14 +16,15 @@ package com.behindcurtain3
 		
 		override public function apply():void 
 		{
+			super.apply();
+			
 			if (entity is Creep)
 			{
 				var c:Creep = entity as Creep;
-				
-				c.effectedSpeed -= c.Speed * 0.5;
-			}
 			
-			super.apply();
+				if(!finished())
+					c.effectedSpeed -= c.Speed * 0.5;
+			}
 		}
 		
 	}

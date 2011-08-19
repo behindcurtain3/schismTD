@@ -6,46 +6,41 @@ package com.behindcurtain3
 	 */
 	public class Messages 
 	{
-		public static const CHAT:String = "chat_message";
-		public static const PLAYER_JOINED:String = "player_joined";
-		public static const PLAYER_LEFT:String = "player_left";
+		public static const CHAT:String = "cm";
+		public static const PLAYER_JOINED:String = "pj";
+		public static const PLAYER_LEFT:String = "pl";
+		public static const PLAYER_MANA:String = "pm";
+        public static const PLAYER_LIFE:String = "pli";
 		
 		// match
-		public static const MATCH_READY:String = "match_ready"; // Called when 2 players have joined
-		public static const MATCH_STARTED:String = "match_start"; //Called when match actually starts
-		public static const MATCH_FINISHED:String = "match_finish";
+		public static const MATCH_READY:String = "mr"; // Called when 2 players have joined
+		public static const MATCH_STARTED:String = "ms"; //Called when match actually starts
+		public static const MATCH_FINISHED:String = "mf";
 		
 		// game
-		public static const GAME_COUNTDOWN:String = "game_countdown"; // Countdown status at start of each game
-		public static const GAME_ACTIVATE:String = "game_activate";
-        public static const GAME_START:String = "game_start";
-        public static const GAME_FINISHED:String = "game_finish";
-		public static const GAME_MANA:String = "game_mana";
-        public static const GAME_LIFE:String = "game_life";
+		public static const GAME_COUNTDOWN:String = "gc"; // Countdown status at start of each game
+		public static const GAME_ACTIVATE:String = "ga";
+        public static const GAME_START:String = "gs";
+        public static const GAME_FINISHED:String = "gf";
 		
-		public static const GAME_ADD_CELL:String = "game_add_cell";
+		public static const GAME_CELL_ADD:String = "gca";
 
-        public static const GAME_PLACE_WALL:String = "game_place_wall";
-        public static const GAME_REMOVE_WALL:String = "game_remove_wall";
-        public static const GAME_INVALID_WALL:String = "game_invalid_wall";
+		public static const GAME_TOWER_PLACE:String = "gtp";
+        public static const GAME_TOWER_REMOVE:String = "gtr";
+        public static const GAME_TOWER_INVALID:String = "gti";
+		public static const GAME_TOWER_UPGRADE:String = "gtu";
+		public static const GAME_TOWER_SELL:String = "gts";
 		
-		public static const GAME_PLACE_TOWER:String = "game_place_tower";
-        public static const GAME_REMOVE_TOWER:String = "game_remove_tower";
-        public static const GAME_INVALID_TOWER:String = "game_invalid_tower";
-		public static const GAME_UPGRADE_TOWER:String = "game_upgrade_tower";
-		public static const GAME_SELL_TOWER:String = "game_sell_tower";
+		public static const GAME_CREEP_ADD:String = "gcra";
+        public static const GAME_CREEP_REMOVE:String = "gcrr";
+		public static const GAME_CREEP_PATH:String = "gcrp";
+		public static const GAME_ALL_CREEPS_PATH:String = "gacrp";
+		public static const GAME_CREEP_UPDATE_LIFE:String = "gcrul";
+		public static const GAME_CREEP_EFFECT:String = "gcre";
 		
-		public static const GAME_CREEP_ADD:String = "game_creep_add";
-        public static const GAME_CREEP_REMOVE:String = "game_creep_remove";
-		public static const GAME_CREEP_PATH:String = "game_creep_path";
-		public static const GAME_ALL_CREEPS_PATH:String = "game_all_creeps_path";
-        public static const GAME_CREEP_UPDATE_POSITION:String = "game_creep_update_position";
-		public static const GAME_CREEP_UPDATE_LIFE:String = "game_creep_update_life";
-		public static const GAME_CREEP_EFFECT:String = "game_creep_effect";
-		
-		public static const GAME_PROJECTILE_ADD:String = "game_projectile_add";
-        public static const GAME_PROJECTILE_REMOVE:String = "game_projectile_remove";
-        public static const GAME_PROJECTILE_UPDATE:String = "game_projectile_update";
+		public static const GAME_PROJECTILE_ADD:String = "gpa";
+        public static const GAME_PROJECTILE_REMOVE:String = "gpr";
+        public static const GAME_PROJECTILE_UPDATE:String = "gpu";
 	}
 
 }

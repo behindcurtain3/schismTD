@@ -171,15 +171,15 @@ package com.behindcurtain3
 						{
 							if (Input.pressed("Upgrade1"))
 							{
-								connection.send(Messages.GAME_UPGRADE_TOWER, objectSelected.centerX, objectSelected.centerY, 1);
+								connection.send(Messages.GAME_TOWER_UPGRADE, objectSelected.centerX, objectSelected.centerY, 1);
 							}
 							else if (Input.pressed("Upgrade2"))
 							{
-								connection.send(Messages.GAME_UPGRADE_TOWER, objectSelected.centerX, objectSelected.centerY, 2);
+								connection.send(Messages.GAME_TOWER_UPGRADE, objectSelected.centerX, objectSelected.centerY, 2);
 							}
 							else if (Input.pressed("Sell"))
 							{
-								connection.send(Messages.GAME_SELL_TOWER, objectSelected.centerX, objectSelected.centerY);
+								connection.send(Messages.GAME_TOWER_SELL, objectSelected.centerX, objectSelected.centerY);
 							}
 						}
 						
@@ -209,7 +209,7 @@ package com.behindcurtain3
 								{
 									if (connection != null)
 									{
-										connection.send(Messages.GAME_PLACE_TOWER, Input.mouseX, Input.mouseY);
+										connection.send(Messages.GAME_TOWER_PLACE, Input.mouseX, Input.mouseY);
 									}
 								}
 							}
@@ -387,12 +387,12 @@ package com.behindcurtain3
 				
 			});
 			
-			connection.addMessageHandler(Messages.GAME_ADD_CELL, function(m:Message, i:int, x:int, y:int, w:int, h:int, mine:Boolean):void {
+			connection.addMessageHandler(Messages.GAME_CELL_ADD, function(m:Message, i:int, x:int, y:int, w:int, h:int, mine:Boolean):void {
 				var c:Cell = new Cell(i, x, y, w, h, mine);
 				add(c);
 			});
 			
-			connection.addMessageHandler(Messages.GAME_PLACE_TOWER, function(m:Message, i:int, type:String):void {				
+			connection.addMessageHandler(Messages.GAME_TOWER_PLACE, function(m:Message, i:int, type:String):void {				
 				for each(var tc:Cell in getCells())
 				{
 					if (tc.getIndex() == i)
@@ -402,7 +402,7 @@ package com.behindcurtain3
 				}
 			});
 			
-			connection.addMessageHandler(Messages.GAME_REMOVE_TOWER, function(m:Message, index:int):void {
+			connection.addMessageHandler(Messages.GAME_TOWER_REMOVE, function(m:Message, index:int):void {
 				for each(var tc:Cell in getCells())
 				{
 					if (tc.getIndex() == index)
@@ -415,7 +415,7 @@ package com.behindcurtain3
 				}
 			});
 			
-			connection.addMessageHandler(Messages.GAME_INVALID_TOWER, function(m:Message, x:int, y:int):void {
+			connection.addMessageHandler(Messages.GAME_TOWER_INVALID, function(m:Message, x:int, y:int):void {
 				addToChat("Invalid tower placement!");
 				sfx_invalid.play();
 			});
@@ -457,14 +457,14 @@ package com.behindcurtain3
 				}
 			});
 			
-			connection.addMessageHandler(Messages.GAME_LIFE, function(m:Message, id:int, value:int):void {
+			connection.addMessageHandler(Messages.PLAYER_LIFE, function(m:Message, id:int, value:int):void {
 				if (id == blackId)
 					blackHealth = value;
 				else
 					whiteHealth = value;
 			});
 			
-			connection.addMessageHandler(Messages.GAME_MANA, function(m:Message, id:int, value:int):void {
+			connection.addMessageHandler(Messages.PLAYER_MANA, function(m:Message, id:int, value:int):void {
 				if (id == blackId)
 					blackMana = value;
 				else
@@ -473,6 +473,7 @@ package com.behindcurtain3
 			
 			connection.addMessageHandler(Messages.GAME_PROJECTILE_ADD, function(m:Message, id:String, x:Number, y:Number, v:Number, crID:String):void {
 				var creep:Creep = null;
+				
 				for each(var cr:Creep in getCreeps())
 				{
 					if (cr.ID == crID)

@@ -159,7 +159,10 @@ package com.behindcurtain3
 				{
 					case BuildMode.NONE:
 						if (Input.pressed("Build"))
+						{
 							buildMode = BuildMode.TOWER;
+							objectSelected = null;
+						}
 						
 						// Glow is visible in this mode
 						glow.visible = true;
@@ -183,7 +186,9 @@ package com.behindcurtain3
 						break;
 					case BuildMode.TOWER:					
 						if (Input.pressed("Build") || objectSelected != null)
+						{
 							buildMode = BuildMode.NONE;
+						}
 						
 						// Glow is not visible in this mode
 						glow.visible = false;
@@ -222,7 +227,7 @@ package com.behindcurtain3
 					dragEnd = new Point(Input.mouseX, Input.mouseY);
 					
 					// Check if something exists
-					var cell:Cell = collidePoint("cell", dragEnd.x, dragEnd.y) as Cell;
+					cell = collidePoint("cell", dragEnd.x, dragEnd.y) as Cell;
 						
 					if (cell != null)
 					{

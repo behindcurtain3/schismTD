@@ -58,7 +58,10 @@ package com.behindcurtain3
 		private var glow:Glow = null;
 		private var blackId:int;
 		private var whiteId:int;
+		
+		public var buildMode:int = BuildMode.NONE;
 		public var objectSelected:Entity = null;
+		public var fauxTower:FauxTower = new FauxTower();
 		
 		private var blackHealth:int = 0;
 		private var blackMana:int = 0;
@@ -71,6 +74,8 @@ package com.behindcurtain3
 		public function GameWorld ()
 		{
 			FP.volume = 0.1;
+			
+			add(fauxTower);
 			
 			// Setup gfx
 			board = new Image(Assets.GFX_BOARD);
@@ -97,6 +102,8 @@ package com.behindcurtain3
 			
 			Input.define("Chat", Key.T);
 			Input.define("Send", Key.ENTER);
+			
+			Input.define("Build", Key.W, Key.UP);
 			Input.define("Upgrade1", Key.A, Key.LEFT);
 			Input.define("Upgrade2", Key.D, Key.RIGHT);
 			Input.define("Sell", Key.S, Key.DOWN);
@@ -145,6 +152,66 @@ package com.behindcurtain3
 				
 			if (gameActive)
 			{
+				// Default is not visible
+				fauxTower.visible = false;
+				
+				switch(buildMode)
+				{
+					case BuildMode.NONE:
+						if (Input.pressed("Build"))
+							buildMode = BuildMode.TOWER;
+						
+						// Glow is visible in this mode
+						glow.visible = true;
+						
+						if (objectSelected != null)
+						{
+							if (Input.pressed("Upgrade1"))
+							{
+								connection.send(Messages.GAME_UPGRADE_TOWER, objectSelected.centerX, objectSelected.centerY, 1);
+							}
+							else if (Input.pressed("Upgrade2"))
+							{
+								connection.send(Messages.GAME_UPGRADE_TOWER, objectSelected.centerX, objectSelected.centerY, 2);
+							}
+							else if (Input.pressed("Sell"))
+							{
+								connection.send(Messages.GAME_SELL_TOWER, objectSelected.centerX, objectSelected.centerY);
+							}
+						}
+						
+						break;
+					case BuildMode.TOWER:					
+						if (Input.pressed("Build") || objectSelected != null)
+							buildMode = BuildMode.NONE;
+						
+						// Glow is not visible in this mode
+						glow.visible = false;
+							
+						// Draw the faux tower over the cell the mouse is over
+						var cell:Cell = collidePoint("cell", Input.mouseX, Input.mouseY) as Cell;
+						
+						if (cell != null)
+						{
+							if (!cell.hasTower)
+							{
+								fauxTower.visible = true;
+								fauxTower.x = cell.x;
+								fauxTower.y = cell.y;
+								
+								// build here
+								if (Input.mouseReleased)
+								{
+									if (connection != null)
+									{
+										connection.send(Messages.GAME_PLACE_TOWER, Input.mouseX, Input.mouseY);
+									}
+								}
+							}
+						}
+						break;
+				}
+
 				if (Input.mousePressed)
 				{
 					dragStart = new Point(Input.mouseX, Input.mouseY);
@@ -161,13 +228,6 @@ package com.behindcurtain3
 					{
 						if (!cell.hasTower)
 						{
-							if (objectSelected == null)
-							{
-								if (connection != null && glow.graphic.visible == true)
-								{
-									connection.send(Messages.GAME_PLACE_TOWER, dragEnd.x, dragEnd.y);
-								}
-							}
 							objectSelected = null;
 						}
 						else
@@ -181,23 +241,6 @@ package com.behindcurtain3
 
 					dragStart = null;
 					dragEnd = null;
-				}
-				
-				if (objectSelected != null)
-				{
-					if (Input.pressed("Upgrade1"))
-					{
-						connection.send(Messages.GAME_UPGRADE_TOWER, objectSelected.centerX, objectSelected.centerY, 1);
-					}
-					else if (Input.pressed("Upgrade2"))
-					{
-						connection.send(Messages.GAME_UPGRADE_TOWER, objectSelected.centerX, objectSelected.centerY, 2);
-					}
-					else if (Input.pressed("Sell"))
-					{
-						connection.send(Messages.GAME_SELL_TOWER, objectSelected.centerX, objectSelected.centerY);
-					}
-					
 				}
 			}
 			

@@ -62,12 +62,11 @@ package com.behindcurtain3
 				}
 				
 				var d:Number = getDistance(MovingTo);
+				var velocity:Number = effectedSpeed * FP.elapsed;
 				
-				if (d <= 3)
+				if (d <= velocity)
 				{
-					path.reverse();
-					path.pop();
-					path.reverse();
+					path.splice(0, 1);
 					
 					if (path.length == 0)
 					{
@@ -80,8 +79,6 @@ package com.behindcurtain3
 				}
 				
 				// Move the creep
-				var velocity:Number = effectedSpeed * FP.elapsed;
-				
 				var movement:Vector2 = new Vector2(centerX, centerY);
 				movement.minus(new Vector2(MovingTo.centerX, MovingTo.centerY));
 				movement.normalize();

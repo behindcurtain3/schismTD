@@ -17,6 +17,8 @@ package com.behindcurtain3
 		[Embed(source = '../../../assets/towers/slow.png')] public static const GFX_TOWER_SLOW:Class;
 		[Embed(source = '../../../assets/towers/pulse.png')] public static const GFX_TOWER_PULSE:Class;
 		[Embed(source = '../../../assets/towers/sniper.png')] public static const GFX_TOWER_SNIPER:Class;
+		[Embed(source = '../../../assets/towers/spell.png')] public static const GFX_TOWER_SPELL:Class;
+		[Embed(source = '../../../assets/towers/seed.png')] public static const GFX_TOWER_SEED:Class;
 		
 		// Creeps
 		[Embed(source = '../../../assets/creeps/Pig.png')] public static const GFX_CREEP_PIG:Class;

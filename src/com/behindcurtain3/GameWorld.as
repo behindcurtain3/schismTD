@@ -414,7 +414,12 @@ package com.behindcurtain3
 							case "sniper":
 								tc.assignGfx(Assets.GFX_TOWER_SNIPER);
 								break;
-							
+							case "spell":
+								tc.assignGfx(Assets.GFX_TOWER_SPELL);
+								break;
+							case "seed":
+								tc.assignGfx(Assets.GFX_TOWER_SEED);
+								break;							
 						}
 						
 					}

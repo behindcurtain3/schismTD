@@ -21,7 +21,8 @@ package com.behindcurtain3
 		[Embed(source = '../../../assets/towers/seed.png')] public static const GFX_TOWER_SEED:Class;
 		
 		// Creeps
-		[Embed(source = '../../../assets/creeps/Pig.png')] public static const GFX_CREEP_PIG:Class;
+		[Embed(source = '../../../assets/creeps/Pig.png')] public static const GFX_CREEP_BASIC:Class;
+		[Embed(source = '../../../assets/creeps/Monkey.png')] public static const GFX_CREEP_CHIGEN:Class;
 		
 		// Sounds
 		[Embed(source = '../../../assets/sfx/invalid.mp3')] public static const SFX_INVALID:Class;

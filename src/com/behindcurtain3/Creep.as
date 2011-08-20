@@ -25,13 +25,13 @@ package com.behindcurtain3
 		public var life:int = -1;
 		public var startingLife:int;
 		
-		public function Creep(s:String, pId:int, _x:int, _y:int, sp:int, _path:Array) 
+		public function Creep(s:String, gfx:Class, pId:int, _x:int, _y:int, sp:int, _path:Array) 
 		{
 			ID = s;		
 			player = pId;
 			Speed = sp;
 			
-			img = new Image(Assets.GFX_CREEP_PIG);
+			img = new Image(gfx);
 			x = _x - img.width / 2;
 			y = _y - img.height / 2 ;
 			width = img.width;

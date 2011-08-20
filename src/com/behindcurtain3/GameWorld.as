@@ -444,11 +444,23 @@ package com.behindcurtain3
 				sfx_invalid.play();
 			});
 			
-			connection.addMessageHandler(Messages.GAME_CREEP_ADD, function(m:Message, id:String, pId:int, x:int, y:int, sp:int):void {
+			connection.addMessageHandler(Messages.GAME_CREEP_ADD, function(m:Message, id:String, type:String, pId:int, x:int, y:int, sp:int):void {
+				var gfx:Class = null;
+				
+				switch(type)
+				{
+					case "Basic":
+						gfx = Assets.GFX_CREEP_BASIC;
+						break;
+					case "Chigen":
+						gfx = Assets.GFX_CREEP_CHIGEN;
+						break;				
+				}
+				
 				if(pId == blackId)
-					add(new Creep(id, pId, x, y, sp, whitePath));
+					add(new Creep(id, gfx, pId, x, y, sp, whitePath));
 				else if (pId == whiteId)
-					add(new Creep(id, pId, x, y, sp, blackPath));
+					add(new Creep(id, gfx, pId, x, y, sp, blackPath));
 			});
 			
 			connection.addMessageHandler(Messages.GAME_CREEP_REMOVE, function(m:Message, id:String):void {

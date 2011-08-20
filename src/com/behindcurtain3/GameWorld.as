@@ -397,7 +397,26 @@ package com.behindcurtain3
 				{
 					if (tc.getIndex() == i)
 					{
-						tc.assignGfx(Assets.GFX_TOWER_BASIC);
+						switch(type)
+						{
+							case "basic":
+								tc.assignGfx(Assets.GFX_TOWER_BASIC);
+								break;
+							case "rapidfire":
+								tc.assignGfx(Assets.GFX_TOWER_RAPIDFIRE);
+								break;
+							case "slow":
+								tc.assignGfx(Assets.GFX_TOWER_SLOW);
+								break;
+							case "pulse":
+								tc.assignGfx(Assets.GFX_TOWER_PULSE);
+								break;
+							case "sniper":
+								tc.assignGfx(Assets.GFX_TOWER_SNIPER);
+								break;
+							
+						}
+						
 					}
 				}
 			});

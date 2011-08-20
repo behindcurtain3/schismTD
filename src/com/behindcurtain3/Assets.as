@@ -23,6 +23,7 @@ package com.behindcurtain3
 		// Creeps
 		[Embed(source = '../../../assets/creeps/Pig.png')] public static const GFX_CREEP_BASIC:Class;
 		[Embed(source = '../../../assets/creeps/Monkey.png')] public static const GFX_CREEP_CHIGEN:Class;
+		[Embed(source = '../../../assets/creeps/Rabbit.png')] public static const GFX_CREEP_REGEN:Class;
 		
 		// Sounds
 		[Embed(source = '../../../assets/sfx/invalid.mp3')] public static const SFX_INVALID:Class;

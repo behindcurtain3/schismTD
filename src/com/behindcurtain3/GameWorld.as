@@ -454,7 +454,10 @@ package com.behindcurtain3
 						break;
 					case "Chigen":
 						gfx = Assets.GFX_CREEP_CHIGEN;
-						break;				
+						break;			
+					case "Regen":
+						gfx = Assets.GFX_CREEP_REGEN;
+						break;
 				}
 				
 				if(pId == blackId)

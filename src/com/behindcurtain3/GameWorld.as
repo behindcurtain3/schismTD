@@ -41,6 +41,8 @@ package com.behindcurtain3
 		private var consoleDisplayTime:Number = 5;
 		
 		// Gfx
+		protected var titleLeft:Image;
+		protected var titleRight:Image;
 		protected var board:Image;
 		
 		// Sfx
@@ -76,6 +78,13 @@ package com.behindcurtain3
 			FP.volume = 0.1;
 			
 			add(fauxTower);
+			
+			// Title
+			titleLeft = new Image(Assets.GFX_TITLE_LEFT);
+			titleRight = new Image(Assets.GFX_TITLE_RIGHT);
+			
+			addGraphic(titleLeft, 1, 0, 0);
+			addGraphic(titleRight, 0, 400, 0);			
 			
 			// Setup gfx
 			board = new Image(Assets.GFX_BOARD);
@@ -198,7 +207,7 @@ package com.behindcurtain3
 						
 						if (cell != null)
 						{
-							if (!cell.hasTower)
+							if (!cell.hasTower && cell.isOurs())
 							{
 								fauxTower.visible = true;
 								fauxTower.x = cell.x;
@@ -296,12 +305,16 @@ package com.behindcurtain3
 			chatbox.visible = false;
 			
 			whiteHealthUI = new Text("Life:", 5, 5, 100, 25);
+			whiteHealthUI.visible = false;
 			whiteManaUI = new Text("Mana:", 105, 5, 100, 25);
+			whiteManaUI.visible = false;
 			addGraphic(whiteHealthUI);
 			addGraphic(whiteManaUI);
 			
 			blackHealthUI = new Text("Life:", FP.screen.width - 200, FP.screen.height - 30, 100, 25);
+			blackHealthUI.visible = false;
 			blackManaUI = new Text("Mana:", FP.screen.width - 95, FP.screen.height - 30, 100, 25);
+			blackManaUI.visible = false;
 			addGraphic(blackHealthUI);
 			addGraphic(blackManaUI);
 			
@@ -332,12 +345,7 @@ package com.behindcurtain3
 				addTween(vt, true);
 			});
 			
-			connection.addMessageHandler(Messages.MATCH_FINISHED, function(m:Message):void {
-				addToChat("Matched finished!");
-				var vt:VarTween = new VarTween();
-				vt.tween(board, "alpha", 0, 1.5, Ease.expoOut);
-				addTween(vt, true);
-			});
+			connection.addMessageHandler(Messages.MATCH_FINISHED, matchFinished);
 			
 			connection.addMessageHandler(Messages.GAME_COUNTDOWN, function(m:Message, i:Number):void {
 				i = Math.ceil(i / 1000);
@@ -348,11 +356,7 @@ package com.behindcurtain3
 				}
 			});
 			
-			connection.addMessageHandler(Messages.GAME_ACTIVATE, function(m:Message):void {
-				gameActive = true;
-				glow = new Glow();
-				add(glow);
-			});
+			connection.addMessageHandler(Messages.GAME_ACTIVATE, activateGame); 
 			
 			connection.addMessageHandler(Messages.GAME_START, function(m:Message):void {
 				addToChat("Game started!");				
@@ -457,6 +461,18 @@ package com.behindcurtain3
 						break;			
 					case "Regen":
 						gfx = Assets.GFX_CREEP_REGEN;
+						break;
+					case "Quick":
+						gfx = Assets.GFX_CREEP_QUICK;
+						break;
+					case "Magic":
+						gfx = Assets.GFX_CREEP_MAGIC;
+						break;
+					case "Armor":
+						gfx = Assets.GFX_CREEP_ARMOR;
+						break;
+					case "Swarm":
+						gfx = Assets.GFX_CREEP_SWARM;
 						break;
 				}
 				
@@ -607,6 +623,77 @@ package com.behindcurtain3
 			}
 		}
 		
+		private function activateGame(m:Message):void 
+		{
+			// tween out the title
+			var tweenLeft:VarTween = new VarTween();
+			tweenLeft.tween(titleLeft, "x", -400, 0.5, Ease.quintOut);
+			
+			var tweenRight:VarTween = new VarTween();
+			tweenRight.tween(titleRight, "x", 400, 0.5, Ease.quintOut);
+			
+			addTween(tweenLeft, true);
+			addTween(tweenRight, true);
+			
+			gameActive = true;
+			glow = new Glow();
+			add(glow);
+			
+			fadeInText();
+		};
+		
+		private function matchFinished(m:Message):void 
+		{
+			FP.world = new ResultWorld(client, connection, m.getInt(0), m.getInt(1), m.getUInt(2), m.getUInt(3));
+			/*
+			
+			addToChat("Matched finished!");
+			
+			var boardTween:VarTween = new VarTween();
+			boardTween.tween(board, "alpha", 0, 1.5, Ease.expoOut);
+			
+			// tween in the title
+			var tweenLeft:VarTween = new VarTween();
+			tweenLeft.tween(titleLeft, "x", 0, 0.5, Ease.quintOut);
+			
+			var tweenRight:VarTween = new VarTween();
+			tweenRight.tween(titleRight, "x", 0, 0.5, Ease.quintOut);
+			
+			addTween(tweenLeft, true);
+			addTween(tweenRight, true);
+			
+			addTween(boardTween, true);
+			
+			fadeOutText();
+			*/
+		};
+		
+		private function fadeInText():void
+		{
+			whiteHealthUI.visible = true;
+			whiteManaUI.visible = true;
+			blackHealthUI.visible = true;
+			blackManaUI.visible = true;
+			
+			for each(var t:Text in console)
+			{
+				t.visible = true;				
+			}
+		}
+		
+		private function fadeOutText():void
+		{
+			whiteHealthUI.visible = false;
+			whiteManaUI.visible = false;
+			blackHealthUI.visible = false;
+			blackManaUI.visible = false;
+			
+			for each(var t:Text in console)
+			{
+				t.visible = false;				
+			}		
+		}
+		
 		private function handleError(error:PlayerIOError):void
 		{
 			addToChat(error.message);		
@@ -616,6 +703,9 @@ package com.behindcurtain3
 		public function addToChat(s:String, time:Number = 4):void
 		{
 			var t:Text = new Text(s, 10, FP.screen.height - 60, FP.screen.width - 20, 20);
+			if (titleLeft.x == 0)
+				t.visible = false;
+				
 			var vt:VarTween = new VarTween();
 			vt.tween(t, "alpha", 0, time, Ease.quadIn);
 			

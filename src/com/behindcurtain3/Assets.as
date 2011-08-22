@@ -6,7 +6,10 @@ package com.behindcurtain3
 	 */
 	public class Assets 
 	{		
-		public static const VERSION:String = "v0.01";
+		public static const VERSION:String = "v0.02";
+		
+		[Embed(source = '../../../assets/title-left.png')] public static const GFX_TITLE_LEFT:Class;
+		[Embed(source = '../../../assets/title-right.png')] public static const GFX_TITLE_RIGHT:Class;
 		
 		// Board
 		[Embed(source = '../../../assets/board/board.png')] public static const GFX_BOARD:Class;
@@ -21,9 +24,13 @@ package com.behindcurtain3
 		[Embed(source = '../../../assets/towers/seed.png')] public static const GFX_TOWER_SEED:Class;
 		
 		// Creeps
-		[Embed(source = '../../../assets/creeps/Pig.png')] public static const GFX_CREEP_BASIC:Class;
-		[Embed(source = '../../../assets/creeps/Monkey.png')] public static const GFX_CREEP_CHIGEN:Class;
-		[Embed(source = '../../../assets/creeps/Rabbit.png')] public static const GFX_CREEP_REGEN:Class;
+		[Embed(source = '../../../assets/creeps/pig.png')] public static const GFX_CREEP_BASIC:Class;
+		[Embed(source = '../../../assets/creeps/monkey.png')] public static const GFX_CREEP_CHIGEN:Class;
+		[Embed(source = '../../../assets/creeps/sheep.png')] public static const GFX_CREEP_REGEN:Class;
+		[Embed(source = '../../../assets/creeps/rabbit.png')] public static const GFX_CREEP_QUICK:Class;
+		[Embed(source = '../../../assets/creeps/dog.png')] public static const GFX_CREEP_MAGIC:Class;
+		[Embed(source = '../../../assets/creeps/ox.png')] public static const GFX_CREEP_ARMOR:Class;
+		[Embed(source = '../../../assets/creeps/rat.png')] public static const GFX_CREEP_SWARM:Class;
 		
 		// Sounds
 		[Embed(source = '../../../assets/sfx/invalid.mp3')] public static const SFX_INVALID:Class;

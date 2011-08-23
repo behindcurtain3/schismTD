@@ -53,12 +53,24 @@ package com.behindcurtain3
 		
 		public function playNow():void
 		{
-			FP.world = new GameWorld();
+			FP.world = new LoginWorld(getRandomName(), "");
 		}
 		
 		public function onPlayNow():void
 		{
 			playNow();
+		}
+		
+		private function getRandomName():String
+		{
+			var names:Array = new Array("Steve", "Rambo", "Rocky 3 - The Best One", "The Girl Next Door", "Sirmixalot", "Ninja Turtle Imposter");
+			var i:Number = Math.floor( Math.random() * names.length );  
+			return names.splice( i, 1 )[0];
+		}
+		
+		private function randomRange(max:Number, min:Number = 0):Number
+		{
+			return Math.floor(Math.random()*(1+max-min))+max;
 		}
 		
 	}

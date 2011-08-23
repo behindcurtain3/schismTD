@@ -30,6 +30,9 @@ package com.behindcurtain3
 	{
 		public var Mode:int = BuildMode.NONE;
 		
+		private var gameSettings:GameSettings;
+		
+		
 		// UI
 		protected var chatbox:PunkTextField;
 		private var console:Array = new Array();
@@ -51,6 +54,7 @@ package com.behindcurtain3
 		// Networking
 		protected var client:Client;
 		protected var connection:Connection;
+		private var inLobby:Boolean = true;
 		
 		// Game
 		private var gameActive:Boolean = false;
@@ -73,8 +77,10 @@ package com.behindcurtain3
 		private var blackPath:Array;
 		private var whitePath:Array;
 	 
-		public function GameWorld ()
+		public function GameWorld (settings:GameSettings)
 		{
+			gameSettings = settings;
+			
 			FP.volume = 0.1;
 			
 			add(fauxTower);
@@ -97,6 +103,21 @@ package com.behindcurtain3
 			
 			addToChat("Connecting...");
 			
+			client = gameSettings.client;
+			
+			var userSettings:Object = {name:gameSettings.name};
+			
+			client.multiplayer.createJoinRoom(
+				gameSettings.gameId,								//Room id. If set to null a random roomid is used
+				"schismTD",							//The game type started on the server
+				false,								//Should the room be visible in the lobby?
+				{},									//Room data. This data is returned to lobby list. Variabels can be modifed on the server
+				userSettings,						//User join data
+				handleNewGame,						//Function executed on successful joining of the room
+				handleError							//Function executed if we got a join error
+			);
+			
+			/*
 			PlayerIO.connect(
 				FP.stage,								//Referance to stage
 				"schismtd-3r3otmhvkki9ixublwca",		//Game id (Get your own at playerio.com. 1: Create user, 2:Goto admin pannel, 3:Create game, 4: Copy game id inside the "")
@@ -107,6 +128,7 @@ package com.behindcurtain3
 				handleConnect,						//Function executed on successful connect
 				handleError							//Function executed if we recive an error
 			); 
+			*/
 			
 			
 			Input.define("Chat", Key.T);
@@ -130,6 +152,9 @@ package com.behindcurtain3
 		
 		override public function update():void
 		{
+			if (inLobby)
+				return;
+			
 			if (chatbox.visible)
 			{
 				if (Input.pressed("Send"))
@@ -285,8 +310,8 @@ package com.behindcurtain3
 			
 			//Create pr join the room test
 			client.multiplayer.createJoinRoom(
-				"schismTD",							//Room id. If set to null a random roomid is used
-				"schismTD",							//The game type started on the server
+				"lobby",							//Room id. If set to null a random roomid is used
+				"$service-room$",					//The game type started on the server
 				true,								//Should the room be visible in the lobby?
 				{},									//Room data. This data is returned to lobby list. Variabels can be modifed on the server
 				{},									//User join data
@@ -299,6 +324,27 @@ package com.behindcurtain3
 		private function handleJoin(c:Connection):void
 		{
 			addToChat("Connected");
+			connection = c;
+			
+			connection.addMessageHandler(Messages.MATCH_ID, function(m:Message, gameId:String):void {
+				trace(gameId);
+				connection.disconnect();
+				
+				client.multiplayer.createJoinRoom(
+					gameId,							//Room id. If set to null a random roomid is used
+					"schismTD",						//The game type started on the server
+					false,								//Should the room be visible in the lobby?
+					{},									//Room data. This data is returned to lobby list. Variabels can be modifed on the server
+					{},									//User join data
+					handleNewGame,							//Function executed on successful joining of the room
+					handleError							//Function executed if we got a join error
+				);
+			});
+		}
+		
+		private function handleNewGame(c:Connection):void
+		{
+			inLobby = false;
 			connection = c;
 			
 			// Setup UI
@@ -323,8 +369,8 @@ package com.behindcurtain3
 				addToChat(s);
 			});
 			
-			connection.addMessageHandler(Messages.PLAYER_JOINED, function(m:Message, i:int):void {
-				addToChat("Player #" + i + " has joined");
+			connection.addMessageHandler(Messages.PLAYER_JOINED, function(m:Message, i:int, name:String):void {
+				addToChat(name + " has joined");
 			});
 			
 			connection.addMessageHandler(Messages.PLAYER_LEFT, function(m:Message, i:int):void {
@@ -644,7 +690,7 @@ package com.behindcurtain3
 		
 		private function matchFinished(m:Message):void 
 		{
-			FP.world = new ResultWorld(client, connection, m.getInt(0), m.getInt(1), m.getUInt(2), m.getUInt(3));
+			FP.world = new ResultWorld(gameSettings, connection, m.getInt(0), m.getInt(1), m.getUInt(2), m.getUInt(3));
 			/*
 			
 			addToChat("Matched finished!");

@@ -54,7 +54,6 @@ package com.behindcurtain3
 		// Networking
 		protected var client:Client;
 		protected var connection:Connection;
-		private var inLobby:Boolean = true;
 		
 		// Game
 		private var gameActive:Boolean = false;
@@ -117,20 +116,6 @@ package com.behindcurtain3
 				handleError							//Function executed if we got a join error
 			);
 			
-			/*
-			PlayerIO.connect(
-				FP.stage,								//Referance to stage
-				"schismtd-3r3otmhvkki9ixublwca",		//Game id (Get your own at playerio.com. 1: Create user, 2:Goto admin pannel, 3:Create game, 4: Copy game id inside the "")
-				"public",							//Connection id, default is public
-				"GuestUser",						//Username
-				"",									//User auth. Can be left blank if authentication is disabled on connection
-				null,								//Current PartnerPay partner.
-				handleConnect,						//Function executed on successful connect
-				handleError							//Function executed if we recive an error
-			); 
-			*/
-			
-			
 			Input.define("Chat", Key.T);
 			Input.define("Send", Key.ENTER);
 			
@@ -152,9 +137,6 @@ package com.behindcurtain3
 		
 		override public function update():void
 		{
-			if (inLobby)
-				return;
-			
 			if (chatbox.visible)
 			{
 				if (Input.pressed("Send"))
@@ -301,50 +283,8 @@ package com.behindcurtain3
 			FP.world = new MenuWorld(message);
 		}
 		
-		private function handleConnect(c:Client):void
-		{
-			client = c;
-			
-			//Set developmentsever (Comment out to connect to your server online)
-			client.multiplayer.developmentServer = "127.0.0.1:8184";
-			
-			//Create pr join the room test
-			client.multiplayer.createJoinRoom(
-				"lobby",							//Room id. If set to null a random roomid is used
-				"$service-room$",					//The game type started on the server
-				true,								//Should the room be visible in the lobby?
-				{},									//Room data. This data is returned to lobby list. Variabels can be modifed on the server
-				{},									//User join data
-				handleJoin,							//Function executed on successful joining of the room
-				handleError							//Function executed if we got a join error
-			);
-			
-		}
-		
-		private function handleJoin(c:Connection):void
-		{
-			addToChat("Connected");
-			connection = c;
-			
-			connection.addMessageHandler(Messages.MATCH_ID, function(m:Message, gameId:String):void {
-				trace(gameId);
-				connection.disconnect();
-				
-				client.multiplayer.createJoinRoom(
-					gameId,							//Room id. If set to null a random roomid is used
-					"schismTD",						//The game type started on the server
-					false,								//Should the room be visible in the lobby?
-					{},									//Room data. This data is returned to lobby list. Variabels can be modifed on the server
-					{},									//User join data
-					handleNewGame,							//Function executed on successful joining of the room
-					handleError							//Function executed if we got a join error
-				);
-			});
-		}
-		
 		private function handleNewGame(c:Connection):void
 		{
-			inLobby = false;
 			connection = c;
 			
 			// Setup UI
@@ -495,37 +435,35 @@ package com.behindcurtain3
 			});
 			
 			connection.addMessageHandler(Messages.GAME_CREEP_ADD, function(m:Message, id:String, type:String, pId:int, x:int, y:int, sp:int):void {
-				var gfx:Class = null;
+				var path:Array;
+				
+				if (pId == blackId)
+					path = whitePath;
+				else
+					path = blackPath;
 				
 				switch(type)
 				{
-					case "Basic":
-						gfx = Assets.GFX_CREEP_BASIC;
-						break;
 					case "Chigen":
-						gfx = Assets.GFX_CREEP_CHIGEN;
+						add(new ChigenCreep(id, pId, x, y, sp, path));
 						break;			
 					case "Regen":
-						gfx = Assets.GFX_CREEP_REGEN;
+						add(new SwarmCreep(id, pId, x, y, sp, path));
 						break;
 					case "Quick":
-						gfx = Assets.GFX_CREEP_QUICK;
+						add(new QuickCreep(id, pId, x, y, sp, path));
 						break;
 					case "Magic":
-						gfx = Assets.GFX_CREEP_MAGIC;
+						add(new MagicCreep(id, pId, x, y, sp, path));
 						break;
 					case "Armor":
-						gfx = Assets.GFX_CREEP_ARMOR;
+						add(new ArmorCreep(id, pId, x, y, sp, path));
 						break;
 					case "Swarm":
-						gfx = Assets.GFX_CREEP_SWARM;
+						add(new SwarmCreep(id, pId, x, y, sp, path));
 						break;
 				}
-				
-				if(pId == blackId)
-					add(new Creep(id, gfx, pId, x, y, sp, whitePath));
-				else if (pId == whiteId)
-					add(new Creep(id, gfx, pId, x, y, sp, blackPath));
+
 			});
 			
 			connection.addMessageHandler(Messages.GAME_CREEP_REMOVE, function(m:Message, id:String):void {
@@ -691,27 +629,6 @@ package com.behindcurtain3
 		private function matchFinished(m:Message):void 
 		{
 			FP.world = new ResultWorld(gameSettings, connection, m.getInt(0), m.getInt(1), m.getUInt(2), m.getUInt(3));
-			/*
-			
-			addToChat("Matched finished!");
-			
-			var boardTween:VarTween = new VarTween();
-			boardTween.tween(board, "alpha", 0, 1.5, Ease.expoOut);
-			
-			// tween in the title
-			var tweenLeft:VarTween = new VarTween();
-			tweenLeft.tween(titleLeft, "x", 0, 0.5, Ease.quintOut);
-			
-			var tweenRight:VarTween = new VarTween();
-			tweenRight.tween(titleRight, "x", 0, 0.5, Ease.quintOut);
-			
-			addTween(tweenLeft, true);
-			addTween(tweenRight, true);
-			
-			addTween(boardTween, true);
-			
-			fadeOutText();
-			*/
 		};
 		
 		private function fadeInText():void

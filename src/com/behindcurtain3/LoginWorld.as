@@ -38,14 +38,14 @@ package com.behindcurtain3
 			playerPassword = password;
 			
 			PlayerIO.connect(
-				FP.stage,								//Referance to stage
-				"schismtd-3r3otmhvkki9ixublwca",		//Game id (Get your own at playerio.com. 1: Create user, 2:Goto admin pannel, 3:Create game, 4: Copy game id inside the "")
-				"public",							//Connection id, default is public
-				userName,							//Username
-				"",									//User auth. Can be left blank if authentication is disabled on connection
-				null,								//Current PartnerPay partner.
-				handleConnect,						//Function executed on successful connect
-				handleError							//Function executed if we recive an error
+				FP.stage,							
+				"schismtd-3r3otmhvkki9ixublwca",	
+				"public",							
+				userName,							
+				"",									
+				null,								
+				handleConnect,						
+				handleError							
 			); 
 		}
 		

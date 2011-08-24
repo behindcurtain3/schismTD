@@ -4,16 +4,16 @@ package com.behindcurtain3
 	import net.flashpunk.Entity;
 	import net.flashpunk.FP;
 	import net.flashpunk.graphics.Image;
+	import net.flashpunk.graphics.Spritemap;
 	
 	/**
 	 * ...
 	 * @author Justin Brown
 	 */
 	public class Creep extends EffectEntity
-	{
-		protected var img:Image;
-		
+	{		
 		public var MovingTo:Cell = null;
+		public var doFacing:Boolean = false;
 		
 		public var ID:String;
 		public var player:int;
@@ -25,21 +25,16 @@ package com.behindcurtain3
 		public var life:int = -1;
 		public var startingLife:int;
 		
-		public function Creep(s:String, gfx:Class, pId:int, _x:int, _y:int, sp:int, _path:Array) 
+		public var spriteMap:Spritemap;
+		
+		public function Creep(s:String, pId:int, _x:int, _y:int, sp:int, _path:Array) 
 		{
 			ID = s;		
 			player = pId;
 			Speed = sp;
 			
-			img = new Image(gfx);
-			x = _x - img.width / 2;
-			y = _y - img.height / 2 ;
-			width = img.width;
-			height = img.height;
-			setHitbox(width, height);
 			type = "creep";
-			
-			graphic = img;
+		
 			layer = 10;
 			
 			updatePath(_path);
@@ -59,6 +54,7 @@ package com.behindcurtain3
 				if (MovingTo == null)
 				{
 					MovingTo = path[0];
+					updateAngle();
 				}
 				
 				var d:Number = getDistance(MovingTo);
@@ -68,13 +64,10 @@ package com.behindcurtain3
 				{
 					path.splice(0, 1);
 					
-					if (path.length == 0)
-					{
-						// Creep has arrived
-					}
-					else
+					if (path.length != 0)
 					{
 						MovingTo = path[0];
+						updateAngle();
 					}
 				}
 				
@@ -87,9 +80,9 @@ package com.behindcurtain3
 				x -= movement.x;
 				y -= movement.y;	
 				
-				if (life != -1)
+				if (life != -1 && spriteMap != null)
 				{
-					img.alpha = (life / startingLife) + 0.25;
+					spriteMap.alpha = (life / startingLife) + 0.25;
 				}
 			}
 			
@@ -108,12 +101,53 @@ package com.behindcurtain3
 		public function updatePath(_path:Array):void
 		{
 			this.path = _path.slice();
-			this.MovingTo = path[0];			
+			this.MovingTo = path[0];	
+			updateAngle();
 		}
 		
 		public function getDistance(cell:Cell):Number
 		{
 			return Math.abs(cell.centerX - centerX) + Math.abs(cell.centerY - centerY);
+		}
+		
+		public function updateAngle():void
+		{
+			if (MovingTo == null || spriteMap == null || !doFacing)
+				return;
+				
+			var dx:int = centerX - MovingTo.centerX;
+			var dy:int = centerY - MovingTo.centerY;
+			
+			var up:Boolean = false;
+			var down:Boolean = false;
+			var left:Boolean = false;
+			var right:Boolean = false;
+			
+			if (dx < -3)
+				left = true;
+			else if (dx > 3)
+				right = true;
+			if (dy < -3)
+				down = true;
+			else if (dy > 3)
+				up = true;
+				
+			if (up && left)
+				spriteMap.angle = 135;
+			else if (up && right)
+				spriteMap.angle = 225;
+			else if (down && left)
+				spriteMap.angle = 45;
+			else if (down && right)
+				spriteMap.angle = 315;
+			else if (up)
+				spriteMap.angle = 180;
+			else if (right)
+				spriteMap.angle = 270;
+			else if (left)
+				spriteMap.angle = 90;
+			else
+				spriteMap.angle = 0;
 		}
 	}
 

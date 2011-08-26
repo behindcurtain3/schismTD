@@ -30,7 +30,9 @@ package com.behindcurtain3
 	{
 		public var Mode:int = BuildMode.NONE;
 		
+		// Settings
 		private var gameSettings:GameSettings;
+		private var connectionAttempts:int = 0;
 		
 		
 		// UI
@@ -47,6 +49,7 @@ package com.behindcurtain3
 		protected var titleLeft:Image;
 		protected var titleRight:Image;
 		protected var board:Image;
+		protected var compass:Image;
 		
 		// Sfx
 		protected var sfx_invalid:Sfx = new Sfx(Assets.SFX_INVALID);
@@ -95,6 +98,10 @@ package com.behindcurtain3
 			board = new Image(Assets.GFX_BOARD);
 			board.alpha = 0;
 			addGraphic(board, 100, 0, 0);
+			addGraphic(new Image(Assets.GFX_BOARD_OVERLAY), 5);
+			
+			compass = new Image(Assets.GFX_COMPASS);
+			addGraphic(compass, 2, 0, FP.screen.height - compass.height);
 			
 			chatbox = new PunkTextField("", 10, FP.screen.height - 30, 200);
 			chatbox.visible = false;
@@ -104,6 +111,20 @@ package com.behindcurtain3
 			
 			client = gameSettings.client;
 			
+			connect();
+			
+			
+			Input.define("Chat", Key.T);
+			Input.define("Send", Key.ENTER);
+			
+			Input.define("Build", Key.W, Key.UP);
+			Input.define("Upgrade1", Key.A, Key.LEFT);
+			Input.define("Upgrade2", Key.D, Key.RIGHT);
+			Input.define("Sell", Key.S, Key.DOWN);
+		}
+		
+		public function connect():void
+		{
 			var userSettings:Object = {name:gameSettings.name};
 			
 			client.multiplayer.createJoinRoom(
@@ -116,13 +137,7 @@ package com.behindcurtain3
 				handleError							//Function executed if we got a join error
 			);
 			
-			Input.define("Chat", Key.T);
-			Input.define("Send", Key.ENTER);
-			
-			Input.define("Build", Key.W, Key.UP);
-			Input.define("Upgrade1", Key.A, Key.LEFT);
-			Input.define("Upgrade2", Key.D, Key.RIGHT);
-			Input.define("Sell", Key.S, Key.DOWN);
+			connectionAttempts++;
 		}
 		
 		override public function end():void
@@ -448,7 +463,7 @@ package com.behindcurtain3
 						add(new ChigenCreep(id, pId, x, y, sp, path));
 						break;			
 					case "Regen":
-						add(new SwarmCreep(id, pId, x, y, sp, path));
+						add(new RegenCreep(id, pId, x, y, sp, path));
 						break;
 					case "Quick":
 						add(new QuickCreep(id, pId, x, y, sp, path));
@@ -608,7 +623,7 @@ package com.behindcurtain3
 		}
 		
 		private function activateGame(m:Message):void 
-		{
+		{			
 			// tween out the title
 			var tweenLeft:VarTween = new VarTween();
 			tweenLeft.tween(titleLeft, "x", -400, 0.5, Ease.quintOut);
@@ -637,11 +652,12 @@ package com.behindcurtain3
 			whiteManaUI.visible = true;
 			blackHealthUI.visible = true;
 			blackManaUI.visible = true;
-			
+			/*
 			for each(var t:Text in console)
 			{
 				t.visible = true;				
 			}
+			*/
 		}
 		
 		private function fadeOutText():void
@@ -659,8 +675,13 @@ package com.behindcurtain3
 		
 		private function handleError(error:PlayerIOError):void
 		{
-			addToChat(error.message);		
-			disconnect(error.message);
+			if (connectionAttempts < 3)
+				connect();
+			else
+			{
+				addToChat(error.message);		
+				disconnect(error.message);
+			}
 		}
 		
 		public function addToChat(s:String, time:Number = 4):void

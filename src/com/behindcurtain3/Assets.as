@@ -12,7 +12,9 @@ package com.behindcurtain3
 		[Embed(source = '../../../assets/title-right.png')] public static const GFX_TITLE_RIGHT:Class;
 		
 		// Board
-		[Embed(source = '../../../assets/board/board.png')] public static const GFX_BOARD:Class;
+		[Embed(source = '../../../assets/board/Board-back.png')] public static const GFX_BOARD:Class;
+		[Embed(source = '../../../assets/board/Board-front.png')] public static const GFX_BOARD_OVERLAY:Class;
+		[Embed(source = '../../../assets/board/Compass.png')] public static const GFX_COMPASS:Class;
 		
 		// Towers
 		[Embed(source = '../../../assets/towers/basic.png')] public static const GFX_TOWER_BASIC:Class;
@@ -36,6 +38,9 @@ package com.behindcurtain3
 		
 		// Misc
 		[Embed(source = '../../../assets/glow.png')] public static const GFX_GLOW:Class;
+		
+		// Fonts
+		[Embed(source = '../../../assets/DOMOAN__.ttf', embedAsCFF="false", fontFamily = 'Domo')] public static const FONT_DOMO:Class
 		
 	}
 

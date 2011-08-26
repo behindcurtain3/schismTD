@@ -24,7 +24,7 @@ package com.behindcurtain3
 			
 			spriteMap = new Spritemap(Assets.GFX_CREEP_ARMOR, 32, 48);
 			spriteMap.centerOrigin();
-			spriteMap.add("walk", [0, 1], 4, true);
+			spriteMap.add("walk", [0, 1], 3, true);
 			spriteMap.play("walk");			
 			
 			graphic = spriteMap;

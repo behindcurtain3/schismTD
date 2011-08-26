@@ -12,6 +12,7 @@ package com.behindcurtain3
 		{
 			super(s, pId, _x, _y, sp, _path);
 			
+			doFacing = true;
 			collidable = true;
 			
 			x = _x - 7;
@@ -22,7 +23,7 @@ package com.behindcurtain3
 
 			spriteMap = new Spritemap(Assets.GFX_CREEP_SWARM, width, height);
 			spriteMap.centerOrigin();
-			spriteMap.add("walk", [0, 1], 4, true);
+			spriteMap.add("walk", [0, 1], 3, true);
 			spriteMap.play("walk");			
 			
 			graphic = spriteMap;

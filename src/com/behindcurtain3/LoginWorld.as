@@ -28,7 +28,10 @@ package com.behindcurtain3
 			titleLeft = new Image(Assets.GFX_TITLE_LEFT);
 			titleRight = new Image(Assets.GFX_TITLE_RIGHT);
 			var str:String = "Authenticating";
-			titleText = new Text(str, FP.screen.width / 2 - (str.length / 2 * 10), FP.screen.height - 100, FP.screen.width);
+			titleText = new Text(str, 0, FP.screen.height - 100, FP.screen.width, 200);
+			titleText.font = "Domo";
+			titleText.size = 24;
+			titleText.x = FP.screen.width / 2 - (titleText.text.length / 2 * 10);
 			
 			addGraphic(titleLeft, 1, 0, 0);
 			addGraphic(titleRight, 1, 400, 0);

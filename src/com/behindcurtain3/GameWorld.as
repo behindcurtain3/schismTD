@@ -307,15 +307,26 @@ package com.behindcurtain3
 			
 			whiteHealthUI = new Text("Life:", 5, 5, 100, 25);
 			whiteHealthUI.visible = false;
+			whiteHealthUI.font = "Domo";
+			whiteHealthUI.size = 18;
+			
 			whiteManaUI = new Text("Mana:", 105, 5, 100, 25);
 			whiteManaUI.visible = false;
+			whiteManaUI.font = "Domo";
+			whiteManaUI.size = 18;
 			addGraphic(whiteHealthUI);
 			addGraphic(whiteManaUI);
 			
 			blackHealthUI = new Text("Life:", FP.screen.width - 200, FP.screen.height - 30, 100, 25);
 			blackHealthUI.visible = false;
+			blackHealthUI.font = "Domo";
+			blackHealthUI.size = 18;
+			
 			blackManaUI = new Text("Mana:", FP.screen.width - 95, FP.screen.height - 30, 100, 25);
 			blackManaUI.visible = false;
+			blackManaUI.font = "Domo";
+			blackManaUI.size = 18;
+			
 			addGraphic(blackHealthUI);
 			addGraphic(blackManaUI);
 			
@@ -424,7 +435,10 @@ package com.behindcurtain3
 								break;
 							case "seed":
 								tc.assignGfx(Assets.GFX_TOWER_SEED);
-								break;							
+								break;		
+							case "damageboost":
+								tc.assignGfx(Assets.GFX_TOWER_SEED);
+								break;		
 						}
 						
 					}

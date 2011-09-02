@@ -28,6 +28,8 @@ package com.behindcurtain3
 			spriteMap.play("walk");			
 			
 			graphic = spriteMap;
+			
+			updateAngle();
 		}
 				
 	}

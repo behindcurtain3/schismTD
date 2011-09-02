@@ -14,7 +14,15 @@ package com.behindcurtain3
 		// Board
 		[Embed(source = '../../../assets/board/Board-back.png')] public static const GFX_BOARD:Class;
 		[Embed(source = '../../../assets/board/Board-front.png')] public static const GFX_BOARD_OVERLAY:Class;
-		[Embed(source = '../../../assets/board/Compass.png')] public static const GFX_COMPASS:Class;
+		[Embed(source = '../../../assets/board/Compasslite.png')] public static const GFX_COMPASS:Class;
+		
+		//Icons
+		[Embed(source = '../../../assets/board/creep icons/miniarmor.png')] public static const GFX_ICONS_ARMOR:Class;
+		[Embed(source = '../../../assets/board/creep icons/minichigen.png')] public static const GFX_ICONS_CHIGEN:Class;
+		[Embed(source = '../../../assets/board/creep icons/minimagic.png')] public static const GFX_ICONS_MAGIC:Class;
+		[Embed(source = '../../../assets/board/creep icons/miniquick.png')] public static const GFX_ICONS_QUICK:Class;
+		[Embed(source = '../../../assets/board/creep icons/miniregen.png')] public static const GFX_ICONS_REGEN:Class;
+		[Embed(source = '../../../assets/board/creep icons/miniswarm.png')] public static const GFX_ICONS_SWARM:Class;
 		
 		// Towers
 		[Embed(source = '../../../assets/towers/basic.png')] public static const GFX_TOWER_BASIC:Class;
@@ -23,7 +31,7 @@ package com.behindcurtain3
 		[Embed(source = '../../../assets/towers/pulse.png')] public static const GFX_TOWER_PULSE:Class;
 		[Embed(source = '../../../assets/towers/sniper.png')] public static const GFX_TOWER_SNIPER:Class;
 		[Embed(source = '../../../assets/towers/spell.png')] public static const GFX_TOWER_SPELL:Class;
-		[Embed(source = '../../../assets/towers/seed.png')] public static const GFX_TOWER_SEED:Class;
+		[Embed(source = '../../../assets/towers/damageboost.png')] public static const GFX_TOWER_DAMAGEBOOST:Class;
 		
 		// Creeps
 		[Embed(source = '../../../assets/creeps/Chigen.png')] public static const GFX_CREEP_CHIGEN:Class;

@@ -25,6 +25,9 @@ package com.behindcurtain3
         public static const GAME_FINISHED:String = "gf";
 		
 		public static const GAME_CELL_ADD:String = "gca";
+		
+		public static const GAME_WAVE_QUEUE:String = "gwq";
+		public static const GAME_WAVE_ACTIVATE:String = "gwa";
 
 		public static const GAME_TOWER_PLACE:String = "gtp";
         public static const GAME_TOWER_REMOVE:String = "gtr";

@@ -42,6 +42,8 @@ package com.behindcurtain3
 		protected var whiteManaUI:Text;
 		protected var blackHealthUI:Text;
 		protected var blackManaUI:Text;
+		protected var whiteWaveQueue:WhiteWaveQueue;
+		protected var blackWaveQueue:BlackWaveQueue;
 		
 		private var consoleDisplayTime:Number = 5;
 		
@@ -106,6 +108,11 @@ package com.behindcurtain3
 			chatbox = new PunkTextField("", 10, FP.screen.height - 30, 200);
 			chatbox.visible = false;
 			add(chatbox);
+			
+			whiteWaveQueue = new WhiteWaveQueue();
+			add(whiteWaveQueue);
+			blackWaveQueue = new BlackWaveQueue();
+			add(blackWaveQueue);
 			
 			addToChat("Connecting...");
 			
@@ -433,11 +440,8 @@ package com.behindcurtain3
 							case "spell":
 								tc.assignGfx(Assets.GFX_TOWER_SPELL);
 								break;
-							case "seed":
-								tc.assignGfx(Assets.GFX_TOWER_SEED);
-								break;		
 							case "damageboost":
-								tc.assignGfx(Assets.GFX_TOWER_SEED);
+								tc.assignGfx(Assets.GFX_TOWER_DAMAGEBOOST);
 								break;		
 						}
 						
@@ -585,6 +589,8 @@ package com.behindcurtain3
 			
 			connection.addMessageHandler(Messages.GAME_ALL_CREEPS_PATH, updatePaths);
 			connection.addMessageHandler(Messages.GAME_CREEP_PATH, updateSinglePath);
+			connection.addMessageHandler(Messages.GAME_WAVE_ACTIVATE, activateWave);
+			connection.addMessageHandler(Messages.GAME_WAVE_QUEUE, queueWave);
 			
 			connection.addDisconnectHandler(function():void {
 				disconnect("Connection to server lost");
@@ -636,8 +642,41 @@ package com.behindcurtain3
 			}
 		}
 		
+		private function activateWave(m:Message):void
+		{
+			if (m.getInt(0) == whiteId)
+			{
+				whiteWaveQueue.activateWave(m.getString(1), m.getNumber(2));
+			}
+			else if (m.getInt(0) == blackId)
+			{
+				blackWaveQueue.activateWave(m.getString(1), m.getNumber(2));
+			}
+		}
+		
+		private function queueWave(m:Message):void
+		{
+			var types:Array = new Array();
+			
+			for (var i:int = 2; i < m.length; i++)
+			{
+				types.push(m.getString(i));				
+			}
+			
+			if (m.getInt(0) == whiteId)
+			{
+				whiteWaveQueue.addWave(m.getString(1), types);
+			}
+			else if (m.getInt(0) == blackId)
+			{
+				blackWaveQueue.addWave(m.getString(1), types);
+			}
+		}
+		
 		private function activateGame(m:Message):void 
-		{			
+		{		
+			trace("activateGame");
+			
 			// tween out the title
 			var tweenLeft:VarTween = new VarTween();
 			tweenLeft.tween(titleLeft, "x", -400, 0.5, Ease.quintOut);

@@ -27,6 +27,14 @@ package com.behindcurtain3
 			spriteMap.play("walk");			
 			
 			graphic = spriteMap;
+			
+			updateAngle();
+		}
+		
+		override public function render():void 
+		{
+			// TODO: Add offsets to x & y
+			super.render();
 		}
 		
 	}

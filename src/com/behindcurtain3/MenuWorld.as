@@ -1,6 +1,7 @@
 package com.behindcurtain3
 {
 	import net.flashpunk.FP;
+	import net.flashpunk.graphics.Image;
 	import net.flashpunk.graphics.Text;
 	import net.flashpunk.tweens.misc.VarTween;
 	import net.flashpunk.utils.Ease;
@@ -21,11 +22,50 @@ package com.behindcurtain3
 	 */
 	public class MenuWorld extends World 
 	{
+		// Login
+		protected var username:PunkTextField;
+		protected var password:PunkPasswordField;
+		
+		// Register
+		protected var regUsername:PunkTextField;
+		protected var regPassword:PunkPasswordField;
+		protected var regEmail:PunkTextField;
+		
 		
 		public function MenuWorld (error:String = "")
 		{
-			add(new PunkButton(FP.screen.width / 2 - 100, FP.screen.height / 2 - 25, 200, 100, "Play Now", onPlayNow)); 
-			add(new PunkButton(FP.screen.width / 2 - 100, FP.screen.height / 2 + 100, 200, 75, "Manage Account", onPlayNow)); 			
+			var uiX:int = 100;
+			var uiY:int = 200;
+			var width:int = 250;
+			var spacer:int = 25;
+			
+			// Background
+			addGraphic(new Image(Assets.GFX_LOGIN_BACKGROUND), 100);
+			
+			// Login
+			add(new PunkLabel("Username:", uiX, uiY, width, 50));
+			username = new PunkTextField("", uiX, uiY + spacer, width);
+			add(new PunkLabel("Password:", uiX, uiY + spacer * 2, width, 50));
+			password = new PunkPasswordField(uiX, uiY + spacer * 3, width);
+			
+			add(username);
+			add(password);
+			add(new PunkButton(uiX, uiY + spacer * 5, width, 50, "Play Now", onPlayNow));
+			
+			// Register
+			uiX = 450;
+			
+			add(new PunkLabel("Username:", uiX, uiY, width, 50));
+			regUsername = new PunkTextField("", uiX, uiY + spacer, width);
+			add(new PunkLabel("Password:", uiX, uiY + spacer * 2, width, 50));
+			regPassword = new PunkPasswordField(uiX, uiY + spacer * 3, width);
+			add(new PunkLabel("Email: (optional)", uiX, uiY + spacer * 4, width, 50));
+			regEmail = new PunkTextField("", uiX, uiY + spacer * 5, width);
+			
+			add(regUsername);
+			add(regPassword);
+			add(regEmail);
+			add(new PunkButton(uiX, uiY + spacer * 7, width, 50, "Register", onPlayNow));			
 			
 			addGraphic(new Text(Assets.VERSION, 0, FP.screen.height - 15, 50, 15));
 			

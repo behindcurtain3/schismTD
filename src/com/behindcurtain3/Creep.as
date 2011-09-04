@@ -26,6 +26,8 @@ package com.behindcurtain3
 		public var startingLife:int;
 		
 		public var spriteMap:Spritemap;
+		public var isActive:Boolean;
+		private var mActivationTime:Number = 0;
 		
 		public function Creep(s:String, pId:int, _x:int, _y:int, sp:int, _path:Array) 
 		{
@@ -38,10 +40,22 @@ package com.behindcurtain3
 			layer = 10;
 			
 			updatePath(_path);
+			
+			isActive = false;
 		}
 		
 		override public function update():void 
 		{
+			if (!isActive)
+			{
+				mActivationTime += FP.elapsed;
+				
+				if (mActivationTime >= 1.0)
+					isActive = true;
+				
+				return;
+			}
+			
 			if (path.length > 0)
 			{
 				// Reset values

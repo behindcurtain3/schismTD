@@ -674,9 +674,7 @@ package com.behindcurtain3
 		}
 		
 		private function activateGame(m:Message):void 
-		{		
-			trace("activateGame");
-			
+		{					
 			// tween out the title
 			var tweenLeft:VarTween = new VarTween();
 			tweenLeft.tween(titleLeft, "x", -400, 0.5, Ease.quintOut);

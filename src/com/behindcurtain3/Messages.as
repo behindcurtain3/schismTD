@@ -17,6 +17,7 @@ package com.behindcurtain3
 		public static const MATCH_READY:String = "mr"; // Called when 2 players have joined
 		public static const MATCH_STARTED:String = "ms"; //Called when match actually starts
 		public static const MATCH_FINISHED:String = "mf";
+		public static const MATCH_SET_ID:String = "msi";
 		
 		// game
 		public static const GAME_COUNTDOWN:String = "gc"; // Countdown status at start of each game
@@ -28,6 +29,7 @@ package com.behindcurtain3
 		
 		public static const GAME_WAVE_QUEUE:String = "gwq";
 		public static const GAME_WAVE_ACTIVATE:String = "gwa";
+		public static const GAME_WAVE_NEXT:String = "gwn";
 
 		public static const GAME_TOWER_PLACE:String = "gtp";
         public static const GAME_TOWER_REMOVE:String = "gtr";

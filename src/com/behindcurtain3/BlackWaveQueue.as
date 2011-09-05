@@ -66,21 +66,37 @@ package com.behindcurtain3
 			{
 				if (w.Id == id)
 				{
-					activeWave = w;
-					activeWave.moveToActive(this.y, time);
-					waves.splice(counter, 1);
-					
 					for (var i:int = 0; i < waves.length; i++)
 					{
-						if (w.Id == waves[i].Id || w.y > waves[i].Id)
+						if (w.Id == waves[i].Id || waves[i].y > w.y)
 							continue;
 							
 						waves[i].moveDown();						
 					}
+					
+					activeWave = w;
+					activeWave.moveToActive(this.y, time);
+					waves.splice(counter, 1);
 					return;
 				}
 				counter++;
 			}
+		}
+		
+		public function getWaveAt(i:int):Wave
+		{
+			if (i < 0 || i >= waves.length)
+				return null;
+				
+			return waves[i];
+		}
+		
+		public function getWaveIdAt(i:int):String 
+		{
+			if (i < 0 || i >= waves.length)
+				return "";
+				
+			return waves[i].Id;
 		}
 		
 	}

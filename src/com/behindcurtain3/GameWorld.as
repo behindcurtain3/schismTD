@@ -31,7 +31,7 @@ package com.behindcurtain3
 		public var Mode:int = BuildMode.NONE;
 		
 		// Settings
-		private var gameSettings:GameSettings;
+		private var gameId:String;
 		private var connectionAttempts:int = 0;
 		
 		
@@ -68,6 +68,7 @@ package com.behindcurtain3
 		private var glow:Glow = null;
 		private var blackId:int;
 		private var whiteId:int;
+		private var playerId:int;
 		
 		public var buildMode:int = BuildMode.NONE;
 		public var objectSelected:Entity = null;
@@ -81,9 +82,11 @@ package com.behindcurtain3
 		private var blackPath:Array;
 		private var whitePath:Array;
 	 
-		public function GameWorld (settings:GameSettings)
+		public function GameWorld (client:Client, gameId:String)
 		{
-			gameSettings = settings;
+			this.client = client;
+			this.gameId = gameId;
+			//gameSettings = settings;
 			
 			FP.volume = 0.1;
 			
@@ -116,8 +119,6 @@ package com.behindcurtain3
 			
 			addToChat("Connecting...");
 			
-			client = gameSettings.client;
-			
 			connect();
 			
 			
@@ -128,18 +129,22 @@ package com.behindcurtain3
 			Input.define("Upgrade1", Key.A, Key.LEFT);
 			Input.define("Upgrade2", Key.D, Key.RIGHT);
 			Input.define("Sell", Key.S, Key.DOWN);
+			
+			Input.define("Wave1", Key.DIGIT_1, Key.NUMPAD_1);
+			Input.define("Wave2", Key.DIGIT_2, Key.NUMPAD_2);
+			Input.define("Wave3", Key.DIGIT_3, Key.NUMPAD_3);
 		}
 		
 		public function connect():void
 		{
-			var userSettings:Object = {name:gameSettings.name};
+			//var userSettings:Object = {name:gameSettings.name};
 			
 			client.multiplayer.createJoinRoom(
-				gameSettings.gameId,								//Room id. If set to null a random roomid is used
+				gameId,								//Room id. If set to null a random roomid is used
 				"schismTD",							//The game type started on the server
 				false,								//Should the room be visible in the lobby?
 				{},									//Room data. This data is returned to lobby list. Variabels can be modifed on the server
-				userSettings,						//User join data
+				{},									//User join data
 				handleNewGame,						//Function executed on successful joining of the room
 				handleError							//Function executed if we got a join error
 			);
@@ -285,6 +290,30 @@ package com.behindcurtain3
 					dragStart = null;
 					dragEnd = null;
 				}
+				
+				if (Input.pressed("Wave1"))
+				{
+					if (playerId == blackId)
+						connection.send(Messages.GAME_WAVE_NEXT, blackWaveQueue.getWaveIdAt(0));
+					else
+						connection.send(Messages.GAME_WAVE_NEXT, whiteWaveQueue.getWaveIdAt(0));
+				}
+				
+				if (Input.pressed("Wave2"))
+				{
+					if (playerId == blackId)
+						connection.send(Messages.GAME_WAVE_NEXT, blackWaveQueue.getWaveIdAt(1));
+					else
+						connection.send(Messages.GAME_WAVE_NEXT, whiteWaveQueue.getWaveIdAt(1));
+				}
+				
+				if (Input.pressed("Wave3"))
+				{
+					if (playerId == blackId)
+						connection.send(Messages.GAME_WAVE_NEXT, blackWaveQueue.getWaveIdAt(2));
+					else
+						connection.send(Messages.GAME_WAVE_NEXT, whiteWaveQueue.getWaveIdAt(2));
+				}
 			}
 			
 			if (Input.pressed(Key.ESCAPE))
@@ -365,6 +394,10 @@ package com.behindcurtain3
 			});
 			
 			connection.addMessageHandler(Messages.MATCH_FINISHED, matchFinished);
+			connection.addMessageHandler(Messages.MATCH_SET_ID, function(m:Message, id:int):void
+			{
+				playerId = id;
+			});
 			
 			connection.addMessageHandler(Messages.GAME_COUNTDOWN, function(m:Message, i:Number):void {
 				i = Math.ceil(i / 1000);
@@ -617,6 +650,10 @@ package com.behindcurtain3
 			{
 				whitePath = newPath;
 			}
+			else
+			{
+				trace("Error! Paths sent do not match player!");
+			}
 		}
 		
 		private function updateSinglePath(m:Message):void
@@ -694,7 +731,7 @@ package com.behindcurtain3
 		
 		private function matchFinished(m:Message):void 
 		{
-			FP.world = new ResultWorld(gameSettings, connection, m.getInt(0), m.getInt(1), m.getUInt(2), m.getUInt(3));
+			FP.world = new ResultWorld(client, connection, m.getInt(0), m.getInt(1), m.getUInt(2), m.getUInt(3));
 		};
 		
 		private function fadeInText():void

@@ -19,11 +19,10 @@ package com.behindcurtain3
 		private var mConnection:Connection;
 		private var mSettings:GameSettings;
 		
-		public function ResultWorld(settings:GameSettings, connection:Connection, blackLife:int, whiteLife:int, blackDamage:uint, whiteDamage:uint)
+		public function ResultWorld(client:Client, connection:Connection, blackLife:int, whiteLife:int, blackDamage:uint, whiteDamage:uint)
 		{
-			mClient = settings.client;
+			mClient = client;
 			mConnection = connection;
-			mSettings = settings;
 
 			add(new PunkButton(FP.screen.width / 2 - 250, FP.screen.height / 2 + 100, 200, 100, "Play Again", onPlayAgain)); 
 			add(new PunkButton(FP.screen.width / 2 + 50, FP.screen.height / 2 + 100, 200, 100, "Exit", onExit));
@@ -74,7 +73,7 @@ package com.behindcurtain3
 		
 		public function onPlayAgain():void
 		{
-			FP.world = new LoginWorld(mSettings.name, mSettings.password);
+			FP.world = new LoginWorld(this.mClient);
 		}
 		
 		public function onExit():void

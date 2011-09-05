@@ -15,19 +15,19 @@ package com.behindcurtain3
 	{
 		private var client:Client;
 		private var connection:Connection;
-		private var playerName:String;
-		private var playerPassword:String;
 		
 		protected var titleLeft:Image;
 		protected var titleRight:Image;
 		protected var titleText:Text;
 		
-		public function LoginWorld(userName:String, password:String) 
+		public function LoginWorld(client:Client) 
 		{
+			this.client = client;
+			
 			// Title
 			titleLeft = new Image(Assets.GFX_TITLE_LEFT);
 			titleRight = new Image(Assets.GFX_TITLE_RIGHT);
-			var str:String = "Authenticating";
+			var str:String = "Waiting for an opponent";
 			titleText = new Text(str, 0, FP.screen.height - 100, FP.screen.width, 200);
 			titleText.font = "Domo";
 			titleText.size = 24;
@@ -37,19 +37,20 @@ package com.behindcurtain3
 			addGraphic(titleRight, 1, 400, 0);
 			addGraphic(titleText);
 			
-			playerName = userName;
-			playerPassword = password;
+			//Set developmentsever (Comment out to connect to your server online)
+			client.multiplayer.developmentServer = "127.0.0.1:8184";
 			
-			PlayerIO.connect(
-				FP.stage,							
-				"schismtd-3r3otmhvkki9ixublwca",	
-				"public",							
-				userName,							
-				"",									
-				null,								
-				handleConnect,						
-				handleError							
-			); 
+			//Create pr join the room test
+			client.multiplayer.createJoinRoom(
+				"match-maker",							//Room id. If set to null a random roomid is used
+				"$service-room$",					//The game type started on the server
+				true,								//Should the room be visible in the lobby?
+				{},									//Room data. This data is returned to lobby list. Variabels can be modifed on the server
+				{},									//User join data
+				handleJoin,							//Function executed on successful joining of the room
+				handleClientError					//Function executed if we got a join error
+			);	
+			
 		}
 		
 		override public function update():void 
@@ -70,44 +71,28 @@ package com.behindcurtain3
 			super.update();
 		}
 		
-		private function handleConnect(c:Client):void
-		{
-			client = c;
-			
-			//Set developmentsever (Comment out to connect to your server online)
-			client.multiplayer.developmentServer = "127.0.0.1:8184";
-			
-			var userSettings:Object = {name:playerName, password:playerPassword};
-			
-			//Create pr join the room test
-			client.multiplayer.createJoinRoom(
-				"lobby",							//Room id. If set to null a random roomid is used
-				"$service-room$",					//The game type started on the server
-				true,								//Should the room be visible in the lobby?
-				{},									//Room data. This data is returned to lobby list. Variabels can be modifed on the server
-				userSettings,						//User join data
-				handleJoin,							//Function executed on successful joining of the room
-				handleError							//Function executed if we got a join error
-			);	
-		}
-		
 		private function handleJoin(c:Connection):void
 		{
 			connection = c;
 			
-			titleText.text = "Waiting for an opponent";
-			titleText.x = FP.screen.width / 2 - (titleText.text.length / 2 * 10);
-			
 			connection.addMessageHandler(Messages.MATCH_ID, function(m:Message, gameId:String):void {
 				connection.disconnect();
-				FP.world = new GameWorld(new GameSettings(client, playerName, playerPassword, gameId));
+				FP.world = new GameWorld(client, gameId);
 			});
 		}
 		
-		private function handleError(error:PlayerIOError):void
+		private function handleConnectionError(error:PlayerIOError):void
 		{
-			FP.world = new MenuWorld(error.message);
+			trace(error.getStackTrace());
+			FP.world = new MenuWorld("Connection: " + error.message);
 		}
+		
+		private function handleClientError(error:PlayerIOError):void
+		{
+			trace(error.getStackTrace());
+			FP.world = new MenuWorld("Client: " + error.message);
+		}
+		
 		
 	}
 

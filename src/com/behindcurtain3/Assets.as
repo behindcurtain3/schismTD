@@ -6,7 +6,8 @@ package com.behindcurtain3
 	 */
 	public class Assets 
 	{		
-		public static const VERSION:String = "v0.03";
+		public static const VERSION:String = "v0.09";
+		public static const GAME_ID:String = "schismtd-3r3otmhvkki9ixublwca";
 		
 		[Embed(source = '../../../assets/title-left.png')] public static const GFX_TITLE_LEFT:Class;
 		[Embed(source = '../../../assets/title-right.png')] public static const GFX_TITLE_RIGHT:Class;

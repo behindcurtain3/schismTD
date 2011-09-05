@@ -38,7 +38,7 @@ package com.behindcurtain3
 			addGraphic(titleText);
 			
 			//Set developmentsever (Comment out to connect to your server online)
-			client.multiplayer.developmentServer = "127.0.0.1:8184";
+			client.multiplayer.developmentServer = "192.168.0.169:8184";
 			
 			//Create pr join the room test
 			client.multiplayer.createJoinRoom(

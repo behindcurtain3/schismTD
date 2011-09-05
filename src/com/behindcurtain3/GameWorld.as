@@ -475,7 +475,13 @@ package com.behindcurtain3
 								break;
 							case "damageboost":
 								tc.assignGfx(Assets.GFX_TOWER_DAMAGEBOOST);
-								break;		
+								break;	
+							case "rangeboost":
+								tc.assignGfx(Assets.GFX_TOWER_RANGEBOOST);
+								break;
+							case "rateboost":
+								tc.assignGfx(Assets.GFX_TOWER_RATEBOOST);
+								break;
 						}
 						
 					}

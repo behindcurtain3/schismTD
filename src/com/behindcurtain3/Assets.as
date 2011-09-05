@@ -34,6 +34,8 @@ package com.behindcurtain3
 		[Embed(source = '../../../assets/towers/sniper.png')] public static const GFX_TOWER_SNIPER:Class;
 		[Embed(source = '../../../assets/towers/spell.png')] public static const GFX_TOWER_SPELL:Class;
 		[Embed(source = '../../../assets/towers/damageboost.png')] public static const GFX_TOWER_DAMAGEBOOST:Class;
+		[Embed(source = '../../../assets/towers/rangeboost.png')] public static const GFX_TOWER_RANGEBOOST:Class;
+		[Embed(source = '../../../assets/towers/speedboost.png')] public static const GFX_TOWER_RATEBOOST:Class;
 		
 		// Creeps
 		[Embed(source = '../../../assets/creeps/Chigen.png')] public static const GFX_CREEP_CHIGEN:Class;

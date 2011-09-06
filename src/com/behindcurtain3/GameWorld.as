@@ -60,15 +60,17 @@ package com.behindcurtain3
 		protected var client:Client;
 		protected var connection:Connection;
 		
+		//Players
+		private var color:String = "";
+		private var blackId:int;
+		private var whiteId:int;
+		
 		// Game
 		private var gameActive:Boolean = false;
 		private var gameCountdown:int = 0;
 		private var dragStart:Point = null;
 		private var dragEnd:Point = null;
-		private var glow:Glow = null;
-		private var blackId:int;
-		private var whiteId:int;
-		private var playerId:int;
+		private var glow:Glow = null;	
 		
 		public var buildMode:int = BuildMode.NONE;
 		public var objectSelected:Entity = null;
@@ -86,7 +88,6 @@ package com.behindcurtain3
 		{
 			this.client = client;
 			this.gameId = gameId;
-			//gameSettings = settings;
 			
 			FP.volume = 0.1;
 			
@@ -119,8 +120,7 @@ package com.behindcurtain3
 			
 			addToChat("Connecting...");
 			
-			connect();
-			
+			connect();			
 			
 			Input.define("Chat", Key.T);
 			Input.define("Send", Key.ENTER);
@@ -293,7 +293,7 @@ package com.behindcurtain3
 				
 				if (Input.pressed("Wave1"))
 				{
-					if (playerId == blackId)
+					if (color == "black")
 						connection.send(Messages.GAME_WAVE_NEXT, blackWaveQueue.getWaveIdAt(0));
 					else
 						connection.send(Messages.GAME_WAVE_NEXT, whiteWaveQueue.getWaveIdAt(0));
@@ -301,7 +301,7 @@ package com.behindcurtain3
 				
 				if (Input.pressed("Wave2"))
 				{
-					if (playerId == blackId)
+					if (color == "black")
 						connection.send(Messages.GAME_WAVE_NEXT, blackWaveQueue.getWaveIdAt(1));
 					else
 						connection.send(Messages.GAME_WAVE_NEXT, whiteWaveQueue.getWaveIdAt(1));
@@ -309,7 +309,7 @@ package com.behindcurtain3
 				
 				if (Input.pressed("Wave3"))
 				{
-					if (playerId == blackId)
+					if (color == "black")
 						connection.send(Messages.GAME_WAVE_NEXT, blackWaveQueue.getWaveIdAt(2));
 					else
 						connection.send(Messages.GAME_WAVE_NEXT, whiteWaveQueue.getWaveIdAt(2));
@@ -371,32 +371,30 @@ package com.behindcurtain3
 				addToChat(s);
 			});
 			
-			connection.addMessageHandler(Messages.PLAYER_JOINED, function(m:Message, i:int, name:String):void {
-				addToChat(name + " has joined");
+			connection.addMessageHandler(Messages.GAME_JOINED, function(m:Message):void {
+				addToChat("Joined game.");
 			});
 			
-			connection.addMessageHandler(Messages.PLAYER_LEFT, function(m:Message, i:int):void {
-				addToChat("Player #" + i + " has left");
-			});
-			
-			connection.addMessageHandler(Messages.MATCH_READY, function(m:Message):void {
-				addToChat("Match ready to begin!");
-			});
-			
-			connection.addMessageHandler(Messages.MATCH_STARTED, function(m:Message, id1:int, id2:int):void {
-				blackId = id1;
-				whiteId = id2;
-				addToChat("Matched started!");
-				
+			connection.addMessageHandler(Messages.GAME_INFO, function(m:Message):void {
 				var vt:VarTween = new VarTween();
 				vt.tween(board, "alpha", 1, 2.5, Ease.expoOut);
 				addTween(vt, true);
-			});
-			
-			connection.addMessageHandler(Messages.MATCH_FINISHED, matchFinished);
-			connection.addMessageHandler(Messages.MATCH_SET_ID, function(m:Message, id:int):void
-			{
-				playerId = id;
+				
+				if (m.getString(0) == "black")
+				{
+					color = m.getString(0);
+					blackId = m.getInt(1);
+					whiteId = m.getInt(2);
+				} 
+				else if (m.getString(0) == "white")
+				{
+					color = m.getString(0);
+					whiteId = m.getInt(1);
+					blackId = m.getInt(2);
+				}
+				
+				trace(color + " --- " + blackId + " --- " + whiteId);
+				
 			});
 			
 			connection.addMessageHandler(Messages.GAME_COUNTDOWN, function(m:Message, i:Number):void {
@@ -414,7 +412,7 @@ package com.behindcurtain3
 				addToChat("Game started!");				
 			});
 			
-			connection.addMessageHandler(Messages.GAME_FINISHED, function(m:Message, id:int):void {
+			connection.addMessageHandler(Messages.GAME_FINISHED, function(m:Message):void {
 				gameActive = false;
 				
 				removeList(getCells());
@@ -427,20 +425,21 @@ package com.behindcurtain3
 					glow = null;
 				}
 				
-				if (id == -1)
+				if (m.getInt(0) == -1)
 				{
 					// Draw
 					addToChat("Game is drawn!", 10);
 				}
-				else if (id == blackId)
+				else if (m.getInt(0) == blackId)
 				{
 					addToChat("Black wins!", 10);
 				}
-				else if (id == whiteId)
+				else if (m.getInt(0) == whiteId)
 				{
 					addToChat("White wins!", 10);
 				}
 				
+				FP.world = new ResultWorld(client, connection, m.getInt(1), m.getInt(2), m.getUInt(3), m.getUInt(4));				
 			});
 			
 			connection.addMessageHandler(Messages.GAME_CELL_ADD, function(m:Message, i:int, x:int, y:int, w:int, h:int, mine:Boolean):void {				
@@ -508,6 +507,12 @@ package com.behindcurtain3
 			
 			connection.addMessageHandler(Messages.GAME_CREEP_ADD, function(m:Message, id:String, type:String, pId:int, x:int, y:int, sp:int):void {
 				var path:Array;
+				
+				if (whitePath == null || blackPath == null)
+				{
+					trace("Error: no path has been set.");
+					return;
+				}
 				
 				if (pId == blackId)
 					path = whitePath;
@@ -637,7 +642,7 @@ package com.behindcurtain3
 		}
 		
 		private function updatePaths(m:Message):void
-		{
+		{			
 			var newPath:Array = new Array();
 			
 			for (var i:int = 1; i < m.length; i++)
@@ -733,11 +738,6 @@ package com.behindcurtain3
 			add(glow);
 			
 			fadeInText();
-		};
-		
-		private function matchFinished(m:Message):void 
-		{
-			FP.world = new ResultWorld(client, connection, m.getInt(0), m.getInt(1), m.getUInt(2), m.getUInt(3));
 		};
 		
 		private function fadeInText():void

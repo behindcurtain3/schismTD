@@ -20,6 +20,8 @@ package com.behindcurtain3
 		public static const MATCH_SET_ID:String = "msi";
 		
 		// game
+		public static const GAME_JOINED:String = "gj";
+        public static const GAME_INFO:String = "gi";
 		public static const GAME_COUNTDOWN:String = "gc"; // Countdown status at start of each game
 		public static const GAME_ACTIVATE:String = "ga";
         public static const GAME_START:String = "gs";

@@ -612,22 +612,33 @@ package com.behindcurtain3
 					whiteMana = value;
 			});
 			
-			connection.addMessageHandler(Messages.GAME_PROJECTILE_ADD, function(m:Message, id:String, x:Number, y:Number, v:Number, crID:String):void {
+			connection.addMessageHandler(Messages.GAME_PROJECTILE_ADD, function(m:Message, id:String, type:String, x:Number, y:Number, v:Number, crID:String):void {
 				var creep:Creep = null;
 				
-				for each(var cr:Creep in getCreeps())
+				switch(type)
 				{
-					if (cr.ID == crID)
-					{
-						creep = cr;
+					case "Pulse":
+						trace(m.toString());
+						add(new PulseProjectile(id, x, y, v));
 						break;
-					}					
+					default:
+						for each(var cr:Creep in getCreeps())
+						{
+							if (cr.ID == crID)
+							{
+								creep = cr;
+								break;
+							}					
+						}
+						
+						if (creep != null)
+						{
+							add(new Projectile(id, x, y, v, creep));					
+						}	
+						break;
 				}
 				
-				if (creep != null)
-				{
-					add(new Projectile(id, x, y, v, creep));					
-				}				
+							
 			});
 			
 			connection.addMessageHandler(Messages.GAME_PROJECTILE_REMOVE, function(m:Message, id:String):void {				

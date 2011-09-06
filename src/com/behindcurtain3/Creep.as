@@ -5,6 +5,7 @@ package com.behindcurtain3
 	import net.flashpunk.FP;
 	import net.flashpunk.graphics.Image;
 	import net.flashpunk.graphics.Spritemap;
+	import net.flashpunk.tweens.misc.VarTween;
 	
 	/**
 	 * ...
@@ -42,6 +43,15 @@ package com.behindcurtain3
 			updatePath(_path);
 			
 			isActive = false;
+		}
+		
+		public function flash():void
+		{
+			spriteMap.color = 0xFF0000;
+
+			var colorTween:VarTween = new VarTween();
+			colorTween.tween(spriteMap, "color", 0xFFFFFF, 2.5);
+			addTween(colorTween, true);
 		}
 		
 		override public function update():void 

@@ -207,8 +207,19 @@ package com.behindcurtain3
 							objectSelected = null;
 						}
 						
-						// Glow is visible in this mode
-						glow.visible = true;
+						// Update if glow is visible
+						var hoverCell:Cell = collidePoint("cell", Input.mouseX, Input.mouseY) as Cell;
+						
+						if (hoverCell == null)
+						{
+							glow.visible = false;	
+						}
+						else
+						{
+							glow.visible = hoverCell.hasTower;
+							glow.x = hoverCell.x - 1;
+							glow.y = hoverCell.y - 1;
+						}
 						
 						if (objectSelected != null)
 						{
@@ -223,6 +234,20 @@ package com.behindcurtain3
 							else if (Input.pressed("Sell"))
 							{
 								connection.send(Messages.GAME_TOWER_SELL, objectSelected.centerX, objectSelected.centerY);
+							}
+						}
+						
+						if (Input.mouseReleased)
+						{
+							var creep:Creep = collidePoint("creep", Input.mouseX, Input.mouseY) as Creep;
+							
+							if (creep != null)
+							{
+								if ((color == "black" && creep.player == whiteId) || (color == "white" && creep.player == blackId))
+								{
+									creep.flash();
+									connection.send(Messages.GAME_FIRE_AT, creep.ID);
+								}
 							}
 						}
 						

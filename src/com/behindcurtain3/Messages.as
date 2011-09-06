@@ -38,6 +38,8 @@ package com.behindcurtain3
         public static const GAME_TOWER_INVALID:String = "gti";
 		public static const GAME_TOWER_UPGRADE:String = "gtu";
 		public static const GAME_TOWER_SELL:String = "gts";
+
+		public static const GAME_FIRE_AT:String = "gfa";
 		
 		public static const GAME_CREEP_ADD:String = "gcra";
         public static const GAME_CREEP_REMOVE:String = "gcrr";

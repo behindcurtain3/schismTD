@@ -19,7 +19,7 @@ package com.behindcurtain3
 		private var mConnection:Connection;
 		private var mSettings:GameSettings;
 		
-		public function ResultWorld(client:Client, connection:Connection, blackLife:int, whiteLife:int, blackDamage:uint, whiteDamage:uint)
+		public function ResultWorld(client:Client, connection:Connection, resultStr:String, blackLife:int, whiteLife:int, blackDamage:uint, whiteDamage:uint)
 		{
 			mClient = client;
 			mConnection = connection;
@@ -28,14 +28,7 @@ package com.behindcurtain3
 			add(new PunkButton(FP.screen.width / 2 + 50, FP.screen.height / 2 + 100, 200, 100, "Exit", onExit));
 			
 			var fontSize:int = 10;
-			var result:String;
-			
-			if (blackLife == whiteLife)
-				result = "Match was drawn";
-			else if (blackLife > whiteLife)
-				result = "Black wins!";
-			else
-				result = "White wins!";
+			var result:String = resultStr;			
 			
 			addGraphic(new Text(result, FP.screen.width / 2 - (result.length / 2 * fontSize), 100));
 			

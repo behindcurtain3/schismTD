@@ -223,15 +223,19 @@ package com.behindcurtain3
 						
 						if (objectSelected != null)
 						{
-							if (Input.pressed("Upgrade1"))
+							glow.visible = true;
+							glow.x = objectSelected.x - 1;
+							glow.y = objectSelected.y - 1;
+							
+							if (Input.released("Upgrade1"))
 							{
 								connection.send(Messages.GAME_TOWER_UPGRADE, objectSelected.centerX, objectSelected.centerY, 1);
 							}
-							else if (Input.pressed("Upgrade2"))
+							else if (Input.released("Upgrade2"))
 							{
 								connection.send(Messages.GAME_TOWER_UPGRADE, objectSelected.centerX, objectSelected.centerY, 2);
 							}
-							else if (Input.pressed("Sell"))
+							else if (Input.released("Sell"))
 							{
 								connection.send(Messages.GAME_TOWER_SELL, objectSelected.centerX, objectSelected.centerY);
 							}
@@ -316,15 +320,15 @@ package com.behindcurtain3
 					dragEnd = null;
 				}
 				
-				if (Input.pressed("Wave1"))
+				if (Input.released("Wave1"))
 				{
 					if (color == "black")
 						connection.send(Messages.GAME_WAVE_NEXT, blackWaveQueue.getWaveIdAt(0));
 					else
 						connection.send(Messages.GAME_WAVE_NEXT, whiteWaveQueue.getWaveIdAt(0));
 				}
-				
-				if (Input.pressed("Wave2"))
+
+				if (Input.released("Wave2"))
 				{
 					if (color == "black")
 						connection.send(Messages.GAME_WAVE_NEXT, blackWaveQueue.getWaveIdAt(1));
@@ -332,7 +336,7 @@ package com.behindcurtain3
 						connection.send(Messages.GAME_WAVE_NEXT, whiteWaveQueue.getWaveIdAt(1));
 				}
 				
-				if (Input.pressed("Wave3"))
+				if (Input.released("Wave3"))
 				{
 					if (color == "black")
 						connection.send(Messages.GAME_WAVE_NEXT, blackWaveQueue.getWaveIdAt(2));
@@ -450,21 +454,22 @@ package com.behindcurtain3
 					glow = null;
 				}
 				
+				var result:String = "";
 				if (m.getInt(0) == -1)
 				{
 					// Draw
-					addToChat("Game is drawn!", 10);
+					result = "Draw";
 				}
 				else if (m.getInt(0) == blackId)
 				{
-					addToChat("Black wins!", 10);
+					result = "Black wins!";
 				}
 				else if (m.getInt(0) == whiteId)
 				{
-					addToChat("White wins!", 10);
+					result = "White wins!";
 				}
 				
-				FP.world = new ResultWorld(client, connection, m.getInt(1), m.getInt(2), m.getUInt(3), m.getUInt(4));				
+				FP.world = new ResultWorld(client, connection, result, m.getInt(1), m.getInt(2), m.getUInt(3), m.getUInt(4));
 			});
 			
 			connection.addMessageHandler(Messages.GAME_CELL_ADD, function(m:Message, i:int, x:int, y:int, w:int, h:int, mine:Boolean):void {				

@@ -313,6 +313,11 @@ package com.behindcurtain3
 							}
 						}
 					}
+					else
+					{
+						objectSelected = null;
+						buildMenu.visible = false;
+					}
 
 					dragStart = null;
 					dragEnd = null;
@@ -625,7 +630,6 @@ package com.behindcurtain3
 				switch(type)
 				{
 					case "Pulse":
-						trace(m.toString());
 						add(new PulseProjectile(id, x, y, v));
 						break;
 					default:

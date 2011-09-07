@@ -63,6 +63,7 @@ package com.behindcurtain3
 			add(username);
 			add(password);
 			add(new PunkButton(uiX, uiY + spacer * 5, width, 50, "Play Now", onPlayNow, Key.ENTER));
+			add(new PunkButton(uiX, uiY + spacer * 5 + 75, width, 50, "Test Game", onPlayTest));
 			
 			// Register
 			uiX = 450;
@@ -134,6 +135,19 @@ package com.behindcurtain3
 				Assets.GAME_ID,
 				username.text, 
 				password.text, 
+				onLoginSuccess,
+				onLoginError
+			);
+		}
+		
+		public function onPlayTest():void
+		{			
+			//Login for a user with QuickConnect for Simple Users
+			PlayerIO.quickConnect.simpleConnect(
+				FP.stage, 
+				Assets.GAME_ID,
+				"Admin", 
+				"password", 
 				onLoginSuccess,
 				onLoginError
 			);

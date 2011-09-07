@@ -4,6 +4,7 @@ package com.behindcurtain3
 	import flash.events.TextEvent;
 	import flash.geom.Point;
 	import flash.text.Font;
+	import flash.text.TextSnapshot;
 	import net.flashpunk.Entity;
 	import net.flashpunk.FP;
 	import net.flashpunk.graphics.Image;
@@ -46,6 +47,7 @@ package com.behindcurtain3
 		protected var blackWaveQueue:BlackWaveQueue;
 		protected var buildMenu:BuildMenu;
 		protected var buildInstructions:Text;
+		protected var countdownText:Text;
 		
 		private var consoleDisplayTime:Number = 5;
 		
@@ -120,6 +122,14 @@ package com.behindcurtain3
 			buildInstructions.size = 18;
 			
 			addGraphic(buildInstructions, 2);
+			
+			var str:String = "Go!";
+			countdownText = new Text(str, (FP.screen.width / 2) - (str.length / 2 * 48), (FP.screen.height / 2) - 48, 250, 250);
+			countdownText.font = "Domo";
+			countdownText.size = 96;
+			countdownText.visible = false;
+			addGraphic(countdownText, 2);
+			
 			connect();
 			
 			Input.define("Chat", Key.T);
@@ -425,7 +435,7 @@ package com.behindcurtain3
 				}
 				
 			});
-			
+			/*
 			connection.addMessageHandler(Messages.GAME_COUNTDOWN, function(m:Message, i:Number):void {
 				i = Math.ceil(i / 1000);
 				if (i != gameCountdown)
@@ -434,11 +444,16 @@ package com.behindcurtain3
 					gameCountdown = i;
 				}
 			});
+			*/
 			
 			connection.addMessageHandler(Messages.GAME_ACTIVATE, activateGame); 
 			
 			connection.addMessageHandler(Messages.GAME_START, function(m:Message):void {
-				addToChat("Game started!");				
+				countdownText.visible = true;
+				
+				var alphaTween:VarTween = new VarTween();
+				alphaTween.tween(countdownText, "alpha", 0, 2);
+				addTween(alphaTween, true);
 			});
 			
 			connection.addMessageHandler(Messages.GAME_FINISHED, function(m:Message):void {

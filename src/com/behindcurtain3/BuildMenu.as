@@ -35,7 +35,7 @@ package com.behindcurtain3
 			towerGfx.x = radius - (towerGfx.width / 2);
 			towerGfx.y = radius - (towerGfx.height / 2);
 			
-			graphic = new Graphiclist(backgroundGfx, compassGfx, towerGfx);
+			graphic = new Graphiclist(backgroundGfx, towerGfx);
 			layer = 4;
 			visible = false;
 		}
@@ -83,9 +83,9 @@ package com.behindcurtain3
 				rightUpgradeGfx.y = radius - (rightUpgradeGfx.height / 2);
 			}
 			if(leftUpgradeGfx != null && rightUpgradeGfx != null)
-				graphic = new Graphiclist(backgroundGfx, compassGfx, towerGfx, leftUpgradeGfx, rightUpgradeGfx);
+				graphic = new Graphiclist(backgroundGfx, towerGfx, leftUpgradeGfx, rightUpgradeGfx);
 			else
-				graphic = new Graphiclist(backgroundGfx, compassGfx, towerGfx);
+				graphic = new Graphiclist(backgroundGfx, towerGfx);
 				
 			this.visible = true;
 		}

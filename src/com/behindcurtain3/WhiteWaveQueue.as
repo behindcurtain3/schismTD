@@ -11,84 +11,15 @@ package com.behindcurtain3
 	 * ...
 	 * @author Justin Brown
 	 */
-	public class WhiteWaveQueue extends Entity 
+	public class WhiteWaveQueue extends WaveQueue
 	{
-		private var counter:int = 1;
-		
-		private var waves:Array = new Array();
-		private var activeWave:Wave = null;
-		private var fadeTimer:Number;
-		private var fading:Boolean = false;
-		
 		public function WhiteWaveQueue() 
 		{
 			super();
 			
 			x = 5;
 			y = 30;
-			
-			width = 168;
-			height = 160;
-			
-			layer = 5;
-		}
-		
-		override public function update():void 
-		{			
-			super.update();
-		}
-		
-		public function addWave(id:String, types:Array):void
-		{
-			var w:Wave = new Wave(x, y + counter * 30, id, types);
-			
-			if (this.world != null)
-			{
-				this.world.add(w);
-				waves.push(w);
-				w.fadeIn();
-			}
-			
-			if(counter < 3)
-				counter++;
-		}
-		
-		public function activateWave(id:String, time:Number):void
-		{
-			if (activeWave != null)
-			{
-				if (this.world != null)
-					this.world.remove(activeWave);
-			}
-			
-			var counter:int = 0;
-			for each(var w:Wave in waves)
-			{
-				if (w.Id == id)
-				{					
-					for (var i:int = 0; i < waves.length; i++)
-					{
-						if (w.Id == waves[i].Id || waves[i].y < w.y)
-							continue;
-							
-						waves[i].moveUp();						
-					}
-					
-					activeWave = w;
-					activeWave.moveToActive(this.y, time);
-					waves.splice(counter, 1);
-					return;
-				}
-				counter++;
-			}
-		}
-		
-		public function getWaveIdAt(i:int):String 
-		{
-			if (i < 0 || i >= waves.length)
-				return "";
-				
-			return waves[i].Id;
+
 		}
 		
 	}

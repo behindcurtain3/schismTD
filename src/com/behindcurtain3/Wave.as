@@ -23,7 +23,7 @@ package com.behindcurtain3
 		
 		public var selection:Image;
 		
-		public function Wave(x:int, y:int, id:String, types:Array, rightJustified:Boolean = false) 
+		public function Wave(x:int, y:int, id:String, types:Array, imgScale:Number, rightJustified:Boolean = false) 
 		{
 			Id = id;
 			this.x = x;
@@ -57,7 +57,7 @@ package com.behindcurtain3
 						img = new Image(Assets.GFX_ICONS_SWARM);
 						break;
 				}				
-				img.scale = 0.75;
+				img.scale = imgScale;
 				if (rightJustified)
 					img.x = (gfxList.count + 1) * -img.scaledWidth;
 				else
@@ -68,19 +68,6 @@ package com.behindcurtain3
 			}
 			
 			graphic = gfxList;
-		}
-		
-		override public function update():void 
-		{
-			if (targetY != y)
-			{
-				if(Math.abs(targetY - y) > 60 * FP.elapsed)
-					moveTowards(x, targetY, 60 * FP.elapsed);
-				else
-					moveTo(x, targetY);
-			}
-			
-			super.update();
 		}
 		
 		public function fadeOut(time:Number = 0.25, followOnFunction:Function = null):void
@@ -117,33 +104,10 @@ package com.behindcurtain3
 			}
 		}
 		
-		public function moveUp():void
+		public function destroy():void
 		{
-			targetY -= 30;
-		}
-		
-		public function moveDown():void
-		{
-			targetY += 30;
-		}
-		
-		public function moveToActive(y:Number, time:Number):void
-		{
-			waveTimer = time / 1000;
-			fadeOut(0.25, fadeOutComplete);
-			moveToY = y;
-		}
-		
-		public function fadeOutComplete():void
-		{
-			y = moveToY;
-			targetY = y;
-			fadeIn(0.5, fadeInComplete);
-		}
-		
-		public function fadeInComplete():void
-		{
-			fadeOut(waveTimer);
+			if (world != null)
+				world.remove(this);			
 		}
 		
 	}

@@ -326,19 +326,19 @@ package com.behindcurtain3
 				if (Input.released("Wave1"))
 				{
 					if (color == "black")
-						connection.send(Messages.GAME_WAVE_NEXT, blackWaveQueue.getWaveIdAt(0));
+						connection.send(Messages.GAME_WAVE_NEXT, blackWaveQueue.oneWave.Id);
 					else
-						connection.send(Messages.GAME_WAVE_NEXT, whiteWaveQueue.getWaveIdAt(0));
+						connection.send(Messages.GAME_WAVE_NEXT, whiteWaveQueue.oneWave.Id);
 				}
 
 				if (Input.released("Wave2"))
 				{
 					if (color == "black")
-						connection.send(Messages.GAME_WAVE_NEXT, blackWaveQueue.getWaveIdAt(1));
+						connection.send(Messages.GAME_WAVE_NEXT, blackWaveQueue.twoWave.Id);
 					else
-						connection.send(Messages.GAME_WAVE_NEXT, whiteWaveQueue.getWaveIdAt(1));
+						connection.send(Messages.GAME_WAVE_NEXT, whiteWaveQueue.twoWave.Id);
 				}
-				
+				/*
 				if (Input.released("Wave3"))
 				{
 					if (color == "black")
@@ -346,6 +346,7 @@ package com.behindcurtain3
 					else
 						connection.send(Messages.GAME_WAVE_NEXT, whiteWaveQueue.getWaveIdAt(2));
 				}
+				*/
 			}
 			
 			if (Input.pressed(Key.ESCAPE))
@@ -739,13 +740,20 @@ package com.behindcurtain3
 		
 		private function activateWave(m:Message):void
 		{
+			var types:Array = new Array();
+			
+			for (var i:int = 4; i < m.length; i++)
+			{
+				types.push(m.getString(i));				
+			}
+			
 			if (m.getInt(0) == whiteId)
 			{
-				whiteWaveQueue.activateWave(m.getString(1), m.getNumber(2));
+				whiteWaveQueue.setActiveWave(m.getString(1), types);
 			}
 			else if (m.getInt(0) == blackId)
 			{
-				blackWaveQueue.activateWave(m.getString(1), m.getNumber(2));
+				blackWaveQueue.setActiveWave(m.getString(1), types);
 			}
 		}
 		
@@ -753,18 +761,18 @@ package com.behindcurtain3
 		{
 			var types:Array = new Array();
 			
-			for (var i:int = 2; i < m.length; i++)
+			for (var i:int = 3; i < m.length; i++)
 			{
 				types.push(m.getString(i));				
 			}
 			
 			if (m.getInt(0) == whiteId)
 			{
-				whiteWaveQueue.addWave(m.getString(1), types);
+				whiteWaveQueue.addWave(m.getString(1), m.getInt(2), types);
 			}
 			else if (m.getInt(0) == blackId)
 			{
-				blackWaveQueue.addWave(m.getString(1), types);
+				blackWaveQueue.addWave(m.getString(1), m.getInt(2), types);
 			}
 		}
 		

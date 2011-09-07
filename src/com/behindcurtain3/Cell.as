@@ -16,6 +16,8 @@ package com.behindcurtain3
 		private var index:int;
 		private var isPlayers:Boolean = false;
 		public var hasTower:Boolean = false;
+		public var towerImage:Image;
+		public var towerAsset:Class;
 		
 		private var setupIndicatorTimer:Number;
 		private var setupIndicatorLength:Number;
@@ -44,6 +46,8 @@ package com.behindcurtain3
 			setupImage.x = -1;
 			setupImage.y = -1;
 			graphic = setupImage;
+			
+			towerImage = new Image(Assets.GFX_TOWER_BASIC);
 		}
 		
 		override public function update():void 
@@ -77,7 +81,9 @@ package com.behindcurtain3
 		
 		public function assignGfx(asset:Class):void
 		{			
-			graphic = new Image(asset);
+			towerImage = new Image(asset);
+			towerAsset = asset;
+			graphic = towerImage;
 			hasTower = true;
 		}
 		

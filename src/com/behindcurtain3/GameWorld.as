@@ -3,6 +3,7 @@ package com.behindcurtain3
 	import flash.display.ActionScriptVersion;
 	import flash.events.TextEvent;
 	import flash.geom.Point;
+	import flash.text.Font;
 	import net.flashpunk.Entity;
 	import net.flashpunk.FP;
 	import net.flashpunk.graphics.Image;
@@ -36,7 +37,6 @@ package com.behindcurtain3
 		
 		
 		// UI
-		protected var chatbox:PunkTextField;
 		private var console:Array = new Array();
 		protected var whiteHealthUI:Text;
 		protected var whiteManaUI:Text;
@@ -44,6 +44,8 @@ package com.behindcurtain3
 		protected var blackManaUI:Text;
 		protected var whiteWaveQueue:WhiteWaveQueue;
 		protected var blackWaveQueue:BlackWaveQueue;
+		protected var buildMenu:BuildMenu;
+		protected var buildInstructions:Text;
 		
 		private var consoleDisplayTime:Number = 5;
 		
@@ -51,7 +53,6 @@ package com.behindcurtain3
 		protected var titleLeft:Image;
 		protected var titleRight:Image;
 		protected var board:Image;
-		protected var compass:Image;
 		
 		// Sfx
 		protected var sfx_invalid:Sfx = new Sfx(Assets.SFX_INVALID);
@@ -105,22 +106,21 @@ package com.behindcurtain3
 			board.alpha = 0;
 			addGraphic(board, 100, 0, 0);
 			addGraphic(new Image(Assets.GFX_BOARD_OVERLAY), 5);
-			
-			compass = new Image(Assets.GFX_COMPASS);
-			addGraphic(compass, 2, 0, FP.screen.height - compass.height);
-			
-			chatbox = new PunkTextField("", 10, FP.screen.height - 30, 200);
-			chatbox.visible = false;
-			add(chatbox);
-			
+						
 			whiteWaveQueue = new WhiteWaveQueue();
 			add(whiteWaveQueue);
 			blackWaveQueue = new BlackWaveQueue();
 			add(blackWaveQueue);
 			
-			addToChat("Connecting...");
+			buildMenu = new BuildMenu();
+			add(buildMenu);
 			
-			connect();			
+			buildInstructions = new Text("Press W to build", 5, FP.screen.height - 25);
+			buildInstructions.font = "Domo";
+			buildInstructions.size = 18;
+			
+			addGraphic(buildInstructions, 2);
+			connect();
 			
 			Input.define("Chat", Key.T);
 			Input.define("Send", Key.ENTER);
@@ -137,8 +137,6 @@ package com.behindcurtain3
 		
 		public function connect():void
 		{
-			//var userSettings:Object = {name:gameSettings.name};
-			
 			client.multiplayer.createJoinRoom(
 				gameId,								//Room id. If set to null a random roomid is used
 				"schismTD",							//The game type started on the server
@@ -164,23 +162,19 @@ package com.behindcurtain3
 		
 		override public function update():void
 		{
-			if (chatbox.visible)
+			if (buildInstructions.visible)
 			{
-				if (Input.pressed("Send"))
+				if (buildInstructions.alpha == 0)
 				{
-					if (chatbox.text != "")
-					{
-						connection.send(Messages.CHAT, chatbox.text);
-						chatbox.text = "";
-					}
-					chatbox.visible = false;
+					var alphaTween:VarTween = new VarTween();
+					alphaTween.tween(buildInstructions, "alpha", 1, 0.5);
+					addTween(alphaTween, true);
 				}
-			}
-			else
-			{
-				if (Input.pressed("Chat"))
+				else if (buildInstructions.alpha == 1)
 				{
-					chatbox.visible = true;
+					var alphaTween:VarTween = new VarTween();
+					alphaTween.tween(buildInstructions, "alpha", 0, 0.5);
+					addTween(alphaTween, true);
 				}
 			}
 
@@ -205,6 +199,8 @@ package com.behindcurtain3
 						{
 							buildMode = BuildMode.TOWER;
 							objectSelected = null;
+							buildMenu.visible = false;
+							buildInstructions.visible = false;
 						}
 						
 						// Update if glow is visible
@@ -306,12 +302,14 @@ package com.behindcurtain3
 						if (!cell.hasTower)
 						{
 							objectSelected = null;
+							buildMenu.visible = false;
 						}
 						else
 						{
 							if (cell.isOurs())
 							{
 								objectSelected = cell;
+								buildMenu.displayAt(cell);
 							}
 						}
 					}
@@ -367,9 +365,7 @@ package com.behindcurtain3
 		{
 			connection = c;
 			
-			// Setup UI
-			chatbox.visible = false;
-			
+			// Setup UI			
 			whiteHealthUI = new Text("Life:", 5, 5, 100, 25);
 			whiteHealthUI.visible = false;
 			whiteHealthUI.font = "Domo";
@@ -421,8 +417,6 @@ package com.behindcurtain3
 					whiteId = m.getInt(1);
 					blackId = m.getInt(2);
 				}
-				
-				trace(color + " --- " + blackId + " --- " + whiteId);
 				
 			});
 			
@@ -513,6 +507,11 @@ package com.behindcurtain3
 								break;
 						}
 						
+						if (tc == objectSelected)
+						{
+							buildMenu.displayAt(tc);
+						}
+						
 					}
 				}
 			});
@@ -523,7 +522,10 @@ package com.behindcurtain3
 					if (tc.getIndex() == index)
 					{
 						if (objectSelected == tc)
+						{
 							objectSelected = null;
+							buildMenu.visible = false;
+						}
 						tc.graphic = null;
 						tc.hasTower = false;
 					}
@@ -824,6 +826,9 @@ package com.behindcurtain3
 			var t:Text = new Text(s, 10, FP.screen.height - 60, FP.screen.width - 20, 20);
 			if (titleLeft.x == 0)
 				t.visible = false;
+				
+			t.font = "Domo";
+			t.size = 14;
 				
 			var vt:VarTween = new VarTween();
 			vt.tween(t, "alpha", 0, time, Ease.quadIn);

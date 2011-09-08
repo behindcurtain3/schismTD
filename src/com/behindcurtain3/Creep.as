@@ -32,6 +32,7 @@ package com.behindcurtain3
 		
 		public function Creep(s:String, pId:int, _x:int, _y:int, sp:int, _path:Array) 
 		{
+			super();
 			ID = s;		
 			player = pId;
 			Speed = sp;

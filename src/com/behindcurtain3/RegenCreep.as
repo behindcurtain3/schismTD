@@ -15,11 +15,12 @@ package com.behindcurtain3
 			doFacing = true;
 			collidable = true;
 			
-			x = _x - 12;
-			y = _y - 19 ;
+			x = _x;
+			y = _y;
 			width = 24;
 			height = 38;
 			setHitbox(width, height);
+			centerOrigin();
 
 			spriteMap = new Spritemap(Assets.GFX_CREEP_REGEN, width, height);
 			spriteMap.centerOrigin();

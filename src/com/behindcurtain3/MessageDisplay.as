@@ -84,7 +84,7 @@ package com.behindcurtain3
 		
 		override public function render():void 
 		{
-			Draw.rectPlus(this.x, this.y, width, height, 0x000000, backgroundAlpha, true, 1, 15);
+			Draw.rectPlus(this.x, this.y, width, height, 0x110011, backgroundAlpha, true, 1, 15);
 			
 			super.render();
 		}

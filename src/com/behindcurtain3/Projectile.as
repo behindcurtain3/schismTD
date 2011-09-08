@@ -28,6 +28,7 @@ package com.behindcurtain3
 			id = _id;
 			x = _x;
 			y = _y;
+			
 			switch(_type)
 			{
 				case "Basic":
@@ -47,12 +48,14 @@ package com.behindcurtain3
 					break;
 			}
 			img.centerOrigin();
-			//img.x = -img.width / 2;
-			//img.y = -img.height / 2;
+			
+			width = img.width;
+			height = img.height;
+			centerOrigin();
 			
 			graphic = img;
 			layer = 2;
-			setHitbox(img.width, img.height);
+			setHitbox(width, height);
 			type = "bullet"
 			
 			speed = _v;
@@ -61,10 +64,10 @@ package com.behindcurtain3
 		
 		override public function update():void
 		{
+			img.angle = FP.angle(centerX, centerY, target.centerX, target.centerY) - 90;
+			
 			var velocity:Number = speed * FP.elapsed;			
 			moveTowards(target.centerX, target.centerY, velocity);
-			
-			img.angle = FP.angle(centerX, centerY, target.centerX, target.centerY) - 90;
 			
 			if (collideRect(x, y, target.x, target.y, target.width, target.height))
 			{

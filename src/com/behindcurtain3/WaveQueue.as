@@ -52,6 +52,13 @@ package com.behindcurtain3
 					zeroWave = new Wave(zeroPosition.x, zeroPosition.y, id, types, 1.0, rightOriented);
 					world.add(zeroWave);
 					zeroWave.fadeIn();
+					
+					if(oneWave != null)
+						if (oneWave.Id == id)
+							oneWave.fadeOut(0.25, oneWave.destroy);
+					if(twoWave != null)
+						if (twoWave.Id == id)
+							twoWave.fadeOut(0.25, twoWave.destroy);
 					break;
 				case 1:
 					if(oneWave != null)
@@ -60,6 +67,13 @@ package com.behindcurtain3
 					oneWave = new Wave(onePosition.x, onePosition.y, id, types, 0.75, rightOriented);
 					world.add(oneWave);
 					oneWave.fadeIn();
+					
+					if(zeroWave != null)
+						if (zeroWave.Id == id)
+							zeroWave.fadeOut(0.25, zeroWave.destroy);
+					if(twoWave != null)
+						if (twoWave.Id == id)
+							twoWave.fadeOut(0.25, twoWave.destroy);
 					break;
 				case 2:
 					if(twoWave != null)
@@ -68,11 +82,18 @@ package com.behindcurtain3
 					twoWave = new Wave(twoPosition.x, twoPosition.y, id, types, 0.6, rightOriented);
 					world.add(twoWave);
 					twoWave.fadeIn();
+					
+					if(oneWave != null)
+						if (oneWave.Id == id)
+							oneWave.fadeOut(0.25, oneWave.destroy);
+					if(zeroWave != null)
+						if (zeroWave.Id == id)
+						zeroWave.fadeOut(0.25, zeroWave.destroy);
 					break;
 				default:
 					trace("Invalid wave position: " + position);
 					break;
-			}
+			}			
 		}
 		
 		public function setActiveWave(id:String, types:Array):void
@@ -87,6 +108,56 @@ package com.behindcurtain3
 			
 			world.add(activeWave);
 			activeWave.fadeIn();
+
+			if(zeroWave != null)
+				if (zeroWave.Id == id)
+					zeroWave.fadeOut(0.25, zeroWave.destroy);
+			if(oneWave != null)
+				if (oneWave.Id == id)
+					oneWave.fadeOut(0.25, oneWave.destroy);
+			if(twoWave != null)
+				if (twoWave.Id == id)
+					twoWave.fadeOut(0.25, twoWave.destroy);
+		}
+		
+		public function removeWave(id:String):void
+		{
+			if (world == null)
+				return;
+				
+			if (activeWave != null)
+			{
+				if (activeWave.Id == id)
+				{
+					activeWave.fadeOut(0.25, activeWave.destroy);
+					return;
+				}
+			}
+			if (zeroWave != null)
+			{
+				if (zeroWave.Id == id)
+				{
+					zeroWave.fadeOut(0.25, zeroWave.destroy);
+					return;
+				}
+			}
+			if (oneWave != null)
+			{
+				if (oneWave.Id == id)
+				{
+					oneWave.fadeOut(0.25, oneWave.destroy);
+					return;
+				}
+			}
+			if (twoWave != null)
+			{
+				if (twoWave.Id == id)
+				{
+					twoWave.fadeOut(0.25, twoWave.destroy);
+					return;
+				}
+			}
+			
 		}
 		
 	}

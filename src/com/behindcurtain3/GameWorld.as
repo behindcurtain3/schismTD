@@ -348,15 +348,6 @@ package com.behindcurtain3
 					else
 						connection.send(Messages.GAME_WAVE_NEXT, whiteWaveQueue.twoWave.Id);
 				}
-				/*
-				if (Input.released("Wave3"))
-				{
-					if (color == "black")
-						connection.send(Messages.GAME_WAVE_NEXT, blackWaveQueue.getWaveIdAt(2));
-					else
-						connection.send(Messages.GAME_WAVE_NEXT, whiteWaveQueue.getWaveIdAt(2));
-				}
-				*/
 			}
 			
 			if (Input.pressed(Key.ESCAPE))
@@ -435,16 +426,6 @@ package com.behindcurtain3
 				}
 				
 			});
-			/*
-			connection.addMessageHandler(Messages.GAME_COUNTDOWN, function(m:Message, i:Number):void {
-				i = Math.ceil(i / 1000);
-				if (i != gameCountdown)
-				{
-					addToChat("Starting in ... " + i, 1.5);
-					gameCountdown = i;
-				}
-			});
-			*/
 			
 			connection.addMessageHandler(Messages.GAME_ACTIVATE, activateGame); 
 			
@@ -655,17 +636,16 @@ package com.behindcurtain3
 							{
 								creep = cr;
 								break;
-							}					
+							}	
 						}
 						
 						if (creep != null)
 						{
-							add(new Projectile(id, x, y, v, creep));					
-						}	
+							add(new Projectile(id, x, y, v, creep, type));
+						}
 						break;
 				}
 				
-							
 			});
 			
 			connection.addMessageHandler(Messages.GAME_PROJECTILE_REMOVE, function(m:Message, id:String):void {				
@@ -698,6 +678,7 @@ package com.behindcurtain3
 			connection.addMessageHandler(Messages.GAME_CREEP_PATH, updateSinglePath);
 			connection.addMessageHandler(Messages.GAME_WAVE_ACTIVATE, activateWave);
 			connection.addMessageHandler(Messages.GAME_WAVE_QUEUE, queueWave);
+			connection.addMessageHandler(Messages.GAME_WAVE_REMOVE, removeWave);
 			
 			connection.addDisconnectHandler(function():void {
 				disconnect("Connection to server lost");
@@ -788,6 +769,18 @@ package com.behindcurtain3
 			else if (m.getInt(0) == blackId)
 			{
 				blackWaveQueue.addWave(m.getString(1), m.getInt(2), types);
+			}
+		}
+		
+		private function removeWave(m:Message):void
+		{
+			if (m.getInt(0) == whiteId)
+			{
+				whiteWaveQueue.removeWave(m.getString(1));
+			}
+			else if (m.getInt(0) == blackId)
+			{
+				blackWaveQueue.removeWave(m.getString(1));
 			}
 		}
 		

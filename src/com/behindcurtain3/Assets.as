@@ -16,7 +16,7 @@ package com.behindcurtain3
 		// Board
 		[Embed(source = '../../../assets/board/Board-back.png')] public static const GFX_BOARD:Class;
 		[Embed(source = '../../../assets/board/Board-front.png')] public static const GFX_BOARD_OVERLAY:Class;
-		[Embed(source = '../../../assets/board/Compasslite.png')] public static const GFX_COMPASS:Class;
+		[Embed(source = '../../../assets/board/Compass.png')] public static const GFX_COMPASS:Class;
 		
 		//Icons
 		[Embed(source = '../../../assets/board/creep icons/miniarmor.png')] public static const GFX_ICONS_ARMOR:Class;
@@ -44,6 +44,13 @@ package com.behindcurtain3
 		[Embed(source = '../../../assets/creeps/Magic.png')] public static const GFX_CREEP_MAGIC:Class;
 		[Embed(source = '../../../assets/creeps/Armor.png')] public static const GFX_CREEP_ARMOR:Class;
 		[Embed(source = '../../../assets/creeps/Swarm.png')] public static const GFX_CREEP_SWARM:Class;
+		
+		// Projectiles
+		[Embed(source = '../../../assets/towers/Bullets/basicbullet.png')] public static const GFX_BULLET_BASIC:Class;
+		[Embed(source = '../../../assets/towers/Bullets/rapidfirebullet.png')] public static const GFX_BULLET_RAPIDFIRE:Class;
+		[Embed(source = '../../../assets/towers/Bullets/sniperbullet.png')] public static const GFX_BULLET_SNIPER:Class;
+		[Embed(source = '../../../assets/towers/Bullets/slowbullet.png')] public static const GFX_BULLET_SLOW:Class;
+		[Embed(source = '../../../assets/towers/Bullets/spellbullet.png')] public static const GFX_BULLET_SPELL:Class;
 		
 		// Sounds
 		[Embed(source = '../../../assets/sfx/invalid.mp3')] public static const SFX_INVALID:Class;

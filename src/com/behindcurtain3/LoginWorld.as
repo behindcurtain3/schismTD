@@ -38,11 +38,11 @@ package com.behindcurtain3
 			addGraphic(titleText);
 			
 			//Set developmentsever (Comment out to connect to your server online)
-			//client.multiplayer.developmentServer = "192.168.0.169:8184";
+			client.multiplayer.developmentServer = "192.168.0.169:8184";
 			
 			//Create pr join the room test
 			client.multiplayer.createJoinRoom(
-				"match-maker3",							//Room id. If set to null a random roomid is used
+				"match-maker",							//Room id. If set to null a random roomid is used
 				"$service-room$",					//The game type started on the server
 				true,								//Should the room be visible in the lobby?
 				{},									//Room data. This data is returned to lobby list. Variabels can be modifed on the server

@@ -46,7 +46,7 @@ package com.behindcurtain3
 		protected var whiteWaveQueue:WhiteWaveQueue;
 		protected var blackWaveQueue:BlackWaveQueue;
 		protected var buildMenu:BuildMenu;
-		protected var buildInstructions:Text;
+		protected var buildInstructions:MessageDisplay;
 		protected var countdownText:Text;
 		
 		private var consoleDisplayTime:Number = 5;
@@ -117,11 +117,13 @@ package com.behindcurtain3
 			buildMenu = new BuildMenu();
 			add(buildMenu);
 			
+			/*
 			buildInstructions = new Text("Press W to build", 5, FP.screen.height - 25);
 			buildInstructions.font = "Domo";
 			buildInstructions.size = 18;
 			
 			addGraphic(buildInstructions, 2);
+			*/
 			
 			var str:String = "Go!";
 			countdownText = new Text(str, (FP.screen.width / 2) - (str.length / 2 * 48), (FP.screen.height / 2) - 48, 250, 250);
@@ -172,6 +174,7 @@ package com.behindcurtain3
 		
 		override public function update():void
 		{
+			/*
 			if (buildInstructions.visible)
 			{
 				if (buildInstructions.alpha == 0)
@@ -187,6 +190,7 @@ package com.behindcurtain3
 					addTween(alphaTween, true);
 				}
 			}
+			*/
 
 			// Update UI
 			if (connection != null)
@@ -431,11 +435,15 @@ package com.behindcurtain3
 			connection.addMessageHandler(Messages.GAME_ACTIVATE, activateGame); 
 			
 			connection.addMessageHandler(Messages.GAME_START, function(m:Message):void {
+				var go:MessageDisplay = new MessageDisplay("Go!", 2, 96, FP.screen.width / 2, FP.screen.height / 2, 250);
+				add(go);
+				/*
 				countdownText.visible = true;
 				
 				var alphaTween:VarTween = new VarTween();
 				alphaTween.tween(countdownText, "alpha", 0, 2);
 				addTween(alphaTween, true);
+				*/
 			});
 			
 			connection.addMessageHandler(Messages.GAME_FINISHED, function(m:Message):void {
@@ -798,6 +806,9 @@ package com.behindcurtain3
 			add(glow);
 			
 			fadeInText();
+			
+			buildInstructions = new MessageDisplay("Press W to build", 5);
+			add(buildInstructions);
 		};
 		
 		private function fadeInText():void

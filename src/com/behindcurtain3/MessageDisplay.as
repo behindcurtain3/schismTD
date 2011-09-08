@@ -17,27 +17,32 @@ package com.behindcurtain3
 		private var displayTime:Number;
 		private var backgroundAlpha:Number;
 		
-		public function MessageDisplay(msg:String, time:Number, x:int = 0, y:int = 0) 
+		public function MessageDisplay(msg:String, time:Number, fontSize:int = 18, x:int = 0, y:int = 0, w:int = 400, h:int = 50) 
 		{
 			layer = 1;
 			displayTime = time;
 			timeDisplayed = 0;
 			
+			var alignCenter:Boolean = false;
+			
 			if (x != 0)
+			{
 				this.x = x;
+				alignCenter = true;
+			}
 			else
 				this.x = 200;
 			if (y != 0)
 				this.y = y;
 			else
 				this.y = 500;
-				
-			height = 50;
-			width = 400;
+					
+			height = h;
+			width = w;
 
 			message = new Text(msg);
 			message.font = "Domo";
-			message.size = 18;
+			message.size = fontSize;
 			message.color = 0xFFFFFF;
 			
 			var edited:Boolean = false;
@@ -56,6 +61,15 @@ package com.behindcurtain3
 			{
 				width =  message.textWidth + 30;
 				this.x = (FP.screen.width - width) / 2;
+			}
+			
+			if (message.textHeight + 10 > height)
+				height = message.textHeight + 10;
+				
+			if (alignCenter)
+			{
+				this.x = this.x - width / 2;
+				this.y = this.y - height / 2;
 			}
 			
 			message.width = this.width;
@@ -84,7 +98,7 @@ package com.behindcurtain3
 		
 		override public function render():void 
 		{
-			Draw.rectPlus(this.x, this.y, width, height, 0x110011, backgroundAlpha, true, 1, 15);
+			Draw.rectPlus(this.x, this.y, width, height, 0x000000, backgroundAlpha, true, 1, 15);
 			
 			super.render();
 		}
@@ -99,8 +113,8 @@ package com.behindcurtain3
 			}
 			
 			backgroundAlpha = message.alpha;
-			if (backgroundAlpha > 0.7)
-				backgroundAlpha = 0.7;
+			if (backgroundAlpha > 0.75)
+				backgroundAlpha = 0.75;
 			
 			super.update();
 		}

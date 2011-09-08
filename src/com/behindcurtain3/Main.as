@@ -5,6 +5,7 @@ package com.behindcurtain3
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.utils.Key;
 	import net.flashpunk.World;
+	import playerio.PlayerIO;
 	
 	/**
 	 * ...
@@ -25,6 +26,7 @@ package com.behindcurtain3
 			
 			if (checkDomain(["www.schismtd.com", "schismtd.com", "schismtd.heroku.com"]))
 			{
+				PlayerIO.showLogo(FP.stage, "BC");
 				world = new LoginWorld();
 			}
 			else 

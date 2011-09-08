@@ -23,15 +23,16 @@ package com.behindcurtain3
 		{
 			super.init();
 			
-			if (checkDomain("localhost"))
+			if (checkDomain(["www.schismtd.com", "schismtd.com", "schismtd.heroku.com"]))
 			{
 				world = new LoginWorld();
-				FP.world = world;
 			}
 			else 
 			{
-				trace("Game is sitelocked, the current site is not on the whitelist.");
+				world = new SiteLockWorld();
+				
 			}
+			FP.world = world;
 		}
 		
 		override public function update():void

@@ -19,7 +19,15 @@ package com.behindcurtain3
 		private var mConnection:Connection;
 		private var mSettings:GameSettings;
 		
-		public function ResultWorld(client:Client, connection:Connection, resultStr:String, blackLife:int, whiteLife:int, blackDamage:uint, whiteDamage:uint)
+		private var result:Text;
+		private var black:Text;
+		private var blackLife:Text;
+		private var blackDamage:Text;
+		private var white:Text; 
+		private var whiteLife:Text;
+		private var whiteDamage:Text;
+		
+		public function ResultWorld(client:Client, connection:Connection, resultStr:String, blackLifeNum:int, whiteLifeNum:int, blackDamageNum:uint, whiteDamageNum:uint)
 		{
 			mClient = client;
 			mConnection = connection;
@@ -27,30 +35,66 @@ package com.behindcurtain3
 			add(new PunkButton(FP.screen.width / 2 - 250, FP.screen.height / 2 + 100, 200, 100, "Play Again", onPlayAgain)); 
 			add(new PunkButton(FP.screen.width / 2 + 50, FP.screen.height / 2 + 100, 200, 100, "Exit", onExit));
 			
-			var fontSize:int = 10;
-			var result:String = resultStr;			
-			
-			addGraphic(new Text(result, FP.screen.width / 2 - (result.length / 2 * fontSize), 100));
+			result = new Text(resultStr, 0, 100);
+			result.font = "Domo";
+			result.size = 48;
+			result.width = FP.screen.width;
+			result.height = 100;
+			result.align = "center";
+			if (result.text.indexOf("Black") != -1)
+				result.color = 0x000000;
+
+			addGraphic(result);
 			
 			var centerx:int = 550;
-			var str:String = "Black";
-			addGraphic(new Text(str, centerx - (str.length / 2 * fontSize), 175));			
-
-			str = "Life: " + blackLife;
-			addGraphic(new Text(str, centerx - (str.length / 2 * fontSize), 225));
 			
-			str = "Damage: " + blackDamage;
-			addGraphic(new Text(str, centerx - (str.length / 2 * fontSize), 255));
+			black = new Text("Black", FP.screen.width / 2 - 100, 175);
+			black.font = "Domo";
+			black.size = 24;
+			black.width = 500;
+			black.align = "center";
+			black.color = 0x000000;
+			addGraphic(black);
+			
+			blackLife = new Text("Life: " + blackLifeNum, FP.screen.width / 2 - 100, 225);
+			blackLife.font = "Domo";
+			blackLife.size = 18;
+			blackLife.width = black.width;
+			blackLife.align = "center";
+			blackLife.color = 0x000000;
+			addGraphic(blackLife);
+			
+			blackDamage = new Text("Damage: " + blackDamageNum, FP.screen.width / 2 - 100, 255);
+			blackDamage.font = "Domo";
+			blackDamage.size = 18;
+			blackDamage.width = black.width;
+			blackDamage.align = "center";
+			blackDamage.color = 0x000000;
+			addGraphic(blackDamage);
 			
 			centerx = 250;
-			str = "White";
-			addGraphic(new Text(str, centerx - (str.length / 2 * fontSize), 175));	
 			
-			str = "Life: " + whiteLife;
-			addGraphic(new Text(str, centerx - (str.length / 2 * fontSize), 225));
+			white = new Text("White", 0, 175);
+			white.font = "Domo";
+			white.size = 24;
+			white.width = 500;
+			white.align = "center";
+			addGraphic(white);
 			
-			str = "Damage: " + whiteDamage;
-			addGraphic(new Text(str, centerx - (str.length / 2 * fontSize), 255));			
+			whiteLife = new Text("Life: " + whiteLifeNum, 0, 225);
+			whiteLife.font = "Domo";
+			whiteLife.size = 18;
+			whiteLife.width = white.width;
+			whiteLife.align = "center";
+			addGraphic(whiteLife);
+			
+			whiteDamage = new Text("Damage: " + whiteDamageNum, 0, 255);
+			whiteDamage.font = "Domo";
+			whiteDamage.size = 18;
+			whiteDamage.width = white.width;
+			whiteDamage.align = "center";
+			addGraphic(whiteDamage);
+
 		}
 		
 		override public function end():void 

@@ -30,10 +30,14 @@ package com.behindcurtain3
 			type = "bullet";
 			layer = 21;
 			
-			image = Image.createCircle(radius, 0x333333);
-			image.alpha = 0.6;
-			image.x = -radius;
-			image.y = -radius;
+			width = radius * 2;
+			height = radius * 2;
+			centerOrigin();
+		
+			image = new Image(Assets.GFX_BULLET_PULSE);
+			image.centerOrigin();
+			image.scaleX = width / image.width;
+			image.scaleY = height / image.height;
 			graphic = image;
 		}
 		
@@ -41,11 +45,11 @@ package com.behindcurtain3
 		{
 			radius += FP.elapsed * velocity;
 			
-			image = Image.createCircle(radius, 0x333333);
-			image.alpha = 0.6;
-			image.x = -radius;
-			image.y = -radius;
-			graphic = image;
+			width = radius * 2;
+			height = radius * 2;
+			
+			image.scaleX = width / image.width;
+			image.scaleY = height / image.height;
 			
 			if (radius > range)
 			{

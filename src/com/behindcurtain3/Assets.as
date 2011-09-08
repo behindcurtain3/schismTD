@@ -51,6 +51,7 @@ package com.behindcurtain3
 		[Embed(source = '../../../assets/towers/Bullets/sniperbullet.png')] public static const GFX_BULLET_SNIPER:Class;
 		[Embed(source = '../../../assets/towers/Bullets/slowbullet.png')] public static const GFX_BULLET_SLOW:Class;
 		[Embed(source = '../../../assets/towers/Bullets/spellbullet.png')] public static const GFX_BULLET_SPELL:Class;
+		[Embed(source = '../../../assets/towers/pulsering.png')] public static const GFX_BULLET_PULSE:Class;
 		
 		// Sounds
 		[Embed(source = '../../../assets/sfx/invalid.mp3')] public static const SFX_INVALID:Class;

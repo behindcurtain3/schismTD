@@ -1,4 +1,7 @@
 /bin
 /obj
+
 *.db
+
 *.psd
+*.ai

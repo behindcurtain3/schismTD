@@ -222,7 +222,7 @@ package com.behindcurtain3
 						}
 						else
 						{
-							glow.visible = hoverCell.hasTower;
+							glow.visible = hoverCell.hasTower && hoverCell.isOurs();
 							glow.x = hoverCell.x - 1;
 							glow.y = hoverCell.y - 1;
 						}

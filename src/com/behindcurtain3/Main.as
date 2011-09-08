@@ -25,7 +25,7 @@ package com.behindcurtain3
 			
 			if (checkDomain("localhost"))
 			{
-				world = new MenuWorld();
+				world = new LoginWorld();
 				FP.world = world;
 			}
 			else 

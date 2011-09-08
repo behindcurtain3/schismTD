@@ -66,13 +66,13 @@ package com.behindcurtain3
 		
 		public function onPlayAgain():void
 		{
-			FP.world = new LoginWorld(this.mClient);
+			FP.world = new MatchFinderWorld(mClient);
 		}
 		
 		public function onExit():void
 		{
 			mConnection.disconnect();
-			FP.world = new MenuWorld();
+			FP.world = new LoginWorld();
 		}
 		
 	}

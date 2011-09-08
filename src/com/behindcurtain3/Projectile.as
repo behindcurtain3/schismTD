@@ -19,16 +19,43 @@ package com.behindcurtain3
 		private var speed:Number;
 		public var target:Creep;
 		public var id:String;
+		private var img:Image;
 		
-		public function Projectile(_id:String, _x:Number, _y:Number, _v:Number, _t:Creep) 
+		public function Projectile(_id:String, _x:Number, _y:Number, _v:Number, _t:Creep, _type:String) 
 		{
+			super();
+			
 			id = _id;
 			x = _x;
 			y = _y;
 			
-			graphic = new Image(new BitmapData(5, 5));
+			switch(_type)
+			{
+				case "Basic":
+					img = new Image(Assets.GFX_BULLET_BASIC);
+					break;
+				case "RapidFire":
+					img = new Image(Assets.GFX_BULLET_RAPIDFIRE);
+					break;
+				case "Sniper":
+					img = new Image(Assets.GFX_BULLET_SNIPER);
+					break;
+				case "Slow":
+					img = new Image(Assets.GFX_BULLET_SLOW);
+					break;
+				case "Spell":
+					img = new Image(Assets.GFX_BULLET_SPELL);
+					break;
+			}
+			img.centerOrigin();
+			
+			width = img.width;
+			height = img.height;
+			centerOrigin();
+			
+			graphic = img;
 			layer = 2;
-			setHitbox(5,5);
+			setHitbox(width, height);
 			type = "bullet"
 			
 			speed = _v;
@@ -37,6 +64,8 @@ package com.behindcurtain3
 		
 		override public function update():void
 		{
+			img.angle = FP.angle(centerX, centerY, target.centerX, target.centerY) - 90;
+			
 			var velocity:Number = speed * FP.elapsed;			
 			moveTowards(target.centerX, target.centerY, velocity);
 			

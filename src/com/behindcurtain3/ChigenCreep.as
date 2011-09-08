@@ -14,11 +14,12 @@ package com.behindcurtain3
 			
 			collidable = true;
 			
-			x = _x - 16;
-			y = _y - 18 ;
+			x = _x;
+			y = _y;
 			width = 32;
 			height = 36;
 			setHitbox(width, height);
+			centerOrigin();
 
 			spriteMap = new Spritemap(Assets.GFX_CREEP_CHIGEN, width, height);
 			spriteMap.centerOrigin();

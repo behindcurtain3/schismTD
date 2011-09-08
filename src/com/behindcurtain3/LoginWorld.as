@@ -5,6 +5,7 @@ package com.behindcurtain3
 	import flash.net.URLRequest;
 	import flash.events.Event;
 	import flash.system.Security;
+	import net.flashpunk.utils.Draw;
 	import playerio.Client;
 	import playerio.PlayerIO;
 	import playerio.PlayerIOError;
@@ -40,6 +41,9 @@ package com.behindcurtain3
 		protected var regUsername:PunkTextField;
 		protected var regPassword:PunkPasswordField;
 		protected var regEmail:PunkTextField;
+		
+		// Messages
+		protected var messageDisplay:MessageDisplay;
 
 		// Kongregate API reference
 		protected var kongregate:*;
@@ -84,13 +88,10 @@ package com.behindcurtain3
 			
 			if (error != "")
 			{
-				var eText:Text = new Text(error, 10, 10, FP.screen.width - 20, 20);
-				var eTween:VarTween = new VarTween();
-				eTween.tween(eText, "alpha", 0, 5, Ease.quadIn);
-				
-				addGraphic(eText);
-				addTween(eTween, true);
+				messageDisplay = new MessageDisplay(error, 5);
+				add(messageDisplay);
 			}
+			
 		}
 		
 		override public function begin():void 
@@ -160,7 +161,11 @@ package com.behindcurtain3
 		
 		private function onLoginError(e:PlayerIOError):void
 		{
-			trace(e.message);
+			if (messageDisplay != null)
+				remove(messageDisplay);
+				
+			messageDisplay = new MessageDisplay(e.message, 5);
+			add(messageDisplay);
 		}
 		
 		public function onRegister():void
@@ -188,10 +193,23 @@ package com.behindcurtain3
 		
 		private function onRegisterError(e:PlayerIORegistrationError):void
 		{
-			trace("Register error: " + e.message);
-			trace(e.emailError);
-			trace(e.passwordError);
-			trace(e.usernameError);
+			if (messageDisplay != null)
+				remove(messageDisplay);
+				
+			var msg:String;	
+				
+			if (e.usernameError != null)
+				msg = e.usernameError;
+			else if (e.passwordError != null)
+				msg = e.passwordError;
+			else if (e.emailError != null)
+				msg = e.emailError;
+			else
+				msg = e.message;
+			
+			messageDisplay = new MessageDisplay(msg, 5);
+			add(messageDisplay);
+
 		}
 		
 		public function kongLoadComplete(event:Event):void

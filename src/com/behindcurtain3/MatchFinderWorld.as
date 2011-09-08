@@ -83,14 +83,22 @@ package com.behindcurtain3
 		
 		private function handleConnectionError(error:PlayerIOError):void
 		{
-			trace(error.getStackTrace());
 			FP.world = new LoginWorld("Connection: " + error.message);
 		}
 		
 		private function handleClientError(error:PlayerIOError):void
-		{
-			trace(error.getStackTrace());
-			FP.world = new LoginWorld("Client: " + error.message);
+		{			
+			switch(error.type)
+			{
+				case PlayerIOError.NoServersAvailable:
+					FP.world = new LoginWorld("There are no game servers currently available.");
+					break;
+				default:
+					FP.world = new LoginWorld("Client Error: " + error.message);
+					break;
+			}
+			
+			
 		}
 		
 		

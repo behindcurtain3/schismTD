@@ -371,6 +371,7 @@ package com.behindcurtain3
 		private function handleNewGame(c:Connection):void
 		{
 			connection = c;
+			connection.addDisconnectHandler(handleDisconnect);
 			
 			// Setup UI			
 			whiteHealthUI = new Text("Life:", 5, 5, 100, 25);
@@ -679,10 +680,6 @@ package com.behindcurtain3
 			connection.addMessageHandler(Messages.GAME_WAVE_ACTIVATE, activateWave);
 			connection.addMessageHandler(Messages.GAME_WAVE_QUEUE, queueWave);
 			connection.addMessageHandler(Messages.GAME_WAVE_REMOVE, removeWave);
-			
-			connection.addDisconnectHandler(function():void {
-				disconnect("Connection to server lost");
-			});
 		}
 		
 		private function updatePaths(m:Message):void
@@ -835,10 +832,14 @@ package com.behindcurtain3
 			if (connectionAttempts < 3)
 				connect();
 			else
-			{
-				addToChat(error.message);		
-				disconnect(error.message);
+			{		
+				disconnect(error.errorID + ": " + error.message);
 			}
+		}
+		
+		private function handleDisconnect():void
+		{
+			FP.world = new LoginWorld("Connection to the server was lost, please try again.");
 		}
 		
 		public function addToChat(s:String, time:Number = 4):void

@@ -365,7 +365,7 @@ package com.behindcurtain3
 			if(connection != null)
 				connection.disconnect();
 				
-			FP.world = new MenuWorld(message);
+			FP.world = new LoginWorld(message);
 		}
 		
 		private function handleNewGame(c:Connection):void

@@ -28,6 +28,8 @@ package com.behindcurtain3
 			Id = id;
 			this.x = x;
 			this.y = y;
+			centerOrigin();
+			
 			targetY = y;
 			
 			layer = 4;
@@ -63,6 +65,7 @@ package com.behindcurtain3
 				else
 					img.x = gfxList.count * img.scaledWidth;
 				img.alpha = 0;
+				img.centerOrigin();
 				gfxList.add(img);
 				images.push(img);
 			}

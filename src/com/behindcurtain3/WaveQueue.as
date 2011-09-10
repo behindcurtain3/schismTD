@@ -30,12 +30,12 @@ package com.behindcurtain3
 			
 			layer = 5;
 			
-			var offset:int = 5;
-			zeroPosition = new Point(offset, 30);
-			onePosition = new Point(offset, 70);
-			twoPosition = new Point(offset, 110);
+			var offset:int = 40;
+			zeroPosition = new Point(offset, 25);
+			onePosition = new Point(offset, 55);
+			twoPosition = new Point(offset, 85);
 			
-			activePosition = new Point(585, 25);
+			activePosition = new Point(625, 75);
 		}
 		
 		public function addWave(id:String, position:int, types:Array):void
@@ -49,7 +49,7 @@ package com.behindcurtain3
 					if (zeroWave != null)
 						zeroWave.fadeOut(0.25, zeroWave.destroy);
 						
-					zeroWave = new Wave(zeroPosition.x, zeroPosition.y, id, types, 1.0, rightOriented);
+					zeroWave = new Wave(zeroPosition.x, zeroPosition.y, id, types, 0.75, rightOriented);
 					world.add(zeroWave);
 					zeroWave.fadeIn();
 					
@@ -79,7 +79,7 @@ package com.behindcurtain3
 					if(twoWave != null)
 						twoWave.fadeOut(0.25, twoWave.destroy);
 						
-					twoWave = new Wave(twoPosition.x, twoPosition.y, id, types, 0.6, rightOriented);
+					twoWave = new Wave(twoPosition.x, twoPosition.y, id, types, 0.75, rightOriented);
 					world.add(twoWave);
 					twoWave.fadeIn();
 					
@@ -104,7 +104,7 @@ package com.behindcurtain3
 			if (activeWave != null)
 				activeWave.fadeOut(0.25, activeWave.destroy);
 				
-			activeWave = new Wave(activePosition.x, activePosition.y, id, types, 0.75, rightOriented);
+			activeWave = new Wave(activePosition.x, activePosition.y, id, types, 1, rightOriented);
 			
 			world.add(activeWave);
 			activeWave.fadeIn();

@@ -27,9 +27,9 @@ package com.behindcurtain3
 			backgroundGfx = Image.createCircle(radius, 0x000000);
 			backgroundGfx.alpha = 0.75;
 			
-			compassGfx = new Image(Assets.GFX_COMPASS);
-			compassGfx.x = radius - (compassGfx.width / 2);
-			compassGfx.y = radius - (compassGfx.height / 2);
+			//compassGfx = new Image(Assets.GFX_COMPASS);
+			//compassGfx.x = radius - (compassGfx.width / 2);
+			//compassGfx.y = radius - (compassGfx.height / 2);
 			
 			towerGfx = new Image(Assets.GFX_TOWER_BASIC);
 			towerGfx.x = radius - (towerGfx.width / 2);

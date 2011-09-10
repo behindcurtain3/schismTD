@@ -16,7 +16,9 @@ package com.behindcurtain3
 		// Board
 		[Embed(source = '../../../assets/board/Board-back.png')] public static const GFX_BOARD:Class;
 		[Embed(source = '../../../assets/board/Board-front.png')] public static const GFX_BOARD_OVERLAY:Class;
-		[Embed(source = '../../../assets/board/Compass.png')] public static const GFX_COMPASS:Class;
+		[Embed(source = '../../../assets/board/playerwindow-white.png')] public static const GFX_BOARD_WHITE:Class;
+		[Embed(source = '../../../assets/board/playerwindow-black.png')] public static const GFX_BOARD_BLACK:Class;
+		
 		
 		//Icons
 		[Embed(source = '../../../assets/board/creep icons/miniarmor.png')] public static const GFX_ICONS_ARMOR:Class;

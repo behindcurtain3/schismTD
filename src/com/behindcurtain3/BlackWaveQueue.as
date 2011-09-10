@@ -18,15 +18,15 @@ package com.behindcurtain3
 		{
 			super();
 			
-			x = FP.screen.width - 5;
+			x = FP.screen.width - 15;
 			y = FP.screen.height - 70;
 			
 			var offset:int = x;
-			zeroPosition = new Point(offset, y);
-			onePosition = new Point(offset, y - 30);
-			twoPosition = new Point(offset, y - 60);
+			zeroPosition = new Point(offset, FP.screen.height - 85);
+			onePosition = new Point(offset, FP.screen.height - 55);
+			twoPosition = new Point(offset, FP.screen.height - 25);
 			
-			activePosition = new Point(210, FP.screen.height - 55);
+			activePosition = new Point(195, FP.screen.height - 75);
 			
 			rightOriented = true;
 		}

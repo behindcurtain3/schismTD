@@ -108,6 +108,9 @@ package com.behindcurtain3
 			board.alpha = 0;
 			addGraphic(board, 100, 0, 0);
 			addGraphic(new Image(Assets.GFX_BOARD_OVERLAY), 5);
+			
+			addGraphic(new Image(Assets.GFX_BOARD_WHITE), 5);
+			addGraphic(new Image(Assets.GFX_BOARD_BLACK), 5, FP.screen.width - 304, FP.screen.height - 160);
 						
 			whiteWaveQueue = new WhiteWaveQueue();
 			add(whiteWaveQueue);
@@ -195,10 +198,10 @@ package com.behindcurtain3
 			// Update UI
 			if (connection != null)
 			{
-				whiteHealthUI.text = "Health: " + whiteHealth;
-				whiteManaUI.text = "Chi: " + whiteMana;
-				blackHealthUI.text = "Health: " + blackHealth;
-				blackManaUI.text = "Chi: " + blackMana;
+				whiteHealthUI.text = whiteHealth.toString();
+				whiteManaUI.text = whiteMana.toString();
+				blackHealthUI.text = blackHealth.toString();
+				blackManaUI.text = blackMana.toString();
 			}
 				
 			if (gameActive)
@@ -378,27 +381,33 @@ package com.behindcurtain3
 			connection.addDisconnectHandler(handleDisconnect);
 			
 			// Setup UI			
-			whiteHealthUI = new Text("Life:", 5, 5, 100, 25);
+			whiteHealthUI = new Text("20", 180, 27);
 			whiteHealthUI.visible = false;
 			whiteHealthUI.font = "Domo";
-			whiteHealthUI.size = 18;
+			whiteHealthUI.size = 16;
+			whiteHealthUI.color = 0x000000;
 			
-			whiteManaUI = new Text("Mana:", 105, 5, 100, 25);
+			whiteManaUI = new Text("100", 180, 5);
 			whiteManaUI.visible = false;
 			whiteManaUI.font = "Domo";
-			whiteManaUI.size = 18;
+			whiteManaUI.size = 16;
+			whiteManaUI.color = 0x000000;
 			addGraphic(whiteHealthUI);
 			addGraphic(whiteManaUI);
 			
-			blackHealthUI = new Text("Life:", FP.screen.width - 200, FP.screen.height - 30, 100, 25);
+			blackHealthUI = new Text("20", FP.screen.width - 280, FP.screen.height - 44);
 			blackHealthUI.visible = false;
 			blackHealthUI.font = "Domo";
-			blackHealthUI.size = 18;
+			blackHealthUI.size = 16;
+			blackHealthUI.width = 100;
+			blackHealthUI.align = "right";
 			
-			blackManaUI = new Text("Mana:", FP.screen.width - 95, FP.screen.height - 30, 100, 25);
+			blackManaUI = new Text("100", FP.screen.width - 280, FP.screen.height - 22);
 			blackManaUI.visible = false;
 			blackManaUI.font = "Domo";
-			blackManaUI.size = 18;
+			blackManaUI.size = 16;
+			blackManaUI.width = 100;
+			blackManaUI.align = "right";
 			
 			addGraphic(blackHealthUI);
 			addGraphic(blackManaUI);
@@ -435,15 +444,7 @@ package com.behindcurtain3
 			connection.addMessageHandler(Messages.GAME_ACTIVATE, activateGame); 
 			
 			connection.addMessageHandler(Messages.GAME_START, function(m:Message):void {
-				var go:MessageDisplay = new MessageDisplay("Go!", 2, 96, FP.screen.width / 2, FP.screen.height / 2, 250);
-				add(go);
-				/*
-				countdownText.visible = true;
-				
-				var alphaTween:VarTween = new VarTween();
-				alphaTween.tween(countdownText, "alpha", 0, 2);
-				addTween(alphaTween, true);
-				*/
+				add(new MessageDisplay("Go!", 2, 96, FP.screen.width / 2, FP.screen.height / 2, 250));
 			});
 			
 			connection.addMessageHandler(Messages.GAME_FINISHED, function(m:Message):void {

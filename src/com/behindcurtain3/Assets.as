@@ -18,6 +18,8 @@ package com.behindcurtain3
 		[Embed(source = '../../../assets/board/Board-front.png')] public static const GFX_BOARD_OVERLAY:Class;
 		[Embed(source = '../../../assets/board/playerwindow-white.png')] public static const GFX_BOARD_WHITE:Class;
 		[Embed(source = '../../../assets/board/playerwindow-black.png')] public static const GFX_BOARD_BLACK:Class;
+		[Embed(source = '../../../assets/Board/nextwaveblack.png')] public static const GFX_BOARD_NEXTBLACK:Class;
+		[Embed(source = '../../../assets/Board/nextwavewhite.png')] public static const GFX_BOARD_NEXTWHITE:Class;
 		
 		
 		//Icons

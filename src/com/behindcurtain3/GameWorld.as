@@ -120,20 +120,8 @@ package com.behindcurtain3
 			buildMenu = new BuildMenu();
 			add(buildMenu);
 			
-			/*
-			buildInstructions = new Text("Press W to build", 5, FP.screen.height - 25);
-			buildInstructions.font = "Domo";
-			buildInstructions.size = 18;
-			
-			addGraphic(buildInstructions, 2);
-			*/
-			
-			var str:String = "Go!";
-			countdownText = new Text(str, (FP.screen.width / 2) - (str.length / 2 * 48), (FP.screen.height / 2) - 48, 250, 250);
-			countdownText.font = "Domo";
-			countdownText.size = 96;
-			countdownText.visible = false;
-			addGraphic(countdownText, 2);
+			addGraphic(new Image(Assets.GFX_BOARD_NEXTBLACK), 5, 26, 499);
+			addGraphic(new Image(Assets.GFX_BOARD_NEXTWHITE), 5, 639, 50);
 			
 			connect();
 			

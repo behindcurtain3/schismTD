@@ -165,24 +165,6 @@ package com.behindcurtain3
 		
 		override public function update():void
 		{
-			/*
-			if (buildInstructions.visible)
-			{
-				if (buildInstructions.alpha == 0)
-				{
-					var alphaTween:VarTween = new VarTween();
-					alphaTween.tween(buildInstructions, "alpha", 1, 0.5);
-					addTween(alphaTween, true);
-				}
-				else if (buildInstructions.alpha == 1)
-				{
-					var alphaTween:VarTween = new VarTween();
-					alphaTween.tween(buildInstructions, "alpha", 0, 0.5);
-					addTween(alphaTween, true);
-				}
-			}
-			*/
-
 			// Update UI
 			if (connection != null)
 			{

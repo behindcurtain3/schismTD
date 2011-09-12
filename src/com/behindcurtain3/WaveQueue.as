@@ -35,7 +35,7 @@ package com.behindcurtain3
 			onePosition = new Point(offset, 55);
 			twoPosition = new Point(offset, 85);
 			
-			activePosition = new Point(625, 75);
+			activePosition = new Point(625, 77);
 		}
 		
 		public function addWave(id:String, position:int, types:Array):void

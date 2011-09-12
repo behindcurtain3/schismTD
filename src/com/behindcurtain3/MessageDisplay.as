@@ -113,8 +113,8 @@ package com.behindcurtain3
 			}
 			
 			backgroundAlpha = message.alpha;
-			if (backgroundAlpha > 0.75)
-				backgroundAlpha = 0.75;
+			if (backgroundAlpha > 0.9)
+				backgroundAlpha = 0.9;
 			
 			super.update();
 		}

@@ -36,6 +36,8 @@ package schism.waves
 			twoPosition = new Point(offset, 85);
 			
 			activePosition = new Point(620, 77);
+			
+			this.visible = false;
 		}
 		
 		public function addWave(id:String, position:int, types:Array):void
@@ -51,7 +53,7 @@ package schism.waves
 						
 					zeroWave = new Wave(zeroPosition.x, zeroPosition.y, id, types, 0.75, rightOriented);
 					world.add(zeroWave);
-					zeroWave.fadeIn();
+					if(visible) zeroWave.fadeIn();
 					
 					if(oneWave != null)
 						if (oneWave.Id == id)
@@ -66,7 +68,7 @@ package schism.waves
 						
 					oneWave = new Wave(onePosition.x, onePosition.y, id, types, 0.75, rightOriented);
 					world.add(oneWave);
-					oneWave.fadeIn();
+					if(visible) oneWave.fadeIn();
 					
 					if(zeroWave != null)
 						if (zeroWave.Id == id)
@@ -81,7 +83,7 @@ package schism.waves
 						
 					twoWave = new Wave(twoPosition.x, twoPosition.y, id, types, 0.75, rightOriented);
 					world.add(twoWave);
-					twoWave.fadeIn();
+					if(visible) twoWave.fadeIn();
 					
 					if(oneWave != null)
 						if (oneWave.Id == id)
@@ -107,7 +109,7 @@ package schism.waves
 			activeWave = new Wave(activePosition.x, activePosition.y, id, types, 1, rightOriented);
 			
 			world.add(activeWave);
-			activeWave.fadeIn();
+			if(visible) activeWave.fadeIn();
 
 			if(zeroWave != null)
 				if (zeroWave.Id == id)
@@ -158,6 +160,16 @@ package schism.waves
 				}
 			}
 			
+		}
+		
+		public function showWaves():void
+		{
+			this.visible = true;
+			
+			if (oneWave != null) oneWave.fadeIn();
+			if (twoWave != null) twoWave.fadeIn();
+			if (zeroWave != null) zeroWave.fadeIn();
+			if (activeWave != null) activeWave.fadeIn();
 		}
 		
 	}

@@ -13,6 +13,7 @@ package schism
 		[Embed(source = '../../assets/Menus/title-left.png')] public static const GFX_TITLE_LEFT:Class;
 		[Embed(source = '../../assets/Menus/title-right.png')] public static const GFX_TITLE_RIGHT:Class;
 		[Embed(source = '../../assets/Menus/loginbackground.png')] public static const GFX_LOGIN_BACKGROUND:Class;
+		[Embed(source = '../../assets/Menus/background.png')] public static const GFX_BACKGROUND:Class;
 		
 		// Board
 		[Embed(source = '../../assets/board/Board-back.png')] public static const GFX_BOARD:Class;

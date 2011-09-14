@@ -30,6 +30,7 @@ package schism.ui
 			height = radius * 2;
 
 			backgroundGfx = new Image(Assets.GFX_TOWER_RANGE);
+			backgroundGfx.smooth = true;
 			backgroundGfx.centerOrigin();
 			backgroundGfx.scaleX = width / backgroundGfx.width;
 			backgroundGfx.scaleY = height / backgroundGfx.height;			

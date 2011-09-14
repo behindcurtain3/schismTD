@@ -1,6 +1,7 @@
 package schism.worlds 
 {
 	import net.flashpunk.FP;
+	import net.flashpunk.graphics.Image;
 	import net.flashpunk.graphics.Text;
 	import net.flashpunk.World;
 	import playerio.Client;
@@ -8,6 +9,7 @@ package schism.worlds
 	import punk.ui.PunkButton;
 	import punk.ui.PunkPanel;
 	import punk.ui.PunkText;
+	import schism.Assets;
 	
 	/**
 	 * ...
@@ -31,8 +33,14 @@ package schism.worlds
 			mClient = client;
 			mConnection = connection;
 
-			add(new PunkButton(FP.screen.width / 2 - 250, FP.screen.height / 2 + 100, 200, 100, "Play Again", onPlayAgain)); 
-			add(new PunkButton(FP.screen.width / 2 + 50, FP.screen.height / 2 + 100, 200, 100, "Exit", onExit));
+			addGraphic(new Image(Assets.GFX_BACKGROUND), 5);
+			
+			var b:PunkButton = new PunkButton(FP.screen.width / 2 - 250, FP.screen.height / 2 + 100, 200, 100, "Play Again", onPlayAgain);
+			b.label.font = "Domo";
+			add(b); 
+			b = new PunkButton(FP.screen.width / 2 + 50, FP.screen.height / 2 + 100, 200, 100, "Exit", onExit);
+			b.label.font = "Domo";
+			add(b);
 			
 			result = new Text(resultStr, 0, 100);
 			result.font = "Domo";

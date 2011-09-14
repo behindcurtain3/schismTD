@@ -70,7 +70,6 @@ package schism.waves
 				gfxList.add(img);
 				images.push(img);
 			}
-			
 			graphic = gfxList;
 		}
 		

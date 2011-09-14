@@ -21,6 +21,7 @@ package schism
 		public var towerAsset:Class;
 		public var towerRange:Number;
 		
+		private var doSetupIndicator:Boolean = false;
 		private var setupIndicatorTimer:Number;
 		private var setupIndicatorLength:Number;
 		private var isSetup:Boolean;
@@ -57,7 +58,7 @@ package schism
 		
 		override public function update():void 
 		{
-			if (!isSetup && isOurs())
+			if (!isSetup && isOurs() && doSetupIndicator)
 			{
 				setupIndicatorTimer += FP.elapsed;
 				
@@ -77,7 +78,7 @@ package schism
 				}
 				else if (setupImage.alpha == 1)
 				{
-					//sfx_highlight.play();
+					sfx_highlight.play();
 					alphaTween = new VarTween();
 					alphaTween.tween(setupImage, "alpha", 0, 0.75);
 					addTween(alphaTween, true);
@@ -107,6 +108,11 @@ package schism
 		override public function toString():String 
 		{
 			return getIndex().toString();
+		}
+		
+		public function flash():void
+		{
+			doSetupIndicator = true;
 		}
 		
 	}

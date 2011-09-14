@@ -72,9 +72,10 @@ package schism.worlds
 		private var consoleDisplayTime:Number = 5;
 		
 		// Gfx
-		protected var titleLeft:Image;
-		protected var titleRight:Image;
 		protected var board:Image;
+		protected var boardOverlay:Image;
+		protected var boardWhite:Image;
+		protected var boardBlack:Image;
 		
 		// Sfx
 		protected var sfx_invalid:Sfx = new Sfx(Assets.SFX_INVALID);
@@ -116,34 +117,38 @@ package schism.worlds
 			
 			FP.volume = 0.1;
 			
+			// UI elements
 			add(fauxTower);
-			
-			// Title
-			titleLeft = new Image(Assets.GFX_TITLE_LEFT);
-			titleRight = new Image(Assets.GFX_TITLE_RIGHT);
-			
-			addGraphic(titleLeft, 1, 0, 0);
-			addGraphic(titleRight, 0, 400, 0);			
-			
-			// Setup gfx
-			board = new Image(Assets.GFX_BOARD);
-			board.alpha = 0;
-			addGraphic(board, 100, 0, 0);
-			addGraphic(new Image(Assets.GFX_BOARD_OVERLAY), 5);
-			
-			addGraphic(new Image(Assets.GFX_BOARD_WHITE), 5);
-			addGraphic(new Image(Assets.GFX_BOARD_BLACK), 5, FP.screen.width - 304, FP.screen.height - 160);
-						
+			buildMenu = new BuildMenu();
+			add(buildMenu);
 			whiteWaveQueue = new WhiteWaveQueue();
 			add(whiteWaveQueue);
 			blackWaveQueue = new BlackWaveQueue();
 			add(blackWaveQueue);
 			
-			buildMenu = new BuildMenu();
-			add(buildMenu);
+			// Board
+			addGraphic(new Image(Assets.GFX_BACKGROUND), 200);
+			board = new Image(Assets.GFX_BOARD);
+			board.alpha = 0;
+			addGraphic(board, 100, 0, 0);
 			
+			boardOverlay = new Image(Assets.GFX_BOARD_OVERLAY);
+			boardOverlay.alpha = 0;
+			addGraphic(boardOverlay, 5);
+			
+			boardWhite = new Image(Assets.GFX_BOARD_WHITE);
+			boardWhite.alpha = 0;
+			boardWhite.x = -boardWhite.width;
+			addGraphic(boardWhite, 5);
+			boardBlack = new Image(Assets.GFX_BOARD_BLACK);
+			boardBlack.alpha = 0;
+			boardBlack.x = boardBlack.width;
+			addGraphic(boardBlack, 5, FP.screen.width - 304, FP.screen.height - 160);
+						
+			// Connect to game
 			connect();
 			
+			// Define our inputs			
 			Input.define("Chat", Key.T);
 			Input.define("Send", Key.ENTER);
 			
@@ -401,20 +406,11 @@ package schism.worlds
 			addGraphic(blackHealthUI);
 			addGraphic(blackManaUI);
 			
-			
-			connection.addMessageHandler(Messages.CHAT, function(m:Message, s:String):void {
-				addToChat(s);
-			});
-			
 			connection.addMessageHandler(Messages.GAME_JOINED, function(m:Message):void {
-				addToChat("Joined game.");
+				add(new MessageDisplay("Game joined!", 1.5, 24));
 			});
 			
-			connection.addMessageHandler(Messages.GAME_INFO, function(m:Message):void {
-				var vt:VarTween = new VarTween();
-				vt.tween(board, "alpha", 1, 2.5, Ease.expoOut);
-				addTween(vt, true);
-				
+			connection.addMessageHandler(Messages.GAME_INFO, function(m:Message):void {				
 				if (m.getString(0) == "black")
 				{
 					color = m.getString(0);
@@ -535,7 +531,7 @@ package schism.worlds
 			});
 			
 			connection.addMessageHandler(Messages.GAME_TOWER_INVALID, function(m:Message, x:int, y:int):void {
-				addToChat("Invalid tower placement!");
+				add(new MessageDisplay("Invalid tower!", 1.5, 24));
 				sfx_invalid.play();
 			});
 			
@@ -791,26 +787,50 @@ package schism.worlds
 		}
 		
 		private function activateGame(m:Message):void 
-		{					
-			// tween out the title
-			var tweenLeft:VarTween = new VarTween();
-			tweenLeft.tween(titleLeft, "x", -400, 0.5, Ease.quintOut);
+		{	
+			var vt:VarTween = new VarTween(activateCells);
+			vt.tween(board, "alpha", 1, 2.5, Ease.expoOut);
+			addTween(vt, true);
 			
-			var tweenRight:VarTween = new VarTween();
-			tweenRight.tween(titleRight, "x", 400, 0.5, Ease.quintOut);
+			vt = new VarTween();
+			vt.tween(boardOverlay, "alpha", 1, 2.5, Ease.expoOut);
+			addTween(vt, true);
 			
-			addTween(tweenLeft, true);
-			addTween(tweenRight, true);
+			vt = new VarTween();
+			vt.tween(boardWhite, "x", 0, 2.5, Ease.expoOut);
+			addTween(vt, true);
 			
+			vt = new VarTween();
+			vt.tween(boardBlack, "x", 0, 2.5, Ease.expoOut);
+			addTween(vt, true);
+			
+			vt = new VarTween();
+			vt.tween(boardWhite, "alpha", 1, 2.5, Ease.expoOut);
+			addTween(vt, true);
+			
+			vt = new VarTween();
+			vt.tween(boardBlack, "alpha", 1, 2.5, Ease.expoOut);
+			addTween(vt, true);
+		};
+		
+		private function activateCells():void
+		{
 			gameActive = true;
 			glow = new Glow();
 			add(glow);
 			
 			fadeInText();
-			
 			buildInstructions = new MessageDisplay("Press W to build", 5);
-			add(buildInstructions);
-		};
+			add(buildInstructions);			
+			
+			blackWaveQueue.showWaves();
+			whiteWaveQueue.showWaves();
+			
+			for each(var c:Cell in getCells())
+			{
+				c.flash();
+			}
+		}
 		
 		private function fadeInText():void
 		{
@@ -857,8 +877,8 @@ package schism.worlds
 		public function addToChat(s:String, time:Number = 4):void
 		{
 			var t:Text = new Text(s, 10, FP.screen.height - 60, FP.screen.width - 20, 20);
-			if (titleLeft.x == 0)
-				t.visible = false;
+			//if (titleLeft.x == 0)
+			//	t.visible = false;
 				
 			t.font = "Domo";
 			t.size = 14;

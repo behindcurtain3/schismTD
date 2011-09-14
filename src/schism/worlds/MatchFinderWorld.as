@@ -8,6 +8,7 @@ package schism.worlds
 	import playerio.*;
 	import schism.Assets;
 	import schism.Messages;
+	import schism.ui.MessageDisplay;
 	
 	/**
 	 * ...
@@ -18,26 +19,13 @@ package schism.worlds
 		private var client:Client;
 		private var connection:Connection;
 		
-		protected var titleLeft:Image;
-		protected var titleRight:Image;
-		protected var titleText:Text;
-		
 		public function MatchFinderWorld(client:Client) 
 		{
 			this.client = client;
 
 			// Title
-			titleLeft = new Image(Assets.GFX_TITLE_LEFT);
-			titleRight = new Image(Assets.GFX_TITLE_RIGHT);
-			var str:String = "Waiting for an opponent";
-			titleText = new Text(str, 0, FP.screen.height - 100, FP.screen.width, 200);
-			titleText.font = "Domo";
-			titleText.size = 24;
-			titleText.x = FP.screen.width / 2 - (titleText.text.length / 2 * 10);
-			
-			addGraphic(titleLeft, 1, 0, 0);
-			addGraphic(titleRight, 1, 400, 0);
-			addGraphic(titleText);
+			addGraphic(new Image(Assets.GFX_BACKGROUND), 10);
+			add(new MessageDisplay("Waiting for an opponent", 99999, 24));
 			
 			//Set developmentsever (Comment out to connect to your server online)
 			client.multiplayer.developmentServer = "192.168.0.169:8184";
@@ -53,24 +41,6 @@ package schism.worlds
 				handleClientError					//Function executed if we got a join error
 			);	
 			
-		}
-		
-		override public function update():void 
-		{
-			if (titleText.alpha == 0)
-			{
-				var alphaTween:VarTween = new VarTween();
-				alphaTween.tween(titleText, "alpha", 1, 0.5);
-				addTween(alphaTween, true);
-			}
-			else if (titleText.alpha == 1)
-			{
-				var alphaTween:VarTween = new VarTween();
-				alphaTween.tween(titleText, "alpha", 0, 0.5);
-				addTween(alphaTween, true);
-			}
-			
-			super.update();
 		}
 		
 		private function handleJoin(c:Connection):void

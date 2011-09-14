@@ -78,7 +78,7 @@ package schism
 				}
 				else if (setupImage.alpha == 1)
 				{
-					sfx_highlight.play();
+					//sfx_highlight.play();
 					alphaTween = new VarTween();
 					alphaTween.tween(setupImage, "alpha", 0, 0.75);
 					addTween(alphaTween, true);

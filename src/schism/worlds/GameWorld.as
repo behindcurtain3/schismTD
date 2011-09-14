@@ -531,7 +531,7 @@ package schism.worlds
 			});
 			
 			connection.addMessageHandler(Messages.GAME_TOWER_INVALID, function(m:Message, x:int, y:int):void {
-				add(new MessageDisplay("Invalid tower!", 1.5, 24));
+				add(new MessageDisplay("Invalid tower!", 1.5, 18, FP.screen.width / 2, FP.screen.height - 20, 200, 25));
 				sfx_invalid.play();
 			});
 			
@@ -820,7 +820,7 @@ package schism.worlds
 			add(glow);
 			
 			fadeInText();
-			buildInstructions = new MessageDisplay("Press W to build", 5);
+			buildInstructions = new MessageDisplay("Press W to build", 5, 24);
 			add(buildInstructions);			
 			
 			blackWaveQueue.showWaves();

@@ -18,7 +18,7 @@ package schism.waves
 		{
 			super();
 			
-			x = FP.screen.width - 15;
+			x = FP.screen.width - 20;
 			y = FP.screen.height - 70;
 			
 			var offset:int = x;

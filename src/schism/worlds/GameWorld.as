@@ -37,6 +37,7 @@ package schism.worlds
 	import schism.ui.Glow;
 	import schism.ui.MessageDisplay;
 	import schism.waves.BlackWaveQueue;
+	import schism.waves.WaveHighlight;
 	import schism.waves.WhiteWaveQueue;
 	
 	import punk.ui.PunkTextArea;
@@ -76,6 +77,7 @@ package schism.worlds
 		protected var boardOverlay:Image;
 		protected var boardWhite:Image;
 		protected var boardBlack:Image;
+		protected var boardWaveHighlight:WaveHighlight;
 		
 		// Sfx
 		protected var sfx_invalid:Sfx = new Sfx(Assets.SFX_INVALID);
@@ -139,11 +141,11 @@ package schism.worlds
 			boardWhite = new Image(Assets.GFX_BOARD_WHITE);
 			boardWhite.alpha = 0;
 			boardWhite.x = -boardWhite.width;
-			addGraphic(boardWhite, 5);
+			addGraphic(boardWhite, 6);
 			boardBlack = new Image(Assets.GFX_BOARD_BLACK);
 			boardBlack.alpha = 0;
 			boardBlack.x = boardBlack.width;
-			addGraphic(boardBlack, 5, FP.screen.width - 304, FP.screen.height - 160);
+			addGraphic(boardBlack, 6, FP.screen.width - 304, FP.screen.height - 160);
 						
 			// Connect to game
 			connect();
@@ -335,20 +337,13 @@ package schism.worlds
 				}
 				
 				if (Input.released("Wave1"))
-				{
-					if (color == "black")
-						connection.send(Messages.GAME_WAVE_NEXT, blackWaveQueue.oneWave.Id);
-					else
-						connection.send(Messages.GAME_WAVE_NEXT, whiteWaveQueue.oneWave.Id);
-				}
+					connection.send(Messages.GAME_WAVE_NEXT, 0);
 
 				if (Input.released("Wave2"))
-				{
-					if (color == "black")
-						connection.send(Messages.GAME_WAVE_NEXT, blackWaveQueue.twoWave.Id);
-					else
-						connection.send(Messages.GAME_WAVE_NEXT, whiteWaveQueue.twoWave.Id);
-				}
+					connection.send(Messages.GAME_WAVE_NEXT, 1);
+				
+				if (Input.released("Wave3"))
+					connection.send(Messages.GAME_WAVE_NEXT, 2);
 			}
 			
 			if (Input.pressed(Key.ESCAPE))
@@ -416,14 +411,19 @@ package schism.worlds
 					color = m.getString(0);
 					blackId = m.getInt(1);
 					whiteId = m.getInt(2);
+					
+					boardWaveHighlight = new WaveHighlight(color, blackWaveQueue.zeroPosition.x, blackWaveQueue.zeroPosition.y);
+					add(boardWaveHighlight);
 				} 
 				else if (m.getString(0) == "white")
 				{
 					color = m.getString(0);
 					whiteId = m.getInt(1);
 					blackId = m.getInt(2);
-				}
-				
+					
+					boardWaveHighlight = new WaveHighlight(color, whiteWaveQueue.zeroPosition.x, whiteWaveQueue.zeroPosition.y);
+					add(boardWaveHighlight);
+				}				
 			});
 			
 			connection.addMessageHandler(Messages.GAME_ACTIVATE, activateGame); 
@@ -685,6 +685,7 @@ package schism.worlds
 			connection.addMessageHandler(Messages.GAME_WAVE_ACTIVATE, activateWave);
 			connection.addMessageHandler(Messages.GAME_WAVE_QUEUE, queueWave);
 			connection.addMessageHandler(Messages.GAME_WAVE_REMOVE, removeWave);
+			connection.addMessageHandler(Messages.GAME_WAVE_POSITION, positionWave);
 		}
 		
 		private function updatePaths(m:Message):void
@@ -774,6 +775,40 @@ package schism.worlds
 			}
 		}
 		
+		private function positionWave(m:Message):void
+		{
+			if (color == "black")
+			{
+				switch(m.getInt(0))
+				{
+					case 0:
+						boardWaveHighlight.setPosition(blackWaveQueue.zeroPosition.y);
+						break;
+					case 1:
+						boardWaveHighlight.setPosition(blackWaveQueue.onePosition.y);
+						break;
+					case 2:
+						boardWaveHighlight.setPosition(blackWaveQueue.twoPosition.y);
+						break;
+				}				
+			}
+			else if(color == "white")
+			{
+				switch(m.getInt(0))
+				{
+					case 0:
+						boardWaveHighlight.setPosition(whiteWaveQueue.zeroPosition.y);
+						break;
+					case 1:
+						boardWaveHighlight.setPosition(whiteWaveQueue.onePosition.y);
+						break;
+					case 2:
+						boardWaveHighlight.setPosition(whiteWaveQueue.twoPosition.y);
+						break;
+				}
+			}
+		}
+		
 		private function removeWave(m:Message):void
 		{
 			if (m.getInt(0) == whiteId)
@@ -825,6 +860,10 @@ package schism.worlds
 			
 			blackWaveQueue.showWaves();
 			whiteWaveQueue.showWaves();
+			
+			var vt:VarTween = new VarTween();
+			vt.tween(boardWaveHighlight.image, "alpha", 1, 1, Ease.expoOut);
+			addTween(vt, true);			
 			
 			for each(var c:Cell in getCells())
 			{

@@ -33,6 +33,7 @@ package schism
 		public static const GAME_WAVE_ACTIVATE:String = "gwa";
 		public static const GAME_WAVE_NEXT:String = "gwn";
 		public static const GAME_WAVE_REMOVE:String = "gwr";
+		public static const GAME_WAVE_POSITION:String = "gwp";
 
 		public static const GAME_TOWER_PLACE:String = "gtp";
         public static const GAME_TOWER_REMOVE:String = "gtr";

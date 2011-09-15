@@ -15,9 +15,9 @@ package schism.waves
 		public var twoWave:Wave;
 		
 		protected var activePosition:Point;
-		protected var zeroPosition:Point;
-		protected var onePosition:Point;
-		protected var twoPosition:Point;
+		public var zeroPosition:Point;
+		public var onePosition:Point;
+		public var twoPosition:Point;
 		
 		protected var rightOriented:Boolean = false;
 		

@@ -67,6 +67,7 @@ package schism.waves
 					img.x = gfxList.count * img.scaledWidth;
 				img.alpha = 0;
 				img.centerOrigin();
+				img.smooth = true;
 				gfxList.add(img);
 				images.push(img);
 			}

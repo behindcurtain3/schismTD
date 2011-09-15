@@ -19,7 +19,9 @@ package schism
 		[Embed(source = '../../assets/board/Board-back.png')] public static const GFX_BOARD:Class;
 		[Embed(source = '../../assets/board/Board-front.png')] public static const GFX_BOARD_OVERLAY:Class;
 		[Embed(source = '../../assets/board/playerwindow-white.png')] public static const GFX_BOARD_WHITE:Class;
-		[Embed(source = '../../assets/board/playerwindow-black.png')] public static const GFX_BOARD_BLACK:Class;		
+		[Embed(source = '../../assets/board/playerwindow-black.png')] public static const GFX_BOARD_BLACK:Class;
+		[Embed(source = '../../assets/board/wavehighlight-black.png')] public static const GFX_WAVE_BLACK:Class;
+		[Embed(source = '../../assets/board/wavehighlight-white.png')] public static const GFX_WAVE_WHITE:Class;
 		
 		//Icons
 		[Embed(source = '../../assets/board/creep icons/miniarmor.png')] public static const GFX_ICONS_ARMOR:Class;

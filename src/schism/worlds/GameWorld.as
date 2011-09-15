@@ -57,6 +57,8 @@ package schism.worlds
 		private var gameId:String;
 		private var connectionAttempts:int = 0;
 		
+		// Result
+		private var resultWorld:ResultWorld;		
 		
 		// UI
 		private var console:Array = new Array();
@@ -68,8 +70,7 @@ package schism.worlds
 		protected var blackWaveQueue:BlackWaveQueue;
 		protected var buildMenu:BuildMenu;
 		protected var buildInstructions:MessageDisplay;
-		protected var countdownText:Text;
-		
+		protected var countdownText:Text;		
 		private var consoleDisplayTime:Number = 5;
 		
 		// Gfx
@@ -95,7 +96,9 @@ package schism.worlds
 		
 		// Game
 		private var gameActive:Boolean = false;
+		private var gameFinished:Boolean = false;
 		private var gameCountdown:int = 0;
+		private var gameFinishCountdown:Number = 8;
 		private var dragStart:Point = null;
 		private var dragEnd:Point = null;
 		private var glow:Glow = null;	
@@ -198,6 +201,14 @@ package schism.worlds
 				whiteManaUI.text = whiteMana.toString();
 				blackHealthUI.text = blackHealth.toString();
 				blackManaUI.text = blackMana.toString();
+			}
+			
+			if (gameFinished)
+			{
+				gameFinishCountdown -= FP.elapsed;
+				
+				if (gameFinishCountdown <= 0)
+					FP.world = resultWorld;
 			}
 				
 			if (gameActive)
@@ -460,7 +471,9 @@ package schism.worlds
 					result = "White wins!";
 				}
 				
-				FP.world = new ResultWorld(client, connection, result, m.getInt(1), m.getInt(2), m.getUInt(3), m.getUInt(4));
+				gameFinished = true;
+				resultWorld = new ResultWorld(client, connection, result, m.getInt(1), m.getInt(2), m.getUInt(3), m.getUInt(4));
+				add(new MessageDisplay(result, gameFinishCountdown, 48, FP.screen.width / 2, FP.screen.height / 2, 250));
 			});
 			
 			connection.addMessageHandler(Messages.GAME_CELL_ADD, function(m:Message, i:int, x:int, y:int, w:int, h:int, mine:Boolean):void {				

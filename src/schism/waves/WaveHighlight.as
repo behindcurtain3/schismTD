@@ -46,7 +46,7 @@ package schism.waves
 		{
 			if (this.targetY != this.y)
 			{
-				var velocity:Number = 45;
+				var velocity:Number = 20;
 				var distance:Number = velocity * FP.elapsed;
 				
 				if (distance <= Math.abs(this.targetY - this.y))

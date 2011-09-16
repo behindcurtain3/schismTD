@@ -32,7 +32,7 @@ package schism.worlds
 			
 			//Create pr join the room test
 			client.multiplayer.createJoinRoom(
-				"match-maker2",							//Room id. If set to null a random roomid is used
+				"match-maker2",						//Room id. If set to null a random roomid is used
 				"$service-room$",					//The game type started on the server
 				true,								//Should the room be visible in the lobby?
 				{},									//Room data. This data is returned to lobby list. Variabels can be modifed on the server
@@ -68,9 +68,7 @@ package schism.worlds
 				default:
 					FP.world = new LoginWorld("Client Error: " + error.message);
 					break;
-			}
-			
-			
+			}						
 		}
 		
 		

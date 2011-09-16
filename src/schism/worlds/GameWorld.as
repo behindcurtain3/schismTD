@@ -446,9 +446,9 @@ package schism.worlds
 			connection.addMessageHandler(Messages.GAME_FINISHED, function(m:Message):void {
 				gameActive = false;
 				
-				removeList(getCells());
-				removeList(getCreeps());
-				removeList(getProjectiles());
+				//removeList(getCells());
+				//removeList(getCreeps());
+				//removeList(getProjectiles());
 				
 				if (glow != null)
 				{
@@ -481,7 +481,7 @@ package schism.worlds
 				add(c);
 			});
 			
-			connection.addMessageHandler(Messages.GAME_TOWER_PLACE, function(m:Message, i:int, type:String):void {				
+			connection.addMessageHandler(Messages.GAME_TOWER_PLACE, function(m:Message, i:int, type:String, range:Number):void {				
 				for each(var tc:Cell in getCells())
 				{
 					if (tc.getIndex() == i)
@@ -517,6 +517,7 @@ package schism.worlds
 								tc.assignGfx(Assets.GFX_TOWER_RATEBOOST);
 								break;
 						}
+						tc.towerRange = range;
 						
 						if (tc == objectSelected)
 						{

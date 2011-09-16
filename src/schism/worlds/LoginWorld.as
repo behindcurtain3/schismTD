@@ -53,7 +53,7 @@ package schism.worlds
 		public function LoginWorld (error:String = "")
 		{
 			var uiX:int = 100;
-			var uiY:int = 200;
+			var uiY:int = 225;
 			var width:int = 250;
 			var spacer:int = 25;
 			
@@ -68,12 +68,13 @@ package schism.worlds
 			
 			add(username);
 			add(password);
-			var b:PunkButton = new PunkButton(uiX, uiY + spacer * 5, width, 50, "Play Now", onPlayNow, Key.ENTER);
+			var b:PunkButton = new PunkButton(uiX, uiY + spacer * 7, width, 50, "Play Now", onPlayNow, Key.ENTER);
 			b.label.font = "Domo";
 			add(b);
-			b = new PunkButton(uiX, uiY + spacer * 5 + 75, width, 50, "Test Game", onPlayTest)
+			b = new PunkButton(0, 0, 100, 30, "Test Game", onPlayTest)
 			b.label.font = "Domo";
 			add(b);
+			add(new MessageDisplay("", 0, 36, 225, FP.screen.height / 2 + 40, width + 15, 245));
 			
 			// Register
 			uiX = 450;
@@ -91,6 +92,7 @@ package schism.worlds
 			b = new PunkButton(uiX, uiY + spacer * 7, width, 50, "Register", onRegister);
 			b.label.font = "Domo";
 			add(b);
+			add(new MessageDisplay("", 0, 36, 575, FP.screen.height / 2 + 40, width + 15, 245));
 			
 			addGraphic(new Text(Assets.VERSION, 0, FP.screen.height - 15, 50, 15));
 			

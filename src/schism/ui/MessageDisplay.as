@@ -161,7 +161,8 @@ package schism.ui
 		
 		public function destroy():void
 		{
-			callBack.call();
+			if(callBack != null)
+				callBack.call();
 			
 			if (world != null)
 				world.remove(this);

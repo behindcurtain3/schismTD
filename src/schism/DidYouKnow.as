@@ -25,7 +25,8 @@ package schism
 			"Range boost towers give a 33% bonus to their surrounding towers.",
 			"Fire rate boost towers give a 33% bonus to their surrounding towers.",
 			"Chi can be used to build a longer maze or upgrade towers.",
-			"To win you must outlast your opponent or have more life after 10 waves."
+			"To win you must outlast your opponent or have more life after 10 waves.",
+			"You can find a guide to the game on schismtd.com."
 		];		
 	}
 

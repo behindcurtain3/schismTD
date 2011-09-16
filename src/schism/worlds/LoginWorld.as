@@ -39,11 +39,6 @@ package schism.worlds
 		protected var username:PunkTextField;
 		protected var password:PunkPasswordField;
 		
-		// Register
-		protected var regUsername:PunkTextField;
-		protected var regPassword:PunkPasswordField;
-		protected var regEmail:PunkTextField;
-		
 		// Messages
 		protected var messageDisplay:MessageDisplay;
 
@@ -52,9 +47,9 @@ package schism.worlds
 		
 		public function LoginWorld (error:String = "")
 		{
-			var uiX:int = 100;
-			var uiY:int = 225;
 			var width:int = 250;
+			var uiX:int = FP.screen.width / 2 - width / 2;
+			var uiY:int = 225;
 			var spacer:int = 25;
 			
 			// Background
@@ -68,31 +63,17 @@ package schism.worlds
 			
 			add(username);
 			add(password);
-			var b:PunkButton = new PunkButton(uiX, uiY + spacer * 7, width, 50, "Play Now", onPlayNow, Key.ENTER);
+			var b:PunkButton = new PunkButton(uiX, uiY + spacer * 4 + spacer / 2, width, 50, "Play Now", onPlayNow, Key.ENTER);
 			b.label.font = "Domo";
 			add(b);
 			b = new PunkButton(0, 0, 100, 30, "Test Game", onPlayTest)
 			b.label.font = "Domo";
 			add(b);
-			add(new MessageDisplay("", 0, 36, 225, FP.screen.height / 2 + 40, width + 15, 245));
-			
-			// Register
-			uiX = 450;
-			
-			add(new PunkLabel("Username:", uiX, uiY, width, 50));
-			regUsername = new PunkTextField("", uiX, uiY + spacer, width);
-			add(new PunkLabel("Password:", uiX, uiY + spacer * 2, width, 50));
-			regPassword = new PunkPasswordField(uiX, uiY + spacer * 3, width);
-			add(new PunkLabel("Email: (optional)", uiX, uiY + spacer * 4, width, 50));
-			regEmail = new PunkTextField("", uiX, uiY + spacer * 5, width);
-			
-			add(regUsername);
-			add(regPassword);
-			add(regEmail);
 			b = new PunkButton(uiX, uiY + spacer * 7, width, 50, "Register", onRegister);
 			b.label.font = "Domo";
 			add(b);
-			add(new MessageDisplay("", 0, 36, 575, FP.screen.height / 2 + 40, width + 15, 245));
+			add(new MessageDisplay("", 0, 36, FP.screen.width / 2, FP.screen.height / 2 + 40, width + 15, 245));
+			
 			
 			addGraphic(new Text(Assets.VERSION, 0, FP.screen.height - 15, 50, 15));
 			
@@ -180,46 +161,7 @@ package schism.worlds
 		
 		public function onRegister():void
 		{			
-			//Register a user with QuickConnect for Simple Users
-			PlayerIO.quickConnect.simpleRegister(
-				FP.stage, 
-				Assets.GAME_ID,
-				regUsername.text, 
-				regPassword.text, 
-				regEmail.text, 
-				null, // captcha key, if captcha is used
-				null, // captcha value, if captcha is used
-				{}, // any additional data you want
-				"",
-				onRegisterSuccess,
-				onRegisterError
-			);
-		}
-		
-		private function onRegisterSuccess(client:Client):void
-		{
-			FP.world = new MatchFinderWorld(client);
-		}
-		
-		private function onRegisterError(e:PlayerIORegistrationError):void
-		{
-			if (messageDisplay != null)
-				remove(messageDisplay);
-				
-			var msg:String;	
-				
-			if (e.usernameError != null)
-				msg = e.usernameError;
-			else if (e.passwordError != null)
-				msg = e.passwordError;
-			else if (e.emailError != null)
-				msg = e.emailError;
-			else
-				msg = e.message;
-			
-			messageDisplay = new MessageDisplay(msg, 5);
-			add(messageDisplay);
-
+			FP.world = new RegisterWorld();
 		}
 		
 		public function kongLoadComplete(event:Event):void

@@ -7,6 +7,7 @@ package schism.worlds
 	import net.flashpunk.World;
 	import playerio.*;
 	import schism.Assets;
+	import schism.DidYouKnow;
 	import schism.Messages;
 	import schism.ui.MessageDisplay;
 	
@@ -19,13 +20,17 @@ package schism.worlds
 		private var client:Client;
 		private var connection:Connection;
 		
+		private var previousDidYouKnow:int = -1;
+		
 		public function MatchFinderWorld(client:Client) 
 		{
 			this.client = client;
 
 			// Title
 			addGraphic(new Image(Assets.GFX_BACKGROUND), 10);
-			add(new MessageDisplay("Waiting for an opponent", 99999, 24));
+			add(new MessageDisplay("Waiting for an opponent", 0, 36, 0, FP.screen.height / 2));
+			
+			newDidYouKnow();
 			
 			//Set developmentsever (Comment out to connect to your server online)
 			client.multiplayer.developmentServer = "192.168.0.169:8184";
@@ -41,6 +46,21 @@ package schism.worlds
 				handleClientError					//Function executed if we got a join error
 			);	
 			
+		}
+		
+		private function newDidYouKnow():void
+		{
+			var i:int;
+			
+			do
+			{
+				i = Math.round(Math.random() * DidYouKnow.strings.length) - 1;
+				if (i < 0)
+					i = DidYouKnow.strings.length - 1;
+			} while (i == previousDidYouKnow);
+			
+			previousDidYouKnow = i;
+			add(new MessageDisplay("Did you know?\n\n" + DidYouKnow.strings[i], 10, 18, 0, 0, 400, 50, newDidYouKnow));
 		}
 		
 		private function handleJoin(c:Connection):void

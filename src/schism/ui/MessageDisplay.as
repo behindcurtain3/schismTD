@@ -16,10 +16,19 @@ package schism.ui
 		private var timeDisplayed:Number;
 		private var displayTime:Number;
 		private var backgroundAlpha:Number;
+		private var doesMsgFade:Boolean = true;
+		private var callBack:Function = null;
 		
-		public function MessageDisplay(msg:String, time:Number, fontSize:int = 18, x:int = 0, y:int = 0, w:int = 400, h:int = 50) 
+		public function MessageDisplay(msg:String, time:Number, fontSize:int = 18, x:int = 0, y:int = 0, w:int = 400, h:int = 50, callBack:Function = null) 
 		{
 			layer = 1;
+			
+			if (time == 0)
+				doesMsgFade = false;
+				
+			if (callBack != null)
+				this.callBack = callBack;
+			
 			displayTime = time;
 			timeDisplayed = 0;
 			
@@ -57,14 +66,14 @@ package schism.ui
 				message.text = message.text + "...";
 			}
 			
-			if (message.textWidth > width)
+			if (message.textWidth + message.size > width)
 			{
-				width =  message.textWidth + 30;
+				width =  message.textWidth + message.size;
 				this.x = (FP.screen.width - width) / 2;
 			}
 			
-			if (message.textHeight + 10 > height)
-				height = message.textHeight + 10;
+			if (message.textHeight + message.size > height)
+				height = message.textHeight + message.size;
 				
 			if (alignCenter)
 			{
@@ -105,11 +114,14 @@ package schism.ui
 		
 		override public function update():void 
 		{
-			timeDisplayed += FP.elapsed;
-			
-			if (timeDisplayed >= displayTime)
+			if (doesMsgFade)
 			{
-				fadeOut(0.25, destroy);
+				timeDisplayed += FP.elapsed;
+				
+				if (timeDisplayed >= displayTime)
+				{
+					fadeOut(0.25, destroy);
+				}
 			}
 			
 			backgroundAlpha = message.alpha;
@@ -149,6 +161,8 @@ package schism.ui
 		
 		public function destroy():void
 		{
+			callBack.call();
+			
 			if (world != null)
 				world.remove(this);
 		}

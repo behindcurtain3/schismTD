@@ -265,7 +265,7 @@ package schism.worlds
 						{
 							var creep:Creep = collidePoint("creep", Input.mouseX, Input.mouseY) as Creep;
 							
-							if (creep != null)
+							if (creep != null && !buildMenu.isMouseOver())
 							{
 								if ((color == "black" && creep.player == whiteId) || (color == "white" && creep.player == blackId))
 								{
@@ -273,6 +273,7 @@ package schism.worlds
 									connection.send(Messages.GAME_FIRE_AT, creep.ID);
 								}
 							}
+							
 						}
 						
 						break;
@@ -307,6 +308,8 @@ package schism.worlds
 							}
 						}
 						break;
+					case BuildMode.UPGRADE:
+						break;
 				}
 
 				if (Input.mousePressed)
@@ -316,33 +319,49 @@ package schism.worlds
 				
 				if (Input.mouseReleased)
 				{
-					dragEnd = new Point(Input.mouseX, Input.mouseY);
-					
-					// Check if something exists
-					cell = collidePoint("cell", dragEnd.x, dragEnd.y) as Cell;
-						
-					if (cell != null)
+					if (buildMenu.isMouseOver())
 					{
-						if (!cell.hasTower)
+						// Check to see if any buttons were pressed
+						if (buildMenu.isMouseOverLeft())
+						{
+							connection.send(Messages.GAME_TOWER_UPGRADE, objectSelected.centerX, objectSelected.centerY, 1);
+						}
+						if (buildMenu.isMouseOverRight())
+						{
+							connection.send(Messages.GAME_TOWER_UPGRADE, objectSelected.centerX, objectSelected.centerY, 2);
+						}
+						
+					}
+					else
+					{					
+						dragEnd = new Point(Input.mouseX, Input.mouseY);
+						
+						// Check if something exists
+						cell = collidePoint("cell", dragEnd.x, dragEnd.y) as Cell;
+							
+						if (cell != null)
+						{
+							if (!cell.hasTower && !buildMenu.isMouseOver())
+							{
+								objectSelected = null;
+								buildMenu.visible = false;
+							}
+							else
+							{
+								if (cell.isOurs())
+								{
+									objectSelected = cell;
+									buildMenu.displayAt(cell);
+								}
+							}
+						}
+						else
 						{
 							objectSelected = null;
 							buildMenu.visible = false;
 						}
-						else
-						{
-							if (cell.isOurs())
-							{
-								objectSelected = cell;
-								buildMenu.displayAt(cell);
-							}
-						}
-					}
-					else
-					{
-						objectSelected = null;
-						buildMenu.visible = false;
-					}
 
+					}
 					dragStart = null;
 					dragEnd = null;
 				}

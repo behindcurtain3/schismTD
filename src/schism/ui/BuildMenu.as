@@ -4,6 +4,7 @@ package schism.ui
 	import net.flashpunk.graphics.Graphiclist;
 	import net.flashpunk.graphics.Image;
 	import net.flashpunk.graphics.Text;
+	import net.flashpunk.utils.Input;
 	import schism.Assets;
 	import schism.Cell;
 	
@@ -144,9 +145,48 @@ package schism.ui
 			this.visible = true;
 		}
 		
-		public function setRange(r:Number):void
+		public function isMouseOver():Boolean
 		{
+			if (leftUpgradeGfx == null && rightUpgradeGfx == null)
+				return false;
+				
+			var distance:Number = Math.abs(this.x - Input.mouseX) + Math.abs(this.y - Input.mouseY);
 			
+			return distance <= this.radius && this.visible;
+		}
+		
+		public function isMouseOverLeft():Boolean
+		{
+			if (leftUpgradeGfx != null)
+			{
+				var left:Number = this.x + (leftUpgradeGfx.x - leftUpgradeGfx.width / 2);
+				var right:Number = left + leftUpgradeGfx.width;
+				var top:Number = this.y  + leftUpgradeGfx.y - leftUpgradeGfx.height / 2;
+				var bottom:Number = top + leftUpgradeGfx.height;
+				
+				return (Input.mouseX >= left && Input.mouseX <= right && Input.mouseY >= top && Input.mouseY <= bottom);
+			}
+			else
+			{
+				return false;
+			}
+		}
+		
+		public function isMouseOverRight():Boolean
+		{
+			if (rightUpgradeGfx != null)
+			{
+				var left:Number = this.x + (rightUpgradeGfx.x - rightUpgradeGfx.width / 2);
+				var right:Number = left + rightUpgradeGfx.width;
+				var top:Number = this.y  + rightUpgradeGfx.y - rightUpgradeGfx.height / 2;
+				var bottom:Number = top + rightUpgradeGfx.height;
+				
+				return (Input.mouseX >= left && Input.mouseX <= right && Input.mouseY >= top && Input.mouseY <= bottom);
+			}
+			else
+			{
+				return false;
+			}
 		}
 		
 	}

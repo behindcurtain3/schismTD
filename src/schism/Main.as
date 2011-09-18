@@ -36,8 +36,7 @@ package schism
 			}
 			else 
 			{
-				world = new SiteLockWorld();
-				
+				world = new SiteLockWorld();				
 			}
 			FP.world = world;
 		}

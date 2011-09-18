@@ -19,7 +19,7 @@ package schism.waves
 		public function WaveHighlight(color:String, x:Number, y:Number) 
 		{
 			this.color = color;
-			this.x = x - 10;
+			this.x = x - 40;
 			this.y = y;
 			this.targetY = this.y;
 			centerOrigin();
@@ -28,7 +28,7 @@ package schism.waves
 			{
 				this.image = new Image(Assets.GFX_WAVE_BLACK);
 				this.image.centerOrigin();
-				this.x = this.x - this.image.width / 2;
+				this.x = this.x + 60 - this.image.width / 2;
 			}
 			else
 			{

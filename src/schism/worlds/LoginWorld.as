@@ -53,7 +53,8 @@ package schism.worlds
 			var spacer:int = 25;
 			
 			// Background
-			addGraphic(new Image(Assets.GFX_LOGIN_BACKGROUND), 100);
+			addGraphic(new Image(Assets.GFX_BACKGROUND), 100);
+			addGraphic(new Image(Assets.GFX_TITLE), 99, FP.screen.width / 2 - 275, 50);
 			
 			// Login
 			add(new PunkLabel("Username:", uiX, uiY, width, 50));
@@ -65,6 +66,7 @@ package schism.worlds
 			add(password);
 			var b:PunkButton = new PunkButton(uiX, uiY + spacer * 4 + spacer / 2, width, 50, "Play Now", onPlayNow, Key.ENTER);
 			b.label.font = "Domo";
+			b.label.size = 20;
 			add(b);
 			b = new PunkButton(0, 0, 100, 30, "Test Game", onPlayTest)
 			b.label.font = "Domo";
@@ -154,7 +156,7 @@ package schism.worlds
 		{
 			if (messageDisplay != null)
 				remove(messageDisplay);
-				
+
 			messageDisplay = new MessageDisplay(e.message, 5);
 			add(messageDisplay);
 		}

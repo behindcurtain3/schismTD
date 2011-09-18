@@ -6,14 +6,12 @@ package schism
 	 */
 	public class Assets 
 	{		
-		public static const VERSION:String = "v0.2-rc3";
+		public static const VERSION:String = "v0.2-rc4";
 		public static const GAME_ID:String = "schismtd-3r3otmhvkki9ixublwca";
 		
 		// Menus
-		[Embed(source = '../../assets/Menus/title-left.png')] public static const GFX_TITLE_LEFT:Class;
-		[Embed(source = '../../assets/Menus/title-right.png')] public static const GFX_TITLE_RIGHT:Class;
-		[Embed(source = '../../assets/Menus/loginbackground.png')] public static const GFX_LOGIN_BACKGROUND:Class;
-		[Embed(source = '../../assets/Menus/background.png')] public static const GFX_BACKGROUND:Class;
+		[Embed(source = '../../assets/board/Title.png')] public static const GFX_TITLE:Class;
+		[Embed(source = '../../assets/board/background.png')] public static const GFX_BACKGROUND:Class;
 		
 		// Board
 		[Embed(source = '../../assets/board/Board-back.png')] public static const GFX_BOARD:Class;
@@ -23,6 +21,7 @@ package schism
 		[Embed(source = '../../assets/board/wavehighlight-black.png')] public static const GFX_WAVE_BLACK:Class;
 		[Embed(source = '../../assets/board/wavehighlight-white.png')] public static const GFX_WAVE_WHITE:Class;
 		[Embed(source = '../../assets/board/Spell Gem.png')] public static const GFX_GEM:Class;
+		[Embed(source = '../../assets/board/buildtowerbutton.png')] public static const GFX_BUTTON_BUILD:Class;
 		
 		//Icons
 		[Embed(source = '../../assets/board/creep icons/miniarmor.png')] public static const GFX_ICONS_ARMOR:Class;

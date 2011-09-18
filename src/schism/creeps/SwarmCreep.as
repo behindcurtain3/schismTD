@@ -33,12 +33,6 @@ package schism.creeps
 			updateAngle();
 		}
 		
-		override public function render():void 
-		{
-			// TODO: Add offsets to x & y
-			super.render();
-		}
-		
 	}
 
 }

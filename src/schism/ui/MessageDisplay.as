@@ -55,7 +55,7 @@ package schism.ui
 			message.color = 0xFFFFFF;
 			
 			var edited:Boolean = false;
-			while (message.textWidth + 100 > FP.screen.width)
+			while (message.textWidth + message.size > FP.screen.width)
 			{
 				message.text = message.text.substr(0, message.text.length - 1);
 				edited = true;
@@ -69,7 +69,6 @@ package schism.ui
 			if (message.textWidth + message.size > width)
 			{
 				width =  message.textWidth + message.size;
-				this.x = (FP.screen.width - width) / 2;
 			}
 			
 			if (message.textHeight + message.size > height)

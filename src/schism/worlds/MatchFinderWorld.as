@@ -27,7 +27,8 @@ package schism.worlds
 			this.client = client;
 
 			// Title
-			addGraphic(new Image(Assets.GFX_BACKGROUND), 10);
+			addGraphic(new Image(Assets.GFX_BACKGROUND), 100);
+			addGraphic(new Image(Assets.GFX_TITLE), 99, FP.screen.width / 2 - 275, 50);
 			add(new MessageDisplay("Waiting for an opponent", 0, 36, 0, FP.screen.height / 2));
 			
 			newDidYouKnow();

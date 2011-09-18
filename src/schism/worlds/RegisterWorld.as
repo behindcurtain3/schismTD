@@ -38,7 +38,8 @@ package schism.worlds
 			var spacer:int = 25;
 			
 			// Background
-			addGraphic(new Image(Assets.GFX_LOGIN_BACKGROUND), 100);
+			addGraphic(new Image(Assets.GFX_BACKGROUND), 100);
+			addGraphic(new Image(Assets.GFX_TITLE), 99, FP.screen.width / 2 - 275, 50);
 			
 			add(new PunkLabel("Username:", uiX, uiY, width, 50));
 			regUsername = new PunkTextField("", uiX, uiY + spacer, width);

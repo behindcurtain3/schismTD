@@ -33,6 +33,7 @@ package schism.worlds
 	import schism.projectiles.Projectile;
 	import schism.projectiles.PulseProjectile;
 	import schism.ui.BuildMenu;
+	import schism.ui.Button;
 	import schism.ui.FauxTower;
 	import schism.ui.Glow;
 	import schism.ui.MessageDisplay;
@@ -61,7 +62,6 @@ package schism.worlds
 		private var resultWorld:ResultWorld;		
 		
 		// UI
-		private var console:Array = new Array();
 		protected var whiteHealthUI:Text;
 		protected var whiteManaUI:Text;
 		protected var blackHealthUI:Text;
@@ -70,8 +70,7 @@ package schism.worlds
 		protected var blackWaveQueue:BlackWaveQueue;
 		protected var buildMenu:BuildMenu;
 		protected var buildInstructions:MessageDisplay;
-		protected var countdownText:Text;		
-		private var consoleDisplayTime:Number = 5;
+		protected var countdownText:Text;
 		
 		// Gfx
 		protected var board:Image;
@@ -139,6 +138,7 @@ package schism.worlds
 			
 			boardOverlay = new Image(Assets.GFX_BOARD_OVERLAY);
 			boardOverlay.alpha = 0;
+			boardOverlay.smooth = true;
 			addGraphic(boardOverlay, 5);
 			
 			boardWhite = new Image(Assets.GFX_BOARD_WHITE);
@@ -374,20 +374,24 @@ package schism.worlds
 				
 				if (Input.released("Wave3"))
 					connection.send(Messages.GAME_WAVE_NEXT, 2);
-			}
-			
-			if (Input.pressed(Key.ESCAPE))
-			{
-				disconnect();
+					
+				if (Input.released(Key.ESCAPE))
+				{
+					if (buildMode == BuildMode.TOWER)
+						buildMode = BuildMode.NONE;
+					if (objectSelected != null)
+					{
+						objectSelected = null;
+						buildMenu.visible = false;
+					}
+				}
 			}
 			
 			super.update();
 		}
 		
 		private function disconnect(message:String = ""):void
-		{
-			addToChat("Disconnected");
-			
+		{			
 			if(connection != null)
 				connection.disconnect();
 				
@@ -444,6 +448,10 @@ package schism.worlds
 					
 					boardWaveHighlight = new WaveHighlight(color, blackWaveQueue.zeroPosition.x, blackWaveQueue.zeroPosition.y);
 					add(boardWaveHighlight);
+					
+					var button:Button = new Button(toggleBuildMode, null, FP.screen.width - 40, FP.screen.height - boardBlack.height - 40);
+					button.setSpritemap(Assets.GFX_BUTTON_BUILD, 40, 40);
+					add(button);
 				} 
 				else if (m.getString(0) == "white")
 				{
@@ -453,10 +461,12 @@ package schism.worlds
 					
 					boardWaveHighlight = new WaveHighlight(color, whiteWaveQueue.zeroPosition.x, whiteWaveQueue.zeroPosition.y);
 					add(boardWaveHighlight);
+					
+					var button:Button = new Button(toggleBuildMode, null, 0, boardWhite.height);
+					button.setSpritemap(Assets.GFX_BUTTON_BUILD, 40, 40);
+					add(button);
 				}				
 			});
-			
-			connection.addMessageHandler(Messages.GAME_ACTIVATE, activateGame); 
 			
 			connection.addMessageHandler(Messages.GAME_START, function(m:Message):void {
 				add(new MessageDisplay("Go!", 2, 96, FP.screen.width / 2, FP.screen.height / 2, 250));
@@ -464,10 +474,17 @@ package schism.worlds
 			
 			connection.addMessageHandler(Messages.GAME_FINISHED, function(m:Message):void {
 				gameActive = false;
+				objectSelected = null;
+				buildMenu.visible = false;
 				
-				//removeList(getCells());
-				//removeList(getCreeps());
-				//removeList(getProjectiles());
+				for each(var p:Projectile in getProjectiles())
+					p.active = false;
+				
+				for each(var cr:Creep in getCreeps())
+				{
+					cr.active = false;
+					cr.spriteMap.active = false;
+				}
 				
 				if (glow != null)
 				{
@@ -492,7 +509,7 @@ package schism.worlds
 				
 				gameFinished = true;
 				resultWorld = new ResultWorld(client, connection, result, m.getInt(1), m.getInt(2), m.getUInt(3), m.getUInt(4));
-				add(new MessageDisplay(result, gameFinishCountdown, 48, FP.screen.width / 2, FP.screen.height / 2, 250));
+				add(new MessageDisplay(result, gameFinishCountdown, 48, FP.screen.width / 2, FP.screen.height / 2));
 			});
 			
 			connection.addMessageHandler(Messages.GAME_CELL_ADD, function(m:Message, i:int, x:int, y:int, w:int, h:int, mine:Boolean):void {				
@@ -713,6 +730,7 @@ package schism.worlds
 				}
 			});
 			
+			connection.addMessageHandler(Messages.GAME_ACTIVATE, activateGame);
 			connection.addMessageHandler(Messages.GAME_ALL_CREEPS_PATH, updatePaths);
 			connection.addMessageHandler(Messages.GAME_CREEP_PATH, updateSinglePath);
 			connection.addMessageHandler(Messages.GAME_WAVE_ACTIVATE, activateWave);
@@ -910,12 +928,6 @@ package schism.worlds
 			whiteManaUI.visible = true;
 			blackHealthUI.visible = true;
 			blackManaUI.visible = true;
-			/*
-			for each(var t:Text in console)
-			{
-				t.visible = true;				
-			}
-			*/
 		}
 		
 		private function fadeOutText():void
@@ -924,11 +936,6 @@ package schism.worlds
 			whiteManaUI.visible = false;
 			blackHealthUI.visible = false;
 			blackManaUI.visible = false;
-			
-			for each(var t:Text in console)
-			{
-				t.visible = false;				
-			}		
 		}
 		
 		private function handleError(error:PlayerIOError):void
@@ -944,29 +951,6 @@ package schism.worlds
 		private function handleDisconnect():void
 		{
 			FP.world = new LoginWorld("Connection to the server was lost, please try again.");
-		}
-		
-		public function addToChat(s:String, time:Number = 4):void
-		{
-			var t:Text = new Text(s, 10, FP.screen.height - 60, FP.screen.width - 20, 20);
-			//if (titleLeft.x == 0)
-			//	t.visible = false;
-				
-			t.font = "Domo";
-			t.size = 14;
-				
-			var vt:VarTween = new VarTween();
-			vt.tween(t, "alpha", 0, time, Ease.quadIn);
-			
-			addGraphic(t);
-			addTween(vt);
-			
-			for each(var text:Text in console)
-			{
-				text.y -= 20;
-			}
-			
-			console.push(t);
 		}
 		
 		public function getCell(index:int):Cell
@@ -1003,6 +987,19 @@ package schism.worlds
 			var p:Array = new Array();
 			getClass(Projectile, p);
 			return p;
+		}
+		
+		public function toggleBuildMode():void
+		{
+			switch(buildMode)
+			{
+				case BuildMode.NONE:
+					buildMode = BuildMode.TOWER;
+					break;
+				case BuildMode.TOWER:
+					buildMode = BuildMode.NONE;
+					break;
+			}
 		}
 		
 	}

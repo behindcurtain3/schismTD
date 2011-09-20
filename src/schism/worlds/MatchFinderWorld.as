@@ -34,10 +34,10 @@ package schism.worlds
 			newDidYouKnow();
 			
 			//Set developmentsever (Comment out to connect to your server online)
-			client.multiplayer.developmentServer = "192.168.0.169:8184";
+			this.client.multiplayer.developmentServer = "192.168.0.169:8184";
 			
 			//Create pr join the room test
-			client.multiplayer.createJoinRoom(
+			this.client.multiplayer.createJoinRoom(
 				"match-maker2",						//Room id. If set to null a random roomid is used
 				"$service-room$",					//The game type started on the server
 				true,								//Should the room be visible in the lobby?
@@ -61,7 +61,7 @@ package schism.worlds
 			} while (i == previousDidYouKnow);
 			
 			previousDidYouKnow = i;
-			add(new MessageDisplay("Did you know?\n\n" + DidYouKnow.strings[i], 10, 18, 0, 0, 400, 50, newDidYouKnow));
+			add(new MessageDisplay("Did you know?\n\n" + DidYouKnow.strings[i], 10, 18, FP.screen.width / 2, 0, 400, 50, newDidYouKnow));
 		}
 		
 		private function handleJoin(c:Connection):void
@@ -70,7 +70,7 @@ package schism.worlds
 
 			connection.addMessageHandler(Messages.MATCH_ID, function(m:Message, gameId:String):void {
 				connection.disconnect();
-				FP.world = new GameWorld(client, gameId);
+				FP.world = new GameWorld(this.client, gameId);
 			});
 		}
 		

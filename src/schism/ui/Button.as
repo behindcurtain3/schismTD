@@ -14,7 +14,7 @@ package schism.ui
 		protected var _over:Boolean;
 		protected var _clicked:Boolean;
 		
-		protected var _map:Spritemap;
+		public var _map:Spritemap;
 		
 		protected var _callback:Function;
 		protected var _argument:*;

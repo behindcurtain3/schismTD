@@ -1,5 +1,6 @@
 package schism
 {
+	import flash.ui.Mouse;
 	import net.flashpunk.Engine;
 	import net.flashpunk.FP;
 	import net.flashpunk.utils.Input;
@@ -9,6 +10,7 @@ package schism
 	import punk.ui.PunkUI;
 	import punk.ui.skins.RolpegeBlue;
 	import punk.ui.skins.SchismUI;
+	import schism.ui.SchismSkin;
 	import schism.worlds.LoginWorld;
 	import schism.worlds.SiteLockWorld;
 	
@@ -32,6 +34,7 @@ package schism
 			if (checkDomain(["www.schismtd.com", "schismtd.com", "schismtd.heroku.com"]))
 			{
 				PlayerIO.showLogo(FP.stage, "BC");
+				PunkUI.skin = new SchismSkin;
 				world = new LoginWorld();
 			}
 			else 

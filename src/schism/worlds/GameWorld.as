@@ -1,5 +1,6 @@
 package schism.worlds
 {
+	import net.flashpunk.graphics.Spritemap;
 	import schism.Assets;
 	import schism.BuildMode;
 	import schism.Cell;
@@ -71,6 +72,11 @@ package schism.worlds
 		protected var buildMenu:BuildMenu;
 		protected var buildInstructions:MessageDisplay;
 		protected var countdownText:Text;
+		protected var whiteHeart:Spritemap;
+		protected var blackHeart:Spritemap;
+		protected var whiteChi:Spritemap;
+		protected var blackChi:Spritemap;
+		protected var buildButton:Button;
 		
 		// Gfx
 		protected var board:Image;
@@ -149,6 +155,38 @@ package schism.worlds
 			boardBlack.alpha = 0;
 			boardBlack.x = boardBlack.width;
 			addGraphic(boardBlack, 6, FP.screen.width - 304, FP.screen.height - 160);
+			
+			whiteHeart = new Spritemap(Assets.GFX_UI_LIFE, 32, 32, endWhiteHeartAnimation);
+			whiteHeart.add("normal", [0]);
+			whiteHeart.add("hit", [1, 0, 1, 0, 1, 0], 50, false);
+			whiteHeart.play("normal");
+			whiteHeart.alpha = 0;
+			whiteHeart.x = -boardWhite.width;
+			addGraphic(whiteHeart, 2, 151, 21);
+			
+			blackHeart = new Spritemap(Assets.GFX_UI_LIFE, 32, 32, endBlackHeartAnimation);
+			blackHeart.add("normal", [0]);
+			blackHeart.add("hit", [1, 0, 1, 0, 1, 0], 50, false);
+			blackHeart.play("normal");
+			blackHeart.alpha = 0;
+			blackHeart.x = boardBlack.width;
+			addGraphic(blackHeart, 2, FP.screen.width - 186, FP.screen.height - 53);
+			
+			whiteChi = new Spritemap(Assets.GFX_UI_CHI, 32, 32, endWhiteChiAnimation);
+			whiteChi.add("normal", [0]);
+			whiteChi.add("highlight", [1, 0, 1, 0, 1, 0], 50, false);
+			whiteChi.play("normal");
+			whiteChi.alpha = 0;
+			whiteChi.x = -boardWhite.width;
+			addGraphic(whiteChi, 2, 150, 0);
+			
+			blackChi = new Spritemap(Assets.GFX_UI_CHI, 32, 32, endBlackChiAnimation);
+			blackChi.add("normal", [0]);
+			blackChi.add("highlight", [1, 0, 1, 0, 1, 0], 50, false);
+			blackChi.play("normal");
+			blackChi.alpha = 0;
+			blackChi.x = boardBlack.width;
+			addGraphic(blackChi, 2,  FP.screen.width - 186, FP.screen.height - 30);
 						
 			// Connect to game
 			connect();
@@ -449,9 +487,11 @@ package schism.worlds
 					boardWaveHighlight = new WaveHighlight(color, blackWaveQueue.zeroPosition.x, blackWaveQueue.zeroPosition.y);
 					add(boardWaveHighlight);
 					
-					var button:Button = new Button(toggleBuildMode, null, FP.screen.width - 40, FP.screen.height - boardBlack.height - 40);
-					button.setSpritemap(Assets.GFX_BUTTON_BUILD, 40, 40);
-					add(button);
+					buildButton = new Button(toggleBuildMode, null, FP.screen.width - 40, FP.screen.height - boardBlack.height - 25);
+					buildButton.setSpritemap(Assets.GFX_BUTTON_BUILD, 40, 40);
+					buildButton._map.alpha = 0;
+					buildButton._map.x = boardBlack.width;
+					add(buildButton);
 				} 
 				else if (m.getString(0) == "white")
 				{
@@ -462,9 +502,11 @@ package schism.worlds
 					boardWaveHighlight = new WaveHighlight(color, whiteWaveQueue.zeroPosition.x, whiteWaveQueue.zeroPosition.y);
 					add(boardWaveHighlight);
 					
-					var button:Button = new Button(toggleBuildMode, null, 0, boardWhite.height);
-					button.setSpritemap(Assets.GFX_BUTTON_BUILD, 40, 40);
-					add(button);
+					buildButton = new Button(toggleBuildMode, null, 0, boardWhite.height - 15);
+					buildButton.setSpritemap(Assets.GFX_BUTTON_BUILD, 40, 40);
+					buildButton._map.alpha = 0;
+					buildButton._map.x = -boardWhite.width;
+					add(buildButton);
 				}				
 			});
 			
@@ -660,6 +702,7 @@ package schism.worlds
 						sfx_player_hurt.play();
 						
 					blackHealth = value;
+					blackHeart.play("hit");
 				}
 				else
 				{
@@ -667,6 +710,7 @@ package schism.worlds
 						sfx_player_hurt.play();
 						
 					whiteHealth = value;
+					whiteHeart.play("hit");
 				}
 			});
 			
@@ -897,6 +941,48 @@ package schism.worlds
 			vt = new VarTween();
 			vt.tween(boardBlack, "alpha", 1, 2.5, Ease.expoOut);
 			addTween(vt, true);
+			
+			vt = new VarTween();
+			vt.tween(whiteHeart, "alpha", 1, 2.5, Ease.expoOut);
+			addTween(vt, true);
+			
+			vt = new VarTween();
+			vt.tween(blackHeart, "alpha", 1, 2.5, Ease.expoOut);
+			addTween(vt, true);
+			
+			vt = new VarTween();
+			vt.tween(whiteChi, "alpha", 1, 2.5, Ease.expoOut);
+			addTween(vt, true);
+			
+			vt = new VarTween();
+			vt.tween(blackChi, "alpha", 1, 2.5, Ease.expoOut);
+			addTween(vt, true);
+			
+			vt = new VarTween();
+			vt.tween(whiteHeart, "x", 0, 2.5, Ease.expoOut);
+			addTween(vt, true);
+			
+			vt = new VarTween();
+			vt.tween(blackHeart, "x", 0, 2.5, Ease.expoOut);
+			addTween(vt, true);
+			
+			vt = new VarTween();
+			vt.tween(whiteChi, "x", 0, 2.5, Ease.expoOut);
+			addTween(vt, true);
+			
+			vt = new VarTween();
+			vt.tween(blackChi, "x", 0, 2.5, Ease.expoOut);
+			addTween(vt, true);
+			
+			vt = new VarTween();
+			vt.tween(buildButton._map , "alpha", 1, 2.5, Ease.expoOut);
+			addTween(vt, true);
+			
+			vt = new VarTween();
+			vt.tween(buildButton._map, "x", 0, 2.5, Ease.expoOut);
+			addTween(vt, true);
+			
+			
 		};
 		
 		private function activateCells():void
@@ -1000,6 +1086,26 @@ package schism.worlds
 					buildMode = BuildMode.NONE;
 					break;
 			}
+		}
+		
+		public function endWhiteHeartAnimation():void
+		{
+			whiteHeart.play("normal");			
+		}
+		
+		public function endBlackHeartAnimation():void
+		{
+			blackHeart.play("normal");			
+		}
+		
+		public function endWhiteChiAnimation():void
+		{
+			whiteChi.play("normal");			
+		}
+		
+		public function endBlackChiAnimation():void
+		{
+			blackChi.play("normal");			
 		}
 		
 	}

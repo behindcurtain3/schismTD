@@ -12,6 +12,7 @@ package schism.worlds
 	import playerio.PlayerIORegistrationError;
 	import schism.Assets;
 	import schism.ui.MessageDisplay;
+	import schism.ui.MyMouse;
 	
 	import net.flashpunk.FP;
 	import net.flashpunk.graphics.Image;
@@ -36,7 +37,9 @@ package schism.worlds
 	public class LoginWorld extends World 
 	{
 		// Login
+		protected var usernameL:PunkLabel;
 		protected var username:PunkTextField;
+		protected var passwordL:PunkLabel;
 		protected var password:PunkPasswordField;
 		
 		// Messages
@@ -57,13 +60,20 @@ package schism.worlds
 			addGraphic(new Image(Assets.GFX_TITLE), 99, FP.screen.width / 2 - 275, 50);
 			
 			// Login
-			add(new PunkLabel("Username:", uiX, uiY, width, 50));
+			usernameL = new PunkLabel("Login Name", uiX, uiY, width, 50);
+			usernameL.font = "Domo";
 			username = new PunkTextField("", uiX, uiY + spacer, width);
-			add(new PunkLabel("Password:", uiX, uiY + spacer * 2, width, 50));
+			username.font = "Domo";
+			passwordL = new PunkLabel("Password", uiX, uiY + spacer * 2, width, 50);
+			passwordL.font = "Domo";
 			password = new PunkPasswordField(uiX, uiY + spacer * 3, width);
+			password.font = "Domo";
 			
+			add(usernameL);
 			add(username);
+			add(passwordL);
 			add(password);
+			
 			var b:PunkButton = new PunkButton(uiX, uiY + spacer * 4 + spacer / 2, width, 50, "Play Now", onPlayNow, Key.ENTER);
 			b.label.font = "Domo";
 			b.label.size = 20;

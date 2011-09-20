@@ -9,6 +9,9 @@ package schism
 		public static const VERSION:String = "v0.2-rc4";
 		public static const GAME_ID:String = "schismtd-3r3otmhvkki9ixublwca";
 		
+		[Embed(source = '../../assets/board/punkuimenus.png')] public static const SKIN:Class;
+		[Embed(source = '../../assets/board/pointers.png')] public static const MOUSE_MAIN:Class;
+		
 		// Menus
 		[Embed(source = '../../assets/board/Title.png')] public static const GFX_TITLE:Class;
 		[Embed(source = '../../assets/board/background.png')] public static const GFX_BACKGROUND:Class;
@@ -16,12 +19,14 @@ package schism
 		// Board
 		[Embed(source = '../../assets/board/Board-back.png')] public static const GFX_BOARD:Class;
 		[Embed(source = '../../assets/board/Board-front.png')] public static const GFX_BOARD_OVERLAY:Class;
-		[Embed(source = '../../assets/board/playerwindow-white.png')] public static const GFX_BOARD_WHITE:Class;
-		[Embed(source = '../../assets/board/playerwindow-black.png')] public static const GFX_BOARD_BLACK:Class;
-		[Embed(source = '../../assets/board/wavehighlight-black.png')] public static const GFX_WAVE_BLACK:Class;
-		[Embed(source = '../../assets/board/wavehighlight-white.png')] public static const GFX_WAVE_WHITE:Class;
-		[Embed(source = '../../assets/board/Spell Gem.png')] public static const GFX_GEM:Class;
+		[Embed(source = '../../assets/board/Player HUDS/playerwindow-white.png')] public static const GFX_BOARD_WHITE:Class;
+		[Embed(source = '../../assets/board/Player HUDS/playerwindow-black.png')] public static const GFX_BOARD_BLACK:Class;
+		[Embed(source = '../../assets/board/Player HUDS/wavehighlight-black.png')] public static const GFX_WAVE_BLACK:Class;
+		[Embed(source = '../../assets/board/Player HUDS/wavehighlight-white.png')] public static const GFX_WAVE_WHITE:Class;
+		[Embed(source = '../../assets/towers/chigem.png')] public static const GFX_GEM:Class;
 		[Embed(source = '../../assets/board/buildtowerbutton.png')] public static const GFX_BUTTON_BUILD:Class;
+		[Embed(source = '../../assets/board/Player HUDS/lifecrystal.png')] public static const GFX_UI_LIFE:Class;
+		[Embed(source = '../../assets/board/Player HUDS/chicrystal.png')] public static const GFX_UI_CHI:Class;
 		
 		//Icons
 		[Embed(source = '../../assets/board/creep icons/miniarmor.png')] public static const GFX_ICONS_ARMOR:Class;

@@ -19,6 +19,8 @@ package schism.ui
 		protected var _callback:Function;
 		protected var _argument:*;
 		
+		public var enabled:Boolean = true;
+		
 		public function Button(callback:Function, argument:*, x:Number = 0, y:Number = 0) 
 		{
 			super(x, y);
@@ -82,7 +84,7 @@ package schism.ui
 			if (_callback == null)
 				return;
 			
-			if (!_argument)
+			if (_argument == null)
 			{
 				_callback();
 			}
@@ -94,19 +96,23 @@ package schism.ui
 		
 		override public function render():void
 		{
-			if (_clicked)
-			{
-				_map.play("Down");
-			}
-			else if (_over)
-			{
-				_map.play("Over");
-			}
+			if (!enabled)
+				_map.play("Up");
 			else
 			{
-				_map.play("Up");
+				if (_clicked)
+				{
+					_map.play("Down");
+				}
+				else if (_over)
+				{
+					_map.play("Over");
+				}
+				else
+				{
+					_map.play("Up");
+				}
 			}
-			
 			super.render();
 		}
 		

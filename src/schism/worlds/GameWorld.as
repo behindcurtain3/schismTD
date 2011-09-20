@@ -77,6 +77,12 @@ package schism.worlds
 		protected var whiteChi:Spritemap;
 		protected var blackChi:Spritemap;
 		protected var buildButton:Button;
+		protected var black1:Button;
+		protected var black2:Button;
+		protected var black3:Button;
+		protected var white1:Button;
+		protected var white2:Button;
+		protected var white3:Button;
 		
 		// Gfx
 		protected var board:Image;
@@ -140,12 +146,17 @@ package schism.worlds
 			addGraphic(new Image(Assets.GFX_BACKGROUND), 200);
 			board = new Image(Assets.GFX_BOARD);
 			board.alpha = 0;
-			addGraphic(board, 100, 0, 0);
+			board.angle = 90;
+			board.smooth = true;
+			board.centerOrigin();
+			addGraphic(board, 100, FP.screen.width / 2, FP.screen.height / 2);
 			
 			boardOverlay = new Image(Assets.GFX_BOARD_OVERLAY);
+			boardOverlay.centerOrigin();
 			boardOverlay.alpha = 0;
 			boardOverlay.smooth = true;
-			addGraphic(boardOverlay, 5);
+			boardOverlay.angle = 90;
+			addGraphic(boardOverlay, 5, FP.screen.width / 2, FP.screen.height / 2);
 			
 			boardWhite = new Image(Assets.GFX_BOARD_WHITE);
 			boardWhite.alpha = 0;
@@ -492,6 +503,46 @@ package schism.worlds
 					buildButton._map.alpha = 0;
 					buildButton._map.x = boardBlack.width;
 					add(buildButton);
+					
+					black1 = new Button(setWave, 0, FP.screen.width - 15, FP.screen.height - 85);
+					black1.setSpritemap(Assets.GFX_UI_B1, 24, 32);
+					black1._map.centerOrigin();
+					black1.centerOrigin();
+					black1._map.x = boardBlack.width;
+					black2 = new Button(setWave, 1, FP.screen.width - 15, FP.screen.height - 55);
+					black2.setSpritemap(Assets.GFX_UI_B2, 24, 32);
+					black2._map.centerOrigin();
+					black2.centerOrigin();
+					black2._map.x = boardBlack.width;
+					black3 = new Button(setWave, 2, FP.screen.width - 15, FP.screen.height - 25);
+					black3.setSpritemap(Assets.GFX_UI_B3, 24, 32);
+					black3._map.centerOrigin();
+					black3.centerOrigin();
+					black3._map.x = boardBlack.width;
+					
+					addList(black1, black2, black3);
+					
+					white1 = new Button(null, null, 15, 25);
+					white1.setSpritemap(Assets.GFX_UI_W1, 24, 32);
+					white1._map.centerOrigin();
+					white1.centerOrigin();
+					white1.enabled = false;
+					white1._map.x = -boardWhite.width;
+					white2 = new Button(null, null, 15, 55);
+					white2.setSpritemap(Assets.GFX_UI_W2, 24, 32);
+					white2._map.centerOrigin();
+					white2.centerOrigin();
+					white2.enabled = false;
+					white2._map.x = -boardWhite.width;
+					white3 = new Button(null, null, 15, 85);
+					white3.setSpritemap(Assets.GFX_UI_W3, 24, 32);
+					white3._map.centerOrigin();
+					white3.centerOrigin();
+					white3.enabled = false;
+					white3._map.x = -boardWhite.width;
+					
+					addList(white1, white2, white3);
+					
 				} 
 				else if (m.getString(0) == "white")
 				{
@@ -507,6 +558,45 @@ package schism.worlds
 					buildButton._map.alpha = 0;
 					buildButton._map.x = -boardWhite.width;
 					add(buildButton);
+					
+					black1 = new Button(null, null, FP.screen.width - 15, FP.screen.height - 85);
+					black1.setSpritemap(Assets.GFX_UI_B1, 24, 32);
+					black1._map.centerOrigin();
+					black1.centerOrigin();
+					black1.enabled = false;
+					black1._map.x = boardBlack.width;
+					black2 = new Button(null, null, FP.screen.width - 15, FP.screen.height - 55);
+					black2.setSpritemap(Assets.GFX_UI_B2, 24, 32);
+					black2._map.centerOrigin();
+					black2.centerOrigin();
+					black2.enabled = false;
+					black2._map.x = boardBlack.width;
+					black3 = new Button(null, null, FP.screen.width - 15, FP.screen.height - 25);
+					black3.setSpritemap(Assets.GFX_UI_B3, 24, 32);
+					black3._map.centerOrigin();
+					black3.centerOrigin();
+					black3.enabled = false;
+					black3._map.x = boardBlack.width;
+					
+					addList(black1, black2, black3);
+					
+					white1 = new Button(setWave, 0, 15, 25);
+					white1.setSpritemap(Assets.GFX_UI_W1, 24, 32);
+					white1._map.centerOrigin();
+					white1.centerOrigin();
+					white1._map.x = -boardWhite.width;
+					white2 = new Button(setWave, 1, 15, 55);
+					white2.setSpritemap(Assets.GFX_UI_W2, 24, 32);
+					white2._map.centerOrigin();
+					white2.centerOrigin();
+					white2._map.x = -boardWhite.width;
+					white3 = new Button(setWave, 2, 15, 85);
+					white3.setSpritemap(Assets.GFX_UI_W3, 24, 32);
+					white3._map.centerOrigin();
+					white3.centerOrigin();
+					white3._map.x = -boardWhite.width;
+					
+					addList(white1, white2, white3);
 				}				
 			});
 			
@@ -927,6 +1017,14 @@ package schism.worlds
 			addTween(vt, true);
 			
 			vt = new VarTween();
+			vt.tween(board, "angle", 0, 2.5, Ease.expoOut);
+			addTween(vt, true);
+			
+			vt = new VarTween();
+			vt.tween(boardOverlay, "angle", 0, 2.5, Ease.expoOut);
+			addTween(vt, true);
+			
+			vt = new VarTween();
 			vt.tween(boardWhite, "x", 0, 2.5, Ease.expoOut);
 			addTween(vt, true);
 			
@@ -982,7 +1080,29 @@ package schism.worlds
 			vt.tween(buildButton._map, "x", 0, 2.5, Ease.expoOut);
 			addTween(vt, true);
 			
+			vt = new VarTween();
+			vt.tween(black1._map, "x", 0, 2.5, Ease.expoOut);
+			addTween(vt, true);
 			
+			vt = new VarTween();
+			vt.tween(black2._map, "x", 0, 2.5, Ease.expoOut);
+			addTween(vt, true);
+			
+			vt = new VarTween();
+			vt.tween(black3._map, "x", 0, 2.5, Ease.expoOut);
+			addTween(vt, true);
+			
+			vt = new VarTween();
+			vt.tween(white1._map, "x", 0, 2.5, Ease.expoOut);
+			addTween(vt, true);
+			
+			vt = new VarTween();
+			vt.tween(white2._map, "x", 0, 2.5, Ease.expoOut);
+			addTween(vt, true);
+			
+			vt = new VarTween();
+			vt.tween(white3._map, "x", 0, 2.5, Ease.expoOut);
+			addTween(vt, true);
 		};
 		
 		private function activateCells():void
@@ -1108,5 +1228,9 @@ package schism.worlds
 			blackChi.play("normal");			
 		}
 		
+		public function setWave(i:int):void
+		{
+			connection.send(Messages.GAME_WAVE_NEXT, i);
+		}
 	}
 }

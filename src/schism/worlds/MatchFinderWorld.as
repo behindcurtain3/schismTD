@@ -34,7 +34,7 @@ package schism.worlds
 			newDidYouKnow();
 			
 			//Set developmentsever (Comment out to connect to your server online)
-			client.multiplayer.developmentServer = "192.168.0.169:8184";
+			//client.multiplayer.developmentServer = "192.168.0.169:8184";
 			
 			//Create pr join the room test
 			client.multiplayer.createJoinRoom(
@@ -87,7 +87,7 @@ package schism.worlds
 					FP.world = new LoginWorld("There are no game servers currently available.");
 					break;
 				default:
-					FP.world = new LoginWorld("Client Error: " + error.message);
+					FP.world = new LoginWorld("There was an error connecting to the servers.");
 					break;
 			}						
 		}

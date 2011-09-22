@@ -91,7 +91,7 @@ package schism.worlds
 			
 			if (error != "")
 			{
-				messageDisplay = new MessageDisplay(error, 5);
+				messageDisplay = new MessageDisplay(error, 5, 18, FP.screen.width / 2);
 				add(messageDisplay);
 			}
 			

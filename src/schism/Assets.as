@@ -6,7 +6,7 @@ package schism
 	 */
 	public class Assets 
 	{		
-		public static const VERSION:String = "v0.2-rc4";
+		public static const VERSION:String = "v0.2-rc5";
 		public static const GAME_ID:String = "schismtd-3r3otmhvkki9ixublwca";
 		
 		[Embed(source = '../../assets/board/punkuimenus.png')] public static const SKIN:Class;

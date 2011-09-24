@@ -34,10 +34,10 @@ package schism.worlds
 			newDidYouKnow();
 			
 			//Set developmentsever (Comment out to connect to your server online)
-			this.client.multiplayer.developmentServer = "192.168.0.169:8184";
+			//client.multiplayer.developmentServer = "192.168.0.169:8184";
 			
 			//Create pr join the room test
-			this.client.multiplayer.createJoinRoom(
+			client.multiplayer.createJoinRoom(
 				"match-maker2",						//Room id. If set to null a random roomid is used
 				"$service-room$",					//The game type started on the server
 				true,								//Should the room be visible in the lobby?
@@ -70,7 +70,7 @@ package schism.worlds
 
 			connection.addMessageHandler(Messages.MATCH_ID, function(m:Message, gameId:String):void {
 				connection.disconnect();
-				FP.world = new GameWorld(this.client, gameId);
+				FP.world = new GameWorld(client, gameId);
 			});
 		}
 		
@@ -87,7 +87,7 @@ package schism.worlds
 					FP.world = new LoginWorld("There are no game servers currently available.");
 					break;
 				default:
-					FP.world = new LoginWorld("Client Error: " + error.message);
+					FP.world = new LoginWorld("There was an error connecting to the servers.");
 					break;
 			}						
 		}

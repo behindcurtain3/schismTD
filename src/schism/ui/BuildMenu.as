@@ -116,7 +116,7 @@ package schism.ui
 				
 				leftUpgradeCost.centerOrigin();
 				leftUpgradeCost.font = "Domo";
-				leftUpgradeCost.color = 0x000000;
+				leftUpgradeCost.color = 0xFFFFFF;
 				leftUpgradeCost.x = leftUpgradeGfx.x + 10;
 				leftUpgradeCost.y = leftUpgradeToken.y;
 			}
@@ -129,7 +129,7 @@ package schism.ui
 				
 				rightUpgradeCost.centerOrigin();
 				rightUpgradeCost.font = "Domo";
-				rightUpgradeCost.color = 0x000000;
+				rightUpgradeCost.color = 0xFFFFFF;
 				rightUpgradeCost.x = rightUpgradeGfx.x + 10;
 				rightUpgradeCost.y = rightUpgradeToken.y;
 			}

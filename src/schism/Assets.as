@@ -6,7 +6,7 @@ package schism
 	 */
 	public class Assets 
 	{		
-		public static const VERSION:String = "v0.2-rc4";
+		public static const VERSION:String = "v0.2-rc5";
 		public static const GAME_ID:String = "schismtd-3r3otmhvkki9ixublwca";
 		
 		[Embed(source = '../../assets/board/punkuimenus.png')] public static const SKIN:Class;
@@ -27,6 +27,12 @@ package schism
 		[Embed(source = '../../assets/board/buildtowerbutton.png')] public static const GFX_BUTTON_BUILD:Class;
 		[Embed(source = '../../assets/board/Player HUDS/lifecrystal.png')] public static const GFX_UI_LIFE:Class;
 		[Embed(source = '../../assets/board/Player HUDS/chicrystal.png')] public static const GFX_UI_CHI:Class;
+		[Embed(source = '../../assets/board/Player HUDS/black-1.png')] public static const GFX_UI_B1:Class;
+		[Embed(source = '../../assets/board/Player HUDS/black-2.png')] public static const GFX_UI_B2:Class;
+		[Embed(source = '../../assets/board/Player HUDS/black-3.png')] public static const GFX_UI_B3:Class;
+		[Embed(source = '../../assets/board/Player HUDS/white-1.png')] public static const GFX_UI_W1:Class;
+		[Embed(source = '../../assets/board/Player HUDS/white-2.png')] public static const GFX_UI_W2:Class;
+		[Embed(source = '../../assets/board/Player HUDS/white-3.png')] public static const GFX_UI_W3:Class;
 		
 		//Icons
 		[Embed(source = '../../assets/board/creep icons/miniarmor.png')] public static const GFX_ICONS_ARMOR:Class;

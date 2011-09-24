@@ -1,5 +1,6 @@
 package schism
 {
+	import flash.display.StageScaleMode;
 	import flash.ui.Mouse;
 	import net.flashpunk.Engine;
 	import net.flashpunk.FP;
@@ -30,7 +31,9 @@ package schism
 		override public function init():void 
 		{
 			super.init();
-						
+			
+			FP.stage.scaleMode = StageScaleMode.SHOW_ALL;
+			
 			if (checkDomain(["www.schismtd.com", "schismtd.com", "schismtd.heroku.com"]))
 			{
 				PlayerIO.showLogo(FP.stage, "BC");

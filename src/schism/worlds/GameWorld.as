@@ -658,7 +658,8 @@ package schism.worlds
 						{
 							case "basic":
 								tc.assignGfx(Assets.GFX_TOWER_BASIC);
-								sfx_tower_build.play();
+								if(tc.isOurs())
+									sfx_tower_build.play();
 								break;
 							case "rapidfire":
 								tc.assignGfx(Assets.GFX_TOWER_RAPIDFIRE);

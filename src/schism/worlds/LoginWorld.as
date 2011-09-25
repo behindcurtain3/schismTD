@@ -59,6 +59,7 @@ package schism.worlds
 			addGraphic(new Image(Assets.GFX_BACKGROUND), 100);
 			addGraphic(new Image(Assets.GFX_TITLE), 99, FP.screen.width / 2 - 275, 50);
 			
+			/*
 			// Login
 			usernameL = new PunkLabel("Login Name", uiX, uiY, width, 50);
 			usernameL.font = "Domo";
@@ -73,18 +74,24 @@ package schism.worlds
 			add(username);
 			add(passwordL);
 			add(password);
+			*/
+			var b:PunkButton = new PunkButton(uiX, FP.screen.height / 2 - 25, width, 50, "Play", onPlayTest)
+			b.label.font = "Domo";
+			add(b);
+			add(new MessageDisplay("", 0, 36, FP.screen.width / 2, FP.screen.height / 2, width + 15, 65));
+			/*
 			
 			var b:PunkButton = new PunkButton(uiX, uiY + spacer * 4 + spacer / 2, width, 50, "Play Now", onPlayNow, Key.ENTER);
 			b.label.font = "Domo";
 			b.label.size = 20;
 			add(b);
-			b = new PunkButton(0, 0, 100, 30, "Test Game", onPlayTest)
-			b.label.font = "Domo";
-			add(b);
+			
 			b = new PunkButton(uiX, uiY + spacer * 7, width, 50, "Register", onRegister);
 			b.label.font = "Domo";
 			add(b);
+			
 			add(new MessageDisplay("", 0, 36, FP.screen.width / 2, FP.screen.height / 2 + 40, width + 15, 245));
+			*/
 			
 			
 			addGraphic(new Text(Assets.VERSION, 0, FP.screen.height - 15, 50, 15));

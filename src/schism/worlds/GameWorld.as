@@ -189,7 +189,7 @@ package schism.worlds
 			whiteChi.play("normal");
 			whiteChi.alpha = 0;
 			whiteChi.x = -boardWhite.width;
-			addGraphic(whiteChi, 2, 150, 0);
+			addGraphic(whiteChi, 2, 158, 8);
 			
 			blackChi = new Spritemap(Assets.GFX_UI_CHI, 32, 32, endBlackChiAnimation);
 			blackChi.add("normal", [0]);
@@ -197,7 +197,7 @@ package schism.worlds
 			blackChi.play("normal");
 			blackChi.alpha = 0;
 			blackChi.x = boardBlack.width;
-			addGraphic(blackChi, 2,  FP.screen.width - 186, FP.screen.height - 30);
+			addGraphic(blackChi, 2,  FP.screen.width - 180, FP.screen.height - 22);
 						
 			// Connect to game
 			connect();
@@ -274,6 +274,7 @@ package schism.worlds
 							objectSelected = null;
 							buildMenu.visible = false;
 							buildInstructions.visible = false;
+							buildButton.toggle();
 						}
 						
 						// Update if glow is visible
@@ -330,6 +331,7 @@ package schism.worlds
 						if (Input.pressed("Build") || objectSelected != null)
 						{
 							buildMode = BuildMode.NONE;
+							buildButton.toggle();
 						}
 						
 						// Glow is not visible in this mode
@@ -1207,6 +1209,8 @@ package schism.worlds
 					buildMode = BuildMode.NONE;
 					break;
 			}
+			
+			buildButton.toggle();
 		}
 		
 		public function endWhiteHeartAnimation():void

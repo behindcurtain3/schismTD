@@ -20,6 +20,7 @@ package schism.ui
 		protected var _argument:*;
 		
 		public var enabled:Boolean = true;
+		private var _toggle:Boolean = false;
 		
 		public function Button(callback:Function, argument:*, x:Number = 0, y:Number = 0) 
 		{
@@ -53,6 +54,10 @@ package schism.ui
 				{
 					mouseOver();
 				}
+			}
+			else
+			{
+				_clicked = _toggle;
 			}
 		}
 		
@@ -115,6 +120,12 @@ package schism.ui
 			}
 			super.render();
 		}
+		
+		public function toggle():void
+		{
+			_toggle = !_toggle;
+		}
+		
 		
 	}
 

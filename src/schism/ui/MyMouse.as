@@ -21,8 +21,8 @@ package schism.ui
 			_map = new Spritemap(Assets.MOUSE_MAIN, 40, 40);
 			_map.add("main", [0]);
 			_map.add("build", [1]);
-			_map.add("sniper", [2]);
-			_map.add("spell", [3]);
+			_map.add("sniper", [3]);
+			_map.add("spell", [2]);
 			_map.play("main");
 			
 			graphic = _map;

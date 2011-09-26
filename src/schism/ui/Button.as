@@ -28,6 +28,7 @@ package schism.ui
 			
 			_callback = callback;
 			_argument = argument;
+			layer = 1;
 		}
 		
 		override public function update():void
@@ -126,6 +127,10 @@ package schism.ui
 			_toggle = !_toggle;
 		}
 		
+		public function isDown():Boolean
+		{
+			return _toggle;
+		}
 		
 	}
 

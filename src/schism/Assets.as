@@ -25,6 +25,7 @@ package schism
 		[Embed(source = '../../assets/board/Player HUDS/wavehighlight-white.png')] public static const GFX_WAVE_WHITE:Class;
 		[Embed(source = '../../assets/towers/chigem.png')] public static const GFX_GEM:Class;
 		[Embed(source = '../../assets/board/buildtowerbutton.png')] public static const GFX_BUTTON_BUILD:Class;
+		[Embed(source = '../../assets/board/chiblastbutton.png')] public static const GFX_BUTTON_SPELL:Class;
 		[Embed(source = '../../assets/board/Player HUDS/lifecrystal.png')] public static const GFX_UI_LIFE:Class;
 		[Embed(source = '../../assets/board/Player HUDS/chicrystal.png')] public static const GFX_UI_CHI:Class;
 		[Embed(source = '../../assets/board/Player HUDS/black-1.png')] public static const GFX_UI_B1:Class;

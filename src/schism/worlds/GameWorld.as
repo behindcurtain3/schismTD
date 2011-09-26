@@ -1,5 +1,6 @@
 package schism.worlds
 {
+	import flash.ui.Mouse;
 	import net.flashpunk.graphics.Spritemap;
 	import schism.Assets;
 	import schism.BuildMode;
@@ -38,6 +39,7 @@ package schism.worlds
 	import schism.ui.FauxTower;
 	import schism.ui.Glow;
 	import schism.ui.MessageDisplay;
+	import schism.ui.MyMouse;
 	import schism.waves.BlackWaveQueue;
 	import schism.waves.WaveHighlight;
 	import schism.waves.WhiteWaveQueue;
@@ -53,7 +55,8 @@ package schism.worlds
 	 */
 	public class GameWorld extends World 
 	{
-		public var Mode:int = BuildMode.NONE;
+		private var Mode:int = BuildMode.NONE;
+		private var inSpellMode:Boolean = false;
 		
 		// Settings
 		private var gameId:String;
@@ -77,12 +80,14 @@ package schism.worlds
 		protected var whiteChi:Spritemap;
 		protected var blackChi:Spritemap;
 		protected var buildButton:Button;
+		protected var spellButton:Button;
 		protected var black1:Button;
 		protected var black2:Button;
 		protected var black3:Button;
 		protected var white1:Button;
 		protected var white2:Button;
 		protected var white3:Button;
+		protected var mouse:MyMouse;
 		
 		// Gfx
 		protected var board:Image;
@@ -130,6 +135,10 @@ package schism.worlds
 		{
 			this.client = client;
 			this.gameId = gameId;
+			
+			Mouse.hide();
+			mouse = new MyMouse();
+			add(mouse);
 			
 			FP.volume = 0.1;
 			
@@ -210,6 +219,7 @@ package schism.worlds
 			Input.define("Upgrade1", Key.A, Key.LEFT);
 			Input.define("Upgrade2", Key.D, Key.RIGHT);
 			Input.define("Sell", Key.S, Key.DOWN);
+			Input.define("Spell", Key.SPACE);
 			
 			Input.define("Wave1", Key.DIGIT_1, Key.NUMPAD_1);
 			Input.define("Wave2", Key.DIGIT_2, Key.NUMPAD_2);
@@ -238,6 +248,7 @@ package schism.worlds
 				connection.disconnect();
 			}
 			removeAll();
+			Mouse.show();
 			super.end();
 		}
 		
@@ -265,6 +276,25 @@ package schism.worlds
 				// Default is not visible
 				fauxTower.visible = false;
 				
+				if (inSpellMode)
+				{
+					if (Input.pressed("Spell"))
+					{
+						inSpellMode = false;
+						mouse.setMap("main");
+						spellButton.toggle();
+					}
+				}
+				else
+				{
+					if (Input.pressed("Spell"))
+					{
+						inSpellMode = true;
+						mouse.setMap("spell");
+						spellButton.toggle();
+					}
+				}
+				
 				switch(buildMode)
 				{
 					case BuildMode.NONE:
@@ -275,6 +305,7 @@ package schism.worlds
 							buildMenu.visible = false;
 							buildInstructions.visible = false;
 							buildButton.toggle();
+							mouse.setMap("build");
 						}
 						
 						// Update if glow is visible
@@ -332,6 +363,7 @@ package schism.worlds
 						{
 							buildMode = BuildMode.NONE;
 							buildButton.toggle();
+							mouse.setMap("main");
 						}
 						
 						// Glow is not visible in this mode
@@ -506,6 +538,12 @@ package schism.worlds
 					buildButton._map.x = boardBlack.width;
 					add(buildButton);
 					
+					spellButton = new Button(toggleSpellMode, null, FP.screen.width - 90, FP.screen.height - boardBlack.height - 25);
+					spellButton.setSpritemap(Assets.GFX_BUTTON_SPELL, 40, 40);
+					spellButton._map.alpha = 0;
+					spellButton._map.x = boardBlack.width;
+					add(spellButton);
+					
 					black1 = new Button(setWave, 0, FP.screen.width - 15, FP.screen.height - 85);
 					black1.setSpritemap(Assets.GFX_UI_B1, 24, 32);
 					black1._map.centerOrigin();
@@ -560,6 +598,12 @@ package schism.worlds
 					buildButton._map.alpha = 0;
 					buildButton._map.x = -boardWhite.width;
 					add(buildButton);
+					
+					spellButton = new Button(toggleSpellMode, null, 50, boardWhite.height - 15);
+					spellButton.setSpritemap(Assets.GFX_BUTTON_SPELL, 40, 40);
+					spellButton._map.alpha = 0;
+					spellButton._map.x = -boardWhite.width;
+					add(spellButton);
 					
 					black1 = new Button(null, null, FP.screen.width - 15, FP.screen.height - 85);
 					black1.setSpritemap(Assets.GFX_UI_B1, 24, 32);
@@ -1084,6 +1128,14 @@ package schism.worlds
 			addTween(vt, true);
 			
 			vt = new VarTween();
+			vt.tween(spellButton._map , "alpha", 1, 2.5, Ease.expoOut);
+			addTween(vt, true);
+			
+			vt = new VarTween();
+			vt.tween(spellButton._map, "x", 0, 2.5, Ease.expoOut);
+			addTween(vt, true);
+			
+			vt = new VarTween();
 			vt.tween(black1._map, "x", 0, 2.5, Ease.expoOut);
 			addTween(vt, true);
 			
@@ -1211,6 +1263,21 @@ package schism.worlds
 			}
 			
 			buildButton.toggle();
+			
+			if (buildButton.isDown())
+				mouse.setMap("build");
+			else
+				mouse.setMap("main");
+		}
+		
+		public function toggleSpellMode():void
+		{
+			spellButton.toggle();
+			inSpellMode = spellButton.isDown();
+			if (spellButton.isDown())
+				mouse.setMap("spell");
+			else
+				mouse.setMap("main");
 		}
 		
 		public function endWhiteHeartAnimation():void

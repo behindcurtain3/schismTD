@@ -53,6 +53,9 @@ package schism
 		public static const GAME_PROJECTILE_ADD:String = "gpa";
         public static const GAME_PROJECTILE_REMOVE:String = "gpr";
         public static const GAME_PROJECTILE_UPDATE:String = "gpu";
+		
+		public static const GAME_SPELL_CREEP:String = "gsc";
+		public static const GAME_SPELL_TOWER:String = "gst";
 	}
 
 }

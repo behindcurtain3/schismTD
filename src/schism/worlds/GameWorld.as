@@ -36,6 +36,7 @@ package schism.worlds
 	import schism.projectiles.PulseProjectile;
 	import schism.ui.BuildMenu;
 	import schism.ui.Button;
+	import schism.ui.ChiBlast;
 	import schism.ui.FauxTower;
 	import schism.ui.Glow;
 	import schism.ui.MessageDisplay;
@@ -56,7 +57,6 @@ package schism.worlds
 	public class GameWorld extends World 
 	{
 		private var Mode:int = BuildMode.NONE;
-		private var inSpellMode:Boolean = false;
 		
 		// Settings
 		private var gameId:String;
@@ -276,28 +276,67 @@ package schism.worlds
 				// Default is not visible
 				fauxTower.visible = false;
 				
-				if (inSpellMode)
+				if (Input.mousePressed)
 				{
-					if (Input.pressed("Spell"))
-					{
-						inSpellMode = false;
-						mouse.setMap("main");
-						spellButton.toggle();
-					}
+					dragStart = new Point(Input.mouseX, Input.mouseY);
 				}
-				else
+				
+				if (Input.mouseReleased)
 				{
-					if (Input.pressed("Spell"))
+					if (buildMenu.isMouseOver())
 					{
-						inSpellMode = true;
-						mouse.setMap("spell");
-						spellButton.toggle();
+						// Check to see if any buttons were pressed
+						if (buildMenu.isMouseOverLeft())
+						{
+							connection.send(Messages.GAME_TOWER_UPGRADE, objectSelected.centerX, objectSelected.centerY, 1);
+						}
+						if (buildMenu.isMouseOverRight())
+						{
+							connection.send(Messages.GAME_TOWER_UPGRADE, objectSelected.centerX, objectSelected.centerY, 2);
+						}
+						
 					}
+					else
+					{					
+						dragEnd = new Point(Input.mouseX, Input.mouseY);
+						
+						// Check if something exists
+						cell = collidePoint("cell", dragEnd.x, dragEnd.y) as Cell;
+							
+						if (cell != null)
+						{
+							if (!cell.hasTower && !buildMenu.isMouseOver())
+							{
+								objectSelected = null;
+								buildMenu.visible = false;
+							}
+							else
+							{
+								if (cell.isOurs() && buildMode != BuildMode.SPELL)
+								{
+									objectSelected = cell;
+									buildMenu.displayAt(cell);
+								}
+							}
+						}
+						else
+						{
+							objectSelected = null;
+							buildMenu.visible = false;
+						}
+
+					}
+					dragStart = null;
+					dragEnd = null;
 				}
 				
 				switch(buildMode)
 				{
 					case BuildMode.NONE:
+						if (spellButton.isDown())
+							spellButton.toggle();
+						if (buildButton.isDown())
+							buildButton.toggle();
 						if (Input.pressed("Build"))
 						{
 							buildMode = BuildMode.TOWER;
@@ -307,6 +346,8 @@ package schism.worlds
 							buildButton.toggle();
 							mouse.setMap("build");
 						}
+						
+						mouse.setMap("main");
 						
 						// Update if glow is visible
 						var hoverCell:Cell = collidePoint("cell", Input.mouseX, Input.mouseY) as Cell;
@@ -358,7 +399,12 @@ package schism.worlds
 						}
 						
 						break;
-					case BuildMode.TOWER:					
+					case BuildMode.TOWER:
+						if (spellButton.isDown())
+							spellButton.toggle();
+						if (!buildButton.isDown())
+							buildButton.toggle();	
+						
 						if (Input.pressed("Build") || objectSelected != null)
 						{
 							buildMode = BuildMode.NONE;
@@ -393,60 +439,47 @@ package schism.worlds
 						break;
 					case BuildMode.UPGRADE:
 						break;
-				}
-
-				if (Input.mousePressed)
-				{
-					dragStart = new Point(Input.mouseX, Input.mouseY);
-				}
-				
-				if (Input.mouseReleased)
-				{
-					if (buildMenu.isMouseOver())
-					{
-						// Check to see if any buttons were pressed
-						if (buildMenu.isMouseOverLeft())
-						{
-							connection.send(Messages.GAME_TOWER_UPGRADE, objectSelected.centerX, objectSelected.centerY, 1);
-						}
-						if (buildMenu.isMouseOverRight())
-						{
-							connection.send(Messages.GAME_TOWER_UPGRADE, objectSelected.centerX, objectSelected.centerY, 2);
-						}
+					case BuildMode.SPELL:
+						if (!spellButton.isDown())
+							spellButton.toggle();
+						if (buildButton.isDown())
+							buildButton.toggle();
+							
+						objectSelected = null;
+						buildMenu.visible = false;
+						mouse.setMap("main");
 						
-					}
-					else
-					{					
-						dragEnd = new Point(Input.mouseX, Input.mouseY);
-						
-						// Check if something exists
-						cell = collidePoint("cell", dragEnd.x, dragEnd.y) as Cell;
+						// See if mouse is over a creep
+						var creep:Creep = collidePoint("creep", Input.mouseX, Input.mouseY) as Creep;
+							
+						if (creep != null && !buildMenu.isMouseOver())
+						{
+							mouse.setMap("spell");
+							
+							if (Input.mouseReleased && connection != null)
+							{
+								connection.send(Messages.GAME_SPELL_CREEP, creep.ID);
+								toggleSpellMode();
+							}
+						}
+							
+						var cell:Cell = collidePoint("cell", Input.mouseX, Input.mouseY) as Cell;
 							
 						if (cell != null)
 						{
-							if (!cell.hasTower && !buildMenu.isMouseOver())
+							if (cell.hasTower && !cell.isOurs())
 							{
-								objectSelected = null;
-								buildMenu.visible = false;
-							}
-							else
-							{
-								if (cell.isOurs())
+								mouse.setMap("spell");
+								
+								if (Input.mouseReleased && connection != null)
 								{
-									objectSelected = cell;
-									buildMenu.displayAt(cell);
+									connection.send(Messages.GAME_SPELL_TOWER, cell.getIndex());
+									toggleSpellMode();
 								}
 							}
-						}
-						else
-						{
-							objectSelected = null;
-							buildMenu.visible = false;
-						}
-
-					}
-					dragStart = null;
-					dragEnd = null;
+						}	
+						
+						break;
 				}
 				
 				if (Input.released("Wave1"))
@@ -467,6 +500,11 @@ package schism.worlds
 						objectSelected = null;
 						buildMenu.visible = false;
 					}
+				}
+				
+				if (Input.pressed("Spell"))
+				{
+					toggleSpellMode();
 				}
 			}
 			
@@ -918,6 +956,8 @@ package schism.worlds
 			connection.addMessageHandler(Messages.GAME_WAVE_QUEUE, queueWave);
 			connection.addMessageHandler(Messages.GAME_WAVE_REMOVE, removeWave);
 			connection.addMessageHandler(Messages.GAME_WAVE_POSITION, positionWave);
+			connection.addMessageHandler(Messages.GAME_SPELL_TOWER, spellTower);
+			connection.addMessageHandler(Messages.GAME_SPELL_CREEP, spellCreep);
 		}
 		
 		private function updatePaths(m:Message):void
@@ -1160,6 +1200,36 @@ package schism.worlds
 			addTween(vt, true);
 		};
 		
+		private function spellCreep(m:Message):void
+		{
+			var creep:Creep = getCreep(m.getString(0));
+			
+			if (creep != null)
+			{
+				if (creep.player == blackId)
+					add(new ChiBlast(creep.centerX, creep.centerY, creep, "black"));
+				else
+					add(new ChiBlast(creep.centerX, creep.centerY, creep));
+			}
+		}
+		
+		private function spellTower(m:Message):void
+		{
+			var cell:Cell = getCell(m.getInt(0));
+			
+			if (cell != null)
+			{
+				if(color == "white" && cell.isOurs())
+					add(new ChiBlast(cell.centerX, cell.centerY));
+				else if (color == "white" && !cell.isOurs())
+					add(new ChiBlast(cell.centerX, cell.centerY, null, "black"));
+				else if (color == "black" && !cell.isOurs())
+					add(new ChiBlast(cell.centerX, cell.centerY));
+				else
+					add(new ChiBlast(cell.centerX, cell.centerY, null, "black"));
+			}
+		}
+		
 		private function activateCells():void
 		{
 			gameActive = true;
@@ -1235,6 +1305,19 @@ package schism.worlds
 			return cells;
 		}
 		
+		public function getCreep(id:String):Creep
+		{
+			var creeps:Array = getCreeps();
+			
+			for each(var creep:Creep in creeps)
+			{
+				if(creep.ID == id)
+					return creep;
+			}
+			
+			return null;
+		}
+		
 		public function getCreeps():Array
 		{
 			var c:Array = new Array();
@@ -1272,12 +1355,12 @@ package schism.worlds
 		
 		public function toggleSpellMode():void
 		{
-			spellButton.toggle();
-			inSpellMode = spellButton.isDown();
-			if (spellButton.isDown())
-				mouse.setMap("spell");
+			if (buildMode == BuildMode.SPELL)
+				buildMode = BuildMode.NONE;
 			else
-				mouse.setMap("main");
+				buildMode = BuildMode.SPELL;
+				
+			spellButton.toggle();			
 		}
 		
 		public function endWhiteHeartAnimation():void

@@ -104,6 +104,8 @@ package schism.ui
 		{
 			if (!enabled)
 				_map.play("Up");
+			else if (_toggle)
+				_map.play("Down");
 			else
 			{
 				if (_clicked)

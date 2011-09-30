@@ -721,6 +721,9 @@ package schism.worlds
 				
 				gameFinished = true;
 				resultWorld = new ResultWorld(client, connection, result, m.getInt(1), m.getInt(2), m.getUInt(3), m.getUInt(4));
+				if(m.getString(5) != "")
+					add(new MessageDisplay(m.getString(5), 5, 24));
+					
 				add(new MessageDisplay(result, gameFinishCountdown, 48, FP.screen.width / 2, FP.screen.height / 2));
 			});
 			

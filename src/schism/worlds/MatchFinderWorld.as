@@ -81,7 +81,13 @@ package schism.worlds
 			add(messageDisplay);
 		
 			this.connection = c;
-			this.connection.addDisconnectHandler(handleDisconnect);			
+			this.connection.addDisconnectHandler(handleDisconnect);		
+			
+			this.connection.addMessageHandler(Messages.MATCH_CREATE, function(m:Message, gameId:String):void {
+				connection.disconnect();
+				FP.world = new GameWorld(client, gameId, true);
+			});
+			
 			this.connection.addMessageHandler(Messages.MATCH_ID, function(m:Message, gameId:String):void {
 				connection.disconnect();
 				FP.world = new GameWorld(client, gameId);

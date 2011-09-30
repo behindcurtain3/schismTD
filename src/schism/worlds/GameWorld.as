@@ -61,6 +61,7 @@ package schism.worlds
 		// Settings
 		private var gameId:String;
 		private var connectionAttempts:int = 0;
+		private var createServerRoom:Boolean;
 		
 		// Result
 		private var resultWorld:ResultWorld;		
@@ -131,10 +132,11 @@ package schism.worlds
 		private var blackPath:Array;
 		private var whitePath:Array;
 	 
-		public function GameWorld (client:Client, gameId:String)
+		public function GameWorld (client:Client, gameId:String, createServer:Boolean = false)
 		{
 			this.client = client;
 			this.gameId = gameId;
+			createServerRoom = createServer;
 			
 			Mouse.hide();
 			mouse = new MyMouse();
@@ -228,17 +230,32 @@ package schism.worlds
 		
 		public function connect():void
 		{
-			client.multiplayer.createJoinRoom(
-				gameId,								//Room id. If set to null a random roomid is used
-				"schismTD",							//The game type started on the server
-				false,								//Should the room be visible in the lobby?
-				{},									//Room data. This data is returned to lobby list. Variabels can be modifed on the server
+			if (createServerRoom)
+			{
+				client.multiplayer.createRoom(
+					gameId,								//Room id. If set to null a random roomid is used
+					"schismTD",							//The game type started on the server
+					false,								//Should the room be visible in the lobby?
+					{},									//Room data. This data is returned to lobby list. Variabels can be modifed on the server
+					joinRoom,						//Function executed on successful joining of the room
+					onRoomCreateError
+				);
+			}
+			else
+			{
+				joinRoom(gameId);
+			}
+			connectionAttempts++;
+		}
+		
+		public function joinRoom(roomId:String):void
+		{
+			client.multiplayer.joinRoom(
+				roomId,								//Room id. If set to null a random roomid is used
 				{},									//User join data
 				handleNewGame,						//Function executed on successful joining of the room
 				handleError							//Function executed if we got a join error
 			);
-			
-			connectionAttempts++;
 		}
 		
 		override public function end():void
@@ -1271,10 +1288,20 @@ package schism.worlds
 			blackManaUI.visible = false;
 		}
 		
-		private function handleError(error:PlayerIOError):void
+		private function onRoomCreateError(e:PlayerIOError):void
 		{
 			if (connectionAttempts < 3)
 				connect();
+			else
+			{
+				FP.world = new LoginWorld("Unable to start a game on the server.");
+			}
+		}
+		
+		private function handleError(error:PlayerIOError):void
+		{
+			if (connectionAttempts < 3)
+				joinRoom(gameId);
 			else
 			{		
 				disconnect(error.errorID + ": " + error.message);

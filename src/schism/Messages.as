@@ -14,6 +14,7 @@ package schism
 		
 		// match
 		public static const MATCH_ID:String = "mi";
+		public static const MATCH_CREATE:String = "mc";
 		public static const MATCH_READY:String = "mr"; // Called when 2 players have joined
 		public static const MATCH_STARTED:String = "ms"; //Called when match actually starts
 		public static const MATCH_FINISHED:String = "mf";

@@ -88,6 +88,7 @@ package schism
 		[Embed(source = '../../assets/sfx/BuildTower.mp3')] public static const SFX_BUILD_TOWER:Class;
 		[Embed(source = '../../assets/sfx/GameStartHighlightSound.mp3')] public static const SFX_START_HIGHLIGHT:Class;
 		[Embed(source = '../../assets/sfx/PlayerHurt.mp3')] public static const SFX_PLAYER_HURT:Class;
+		[Embed(source = '../../assets/sfx/PopupSound.mp3')] public static const SFX_POPUP:Class;
 		[Embed(source = '../../assets/sfx/SwarmCreepDeath.mp3')] public static const SFX_SWARM_CREEP_DEATH:Class;
 		
 		// Misc

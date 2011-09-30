@@ -7,6 +7,7 @@ package schism.worlds
 	import flash.system.Security;
 	import net.flashpunk.utils.Draw;
 	import playerio.Client;
+	import playerio.Connection;
 	import playerio.PlayerIO;
 	import playerio.PlayerIOError;
 	import playerio.PlayerIORegistrationError;
@@ -47,6 +48,9 @@ package schism.worlds
 
 		// Kongregate API reference
 		protected var kongregate:*;
+		
+		// Client
+		protected var _client:Client;
 		
 		public function LoginWorld (error:String = "")
 		{
@@ -99,6 +103,7 @@ package schism.worlds
 			if (error != "")
 			{
 				messageDisplay = new MessageDisplay(error, 5, 18, FP.screen.width / 2);
+				messageDisplay.sound();
 				add(messageDisplay);
 			}
 			
@@ -166,7 +171,27 @@ package schism.worlds
 		
 		private function onLoginSuccess(client:Client):void
 		{
-			FP.world = new MatchFinderWorld(client);
+			_client = client;
+			
+			//Set developmentsever (Comment out to connect to your server online)
+			_client.multiplayer.developmentServer = "72.220.227.32:8184";
+			//client.multiplayer.developmentServer = "192.168.0.169:8184";
+			
+			//Create pr join the room test
+			_client.multiplayer.createJoinRoom(
+				"match-maker2",						//Room id. If set to null a random roomid is used
+				"$service-room$",					//The game type started on the server
+				true,								//Should the room be visible in the lobby?
+				{},									//Room data. This data is returned to lobby list. Variabels can be modifed on the server
+				{},									//User join data
+				onMatchMakerJoin,					//Function executed on successful joining of the room
+				onLoginError						//Function executed if we got a join error
+			);
+		}
+		
+		private function onMatchMakerJoin(connection:Connection):void
+		{
+			FP.world = new MatchFinderWorld(_client, connection);
 		}
 		
 		private function onLoginError(e:PlayerIOError):void
@@ -174,7 +199,16 @@ package schism.worlds
 			if (messageDisplay != null)
 				remove(messageDisplay);
 
-			messageDisplay = new MessageDisplay(e.message, 5);
+			switch(e.type)
+			{
+				case PlayerIOError.NoServersAvailable:
+					messageDisplay = new MessageDisplay("There are no game servers currently available.", 5);
+					break;
+				default:
+					messageDisplay = new MessageDisplay(e.message, 5);
+					break;
+			}				
+			messageDisplay.sound();
 			add(messageDisplay);
 		}
 		

@@ -3,8 +3,10 @@ package schism.ui
 	import net.flashpunk.Entity;
 	import net.flashpunk.FP;
 	import net.flashpunk.graphics.Text;
+	import net.flashpunk.Sfx;
 	import net.flashpunk.tweens.misc.VarTween;
 	import net.flashpunk.utils.Draw;
+	import schism.Assets;
 	
 	/**
 	 * ...
@@ -165,6 +167,12 @@ package schism.ui
 			
 			if (world != null)
 				world.remove(this);
+		}
+		
+		public function sound():void
+		{
+			var s:Sfx = new Sfx(Assets.SFX_POPUP);
+			s.play();
 		}
 		
 	}

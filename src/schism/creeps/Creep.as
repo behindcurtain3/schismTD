@@ -133,6 +133,37 @@ package schism.creeps
 			updateAngle();
 		}
 		
+		public function setPositionFromServer(_x:Number, _y:Number, length:int):void
+		{
+			// If we are further than 15px away do something about it
+			if (getDistanceFromXY(_x, _y) > 15)
+			{
+				this.x = _x;
+				this.y = _y;
+				
+				setPathToLength(length);
+			}
+		}
+		
+		public function setPathToLength(length:int):void
+		{
+			while (this.path.length > length)
+			{
+				this.path = path.splice(0, 1);
+			}
+			
+			if (path.length != 0)
+			{
+				MovingTo = path[0];
+				updateAngle();
+			}
+		}
+		
+		public function getDistanceFromXY(x:Number, y:Number):Number
+		{
+			return Math.abs(x - centerX) + Math.abs(y - centerY);
+		}
+		
 		public function getDistance(cell:Cell):Number
 		{
 			return Math.abs(cell.centerX - centerX) + Math.abs(cell.centerY - centerY);

@@ -86,7 +86,7 @@ package schism.worlds
 		
 		private function onRegisterSuccess(client:Client):void
 		{
-			FP.world = new MatchFinderWorld(client);
+			//FP.world = new MatchFinderWorld(client);
 		}
 		
 		private function onRegisterError(e:PlayerIORegistrationError):void

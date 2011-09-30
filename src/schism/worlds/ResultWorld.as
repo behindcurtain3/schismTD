@@ -117,7 +117,7 @@ package schism.worlds
 		
 		public function onPlayAgain():void
 		{
-			FP.world = new MatchFinderWorld(mClient);
+			FP.world = new MatchFinderWorld(mClient, mConnection);
 		}
 		
 		public function onExit():void

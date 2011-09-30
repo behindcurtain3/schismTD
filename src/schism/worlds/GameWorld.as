@@ -403,7 +403,9 @@ package schism.worlds
 						if (spellButton.isDown())
 							spellButton.toggle();
 						if (!buildButton.isDown())
-							buildButton.toggle();	
+							buildButton.toggle();
+							
+						mouse.setMap("build");
 						
 						if (Input.pressed("Build") || objectSelected != null)
 						{
@@ -448,22 +450,6 @@ package schism.worlds
 						objectSelected = null;
 						buildMenu.visible = false;
 						mouse.setMap("main");
-						
-						// See if mouse is over a creep
-						/*
-						var creep:Creep = collidePoint("creep", Input.mouseX, Input.mouseY) as Creep;
-							
-						if (creep != null && !buildMenu.isMouseOver())
-						{
-							mouse.setMap("spell");
-							
-							if (Input.mouseReleased && connection != null)
-							{
-								connection.send(Messages.GAME_SPELL_CREEP, creep.ID);
-								toggleSpellMode();
-							}
-						}
-						*/
 							
 						var cell:Cell = collidePoint("cell", Input.mouseX, Input.mouseY) as Cell;
 							
@@ -869,11 +855,12 @@ package schism.worlds
 				}
 			});
 			
-			connection.addMessageHandler(Messages.GAME_CREEP_UPDATE_LIFE, function(m:Message, id:String, value:int):void {
+			connection.addMessageHandler(Messages.GAME_CREEP_UPDATE_LIFE, function(m:Message, id:String, value:int, x:Number, y:Number, length:int):void {
 				for each(var cr:Creep in getCreeps())
 				{
 					if (cr.ID == id)
 					{
+						cr.setPositionFromServer(x, y, length);
 						cr.updateLife(value);
 						break;
 					}

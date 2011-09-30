@@ -71,7 +71,7 @@ package schism.ui
 			{
 				case Assets.GFX_TOWER_BASIC:
 					leftUpgradeGfx = new Image(Assets.GFX_TOWER_RAPIDFIRE);
-					rightUpgradeGfx = new Image(Assets.GFX_TOWER_SLOW);
+					rightUpgradeGfx = new Image(Assets.GFX_TOWER_SPELL);
 					
 					leftUpgradeCost = new Text("90");
 					rightUpgradeCost = new Text("90");
@@ -83,8 +83,8 @@ package schism.ui
 					leftUpgradeCost = new Text("180");
 					rightUpgradeCost = new Text("180");
 					break;
-				case Assets.GFX_TOWER_SLOW:
-					leftUpgradeGfx = new Image(Assets.GFX_TOWER_SPELL);
+				case Assets.GFX_TOWER_SPELL:
+					leftUpgradeGfx = new Image(Assets.GFX_TOWER_SLOW);
 					rightUpgradeGfx = new Image(Assets.GFX_TOWER_DAMAGEBOOST);
 					
 					leftUpgradeCost = new Text("180");

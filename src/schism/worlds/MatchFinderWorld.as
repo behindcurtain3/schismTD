@@ -34,7 +34,7 @@ package schism.worlds
 			newDidYouKnow();
 			
 			//Set developmentsever (Comment out to connect to your server online)
-			client.multiplayer.developmentServer = "72.220.227.32:8184";
+			//client.multiplayer.developmentServer = "72.220.227.32:8184";
 			//client.multiplayer.developmentServer = "192.168.0.169:8184";
 			
 			//Create pr join the room test

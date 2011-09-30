@@ -450,6 +450,7 @@ package schism.worlds
 						mouse.setMap("main");
 						
 						// See if mouse is over a creep
+						/*
 						var creep:Creep = collidePoint("creep", Input.mouseX, Input.mouseY) as Creep;
 							
 						if (creep != null && !buildMenu.isMouseOver())
@@ -462,19 +463,28 @@ package schism.worlds
 								toggleSpellMode();
 							}
 						}
+						*/
 							
 						var cell:Cell = collidePoint("cell", Input.mouseX, Input.mouseY) as Cell;
 							
 						if (cell != null)
 						{
+							mouse.setMap("spell");
+							
 							if (cell.hasTower && !cell.isOurs())
-							{
-								mouse.setMap("spell");
-								
+							{								
 								if (Input.mouseReleased && connection != null)
 								{
 									connection.send(Messages.GAME_SPELL_TOWER, cell.getIndex());
 									toggleSpellMode();
+								}
+							}
+							else if (!cell.hasTower)
+							{
+								if (Input.mouseReleased && connection != null)
+								{
+									connection.send(Messages.GAME_SPELL_CREEP, Input.mouseX, Input.mouseY);
+									toggleSpellMode();	
 								}
 							}
 						}	
@@ -1202,14 +1212,16 @@ package schism.worlds
 		
 		private function spellCreep(m:Message):void
 		{
-			var creep:Creep = getCreep(m.getString(0));
+			var cell:Cell = collidePoint("cell", m.getInt(0), m.getInt(1)) as Cell;
 			
-			if (creep != null)
+			if (cell != null)
 			{
-				if (creep.player == blackId)
-					add(new ChiBlast(creep.centerX, creep.centerY, creep, "black"));
+				if (cell.isOurs() && color == "white")
+					add(new ChiBlast(m.getInt(0), m.getInt(1), null, "black"));
+				else if (cell.isOurs() && color == "black")
+					add(new ChiBlast(m.getInt(0), m.getInt(1)));
 				else
-					add(new ChiBlast(creep.centerX, creep.centerY, creep));
+					add(new ChiBlast(m.getInt(0), m.getInt(1)));
 			}
 		}
 		

@@ -37,7 +37,7 @@
     <option linkReport="" />
     <option loadExterns="" />
     <option staticLinkRSL="True" />
-    <option additional="-frame main schism.Main" />
+    <option additional="-frame start schism.Main" />
     <option compilerConstants="" />
     <option customSDK="" />
   </build>

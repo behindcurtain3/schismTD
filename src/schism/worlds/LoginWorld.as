@@ -200,6 +200,7 @@ package schism.worlds
 		
 		public function kongLoadComplete(event:Event):void
 		{
+			trace("Kong loaded.");
 			kongregate = event.target.content;
 			
 			//trace(kongregate.services.getUserId());

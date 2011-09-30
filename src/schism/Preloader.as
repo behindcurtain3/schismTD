@@ -4,9 +4,12 @@ package schism
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
+	import flash.display.Shape;
 	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import flash.events.ProgressEvent;
 	import flash.text.Font;
+	import flash.text.TextFormat;
 	import flash.utils.getDefinitionByName;
 	import flash.display.Sprite;
 	import flash.text.TextField;
@@ -20,71 +23,128 @@ package schism
 	 */
 	public class Preloader extends MovieClip 
 	{
-		//[Embed(source = 'data/loading.png')] static private var imgLoading:Class;
-		private var loading:Bitmap = new Bitmap(new BitmapData(5, 5));
-		
-		private var square:Sprite = new Sprite();
-		private var border:Sprite = new Sprite();
-		private var wd:Number = (loaderInfo.bytesLoaded / loaderInfo.bytesTotal) * 240;
-		private var text:TextField = new TextField();
-		
-		private var dummyMain:Main;
-		
-		public function Preloader() 
+		// Change these values
+		private static const mustClick: Boolean = false;
+		private static const mainClassName: String = "schism.Main";
+
+		private static const BG_COLOR:uint = 0x000000;
+		private static const FG_COLOR:uint = 0xFFFFFF;
+
+		[Embed(source = '../../assets/DOMOAN__.ttf', embedAsCFF="false", fontFamily = 'default')]
+		private static const FONT:Class;
+
+
+
+		// Ignore everything else
+
+
+
+		private var progressBar: Shape;
+		private var text: TextField;
+
+		private var px:int;
+		private var py:int;
+		private var w:int;
+		private var h:int;
+		private var sw:int;
+		private var sh:int;
+
+		public function Preloader ()
 		{
-			addEventListener(Event.ENTER_FRAME, checkFrame);
-			loaderInfo.addEventListener(ProgressEvent.PROGRESS, progress);
-			// show loader
-			addChild(square);
-			square.x = 200;
-			square.y = stage.stageHeight / 2;
-			
-			addChild(border);
-			border.x = 200-4;
-			border.y = stage.stageHeight / 2 - 4;
-		
+			sw = stage.stageWidth;
+			sh = stage.stageHeight;
+
+			w = stage.stageWidth * 0.8;
+			h = 20;
+
+			px = (sw - w) * 0.5;
+			py = (sh - h) * 0.5;
+
+			graphics.beginFill(BG_COLOR);
+			graphics.drawRect(0, 0, sw, sh);
+			graphics.endFill();
+
+			graphics.beginFill(FG_COLOR);
+			graphics.drawRect(px - 2, py - 2, w + 4, h + 4);
+			graphics.endFill();
+
+			progressBar = new Shape();
+
+			addChild(progressBar);
+
+			text = new TextField();
+
+			text.textColor = FG_COLOR;
+			text.selectable = false;
+			text.mouseEnabled = false;
+			text.defaultTextFormat = new TextFormat("default", 16);
+			text.embedFonts = true;
+			text.autoSize = "left";
+			text.text = "0%";
+			text.x = (sw - text.width) * 0.5;
+			text.y = sh * 0.5 + h;
+
 			addChild(text);
-			text.x = 194;
-			text.y = stage.stageHeight / 2 - 30;
-			
-			addChild(loading);
-			loading.x = 0;
-			loading.y = 48;
-			
+
+			stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
+
+			if (mustClick) {
+				stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
+			}
 		}
-		
-		private function progress(e:ProgressEvent):void 
+
+		public function onEnterFrame (e:Event): void
 		{
-			// update loader
-			square.graphics.beginFill(0xF2F2F2);
-			square.graphics.drawRect(0,0,(loaderInfo.bytesLoaded / loaderInfo.bytesTotal) * 240,20);
-			square.graphics.endFill();
-			
-			border.graphics.lineStyle(2,0xFFFFFF);
-			border.graphics.drawRect(0, 0, 248, 28);
-			
-			text.textColor = 0xFFFFFF;
-			text.text = "Loading: " + Math.ceil((loaderInfo.bytesLoaded/loaderInfo.bytesTotal)*100) + "%";
-			
-		}
-		
-		private function checkFrame(e:Event):void 
-		{
-			if (currentFrame == totalFrames) 
+			if (hasLoaded())
 			{
-				removeEventListener(Event.ENTER_FRAME, checkFrame);
+				graphics.clear();
+				graphics.beginFill(BG_COLOR);
+				graphics.drawRect(0, 0, sw, sh);
+				graphics.endFill();
+
+				if (! mustClick) {
+					startup();
+				} else {
+					text.scaleX = 2.0;
+					text.scaleY = 2.0;
+
+					text.text = "Click to start";
+
+					text.y = (sh - text.height) * 0.5;
+				}
+			} else {
+				var p:Number = (loaderInfo.bytesLoaded / loaderInfo.bytesTotal);
+
+				progressBar.graphics.clear();
+				progressBar.graphics.beginFill(BG_COLOR);
+				progressBar.graphics.drawRect(px, py, p * w, h);
+				progressBar.graphics.endFill();
+
+				text.text = int(p * 100) + "%";
+			}
+
+			text.x = (sw - text.width) * 0.5;
+		}
+
+		private function onMouseDown(e:MouseEvent):void {
+			if (hasLoaded())
+			{
+				stage.removeEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 				startup();
 			}
 		}
-		
-		private function startup():void 
-		{
-			// hide loader
-			stop();
-			loaderInfo.removeEventListener(ProgressEvent.PROGRESS, progress);
-			
-			var mainClass:Class = getDefinitionByName("schism.Main") as Class;
-			addChild(new mainClass() as DisplayObject);
+
+		private function hasLoaded (): Boolean {
+			return (loaderInfo.bytesLoaded >= loaderInfo.bytesTotal);
+		}
+
+		private function startup (): void {
+			stage.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+
+			var mainClass:Class = getDefinitionByName(mainClassName) as Class;
+			parent.addChild(new mainClass as DisplayObject);
+
+			parent.removeChild(this);
 		}
 		
 	}

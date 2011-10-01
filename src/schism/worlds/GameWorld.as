@@ -131,6 +131,8 @@ package schism.worlds
 		
 		private var blackPath:Array;
 		private var whitePath:Array;
+		
+		private var connectionStatusDisplay:MessageDisplay;
 	 
 		public function GameWorld (client:Client, gameId:String, createServer:Boolean = false)
 		{
@@ -211,6 +213,8 @@ package schism.worlds
 			addGraphic(blackChi, 2,  FP.screen.width - 180, FP.screen.height - 22);
 						
 			// Connect to game
+			connectionStatusDisplay = new MessageDisplay("Connecting to game...", 0, 24);
+			add(connectionStatusDisplay);
 			connect();
 			
 			// Define our inputs			
@@ -537,6 +541,9 @@ package schism.worlds
 			connection = c;
 			connection.addDisconnectHandler(handleDisconnect);
 			
+			if(connectionStatusDisplay != null)
+				remove(connectionStatusDisplay);
+			
 			// Setup UI			
 			whiteHealthUI = new Text("20", 180, 27);
 			whiteHealthUI.visible = false;
@@ -569,8 +576,13 @@ package schism.worlds
 			addGraphic(blackHealthUI);
 			addGraphic(blackManaUI);
 			
+			connection.addMessageHandler(Messages.CHAT, function(m:Message):void {
+				trace(m.getString(0));
+			});
+			
 			connection.addMessageHandler(Messages.GAME_JOINED, function(m:Message):void {
-				add(new MessageDisplay("Game joined!", 1.5, 24));
+				connectionStatusDisplay = new MessageDisplay("Game joined!", 1.5, 24);
+				add(connectionStatusDisplay);
 			});
 			
 			connection.addMessageHandler(Messages.GAME_INFO, function(m:Message):void {				

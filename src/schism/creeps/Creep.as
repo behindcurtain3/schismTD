@@ -136,7 +136,7 @@ package schism.creeps
 		public function setPositionFromServer(_x:Number, _y:Number, length:int):void
 		{
 			// If we are further than 15px away do something about it
-			if (getDistanceFromXY(_x, _y) > 15)
+			if (getDistanceFromXY(_x, _y) > 30)
 			{
 				this.x = _x;
 				this.y = _y;
@@ -149,12 +149,12 @@ package schism.creeps
 		{
 			while (this.path.length > length)
 			{
-				this.path = path.splice(0, 1);
+				this.path = this.path.splice(0, 1);
 			}
 			
-			if (path.length != 0)
+			if (this.path.length != 0)
 			{
-				MovingTo = path[0];
+				MovingTo = this.path[0];
 				updateAngle();
 			}
 		}
@@ -174,39 +174,7 @@ package schism.creeps
 			if (MovingTo == null || spriteMap == null || !doFacing)
 				return;
 				
-			var dx:int = centerX - MovingTo.centerX;
-			var dy:int = centerY - MovingTo.centerY;
-			
-			var up:Boolean = false;
-			var down:Boolean = false;
-			var left:Boolean = false;
-			var right:Boolean = false;
-			
-			if (dx < -3)
-				left = true;
-			else if (dx > 3)
-				right = true;
-			if (dy < -3)
-				down = true;
-			else if (dy > 3)
-				up = true;
-				
-			if (up && left)
-				spriteMap.angle = 135;
-			else if (up && right)
-				spriteMap.angle = 225;
-			else if (down && left)
-				spriteMap.angle = 45;
-			else if (down && right)
-				spriteMap.angle = 315;
-			else if (up)
-				spriteMap.angle = 180;
-			else if (right)
-				spriteMap.angle = 270;
-			else if (left)
-				spriteMap.angle = 90;
-			else
-				spriteMap.angle = 0;
+			spriteMap.angle = FP.angle(centerX, centerY, MovingTo.centerX, MovingTo.centerY) + 90;	
 		}
 	}
 

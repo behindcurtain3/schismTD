@@ -13,7 +13,6 @@ package schism.worlds
 	import playerio.PlayerIORegistrationError;
 	import schism.Assets;
 	import schism.ui.MessageDisplay;
-	import schism.ui.MyMouse;
 	
 	import net.flashpunk.FP;
 	import net.flashpunk.graphics.Image;

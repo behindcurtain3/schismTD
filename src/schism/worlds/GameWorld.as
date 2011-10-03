@@ -37,10 +37,10 @@ package schism.worlds
 	import schism.ui.BuildMenu;
 	import schism.ui.Button;
 	import schism.ui.ChiBlast;
+	import schism.ui.CustomMouse;
 	import schism.ui.FauxTower;
 	import schism.ui.Glow;
 	import schism.ui.MessageDisplay;
-	import schism.ui.MyMouse;
 	import schism.waves.BlackWaveQueue;
 	import schism.waves.WaveHighlight;
 	import schism.waves.WhiteWaveQueue;
@@ -88,7 +88,6 @@ package schism.worlds
 		protected var white1:Button;
 		protected var white2:Button;
 		protected var white3:Button;
-		protected var mouse:MyMouse;
 		
 		// Gfx
 		protected var board:Image;
@@ -141,8 +140,6 @@ package schism.worlds
 			createServerRoom = createServer;
 			
 			Mouse.hide();
-			mouse = new MyMouse();
-			add(mouse);
 			
 			FP.volume = 0.1;
 			
@@ -365,10 +362,8 @@ package schism.worlds
 							buildMenu.visible = false;
 							buildInstructions.visible = false;
 							buildButton.toggle();
-							mouse.setMap("build");
+							(FP.stage.getChildByName("CustomMouse") as CustomMouse).setCursor(Assets.MOUSE_BUILD);
 						}
-						
-						mouse.setMap("main");
 						
 						// Update if glow is visible
 						var hoverCell:Cell = collidePoint("cell", Input.mouseX, Input.mouseY) as Cell;
@@ -425,14 +420,12 @@ package schism.worlds
 							spellButton.toggle();
 						if (!buildButton.isDown())
 							buildButton.toggle();
-							
-						mouse.setMap("build");
 						
 						if (Input.pressed("Build") || objectSelected != null)
 						{
 							buildMode = BuildMode.NONE;
 							buildButton.toggle();
-							mouse.setMap("main");
+							(FP.stage.getChildByName("CustomMouse") as CustomMouse).setCursor(Assets.MOUSE_NORMAL);
 						}
 						
 						// Glow is not visible in this mode
@@ -470,13 +463,12 @@ package schism.worlds
 							
 						objectSelected = null;
 						buildMenu.visible = false;
-						mouse.setMap("main");
 							
 						var cell:Cell = collidePoint("cell", Input.mouseX, Input.mouseY) as Cell;
 							
 						if (cell != null)
 						{
-							mouse.setMap("spell");
+							(FP.stage.getChildByName("CustomMouse") as CustomMouse).setCursor(Assets.MOUSE_SPELL);
 							
 							if (cell.hasTower && !cell.isOurs())
 							{								
@@ -494,7 +486,11 @@ package schism.worlds
 									toggleSpellMode();	
 								}
 							}
-						}	
+						}
+						else
+						{
+							(FP.stage.getChildByName("CustomMouse") as CustomMouse).setCursor(Assets.MOUSE_NORMAL);
+						}
 						
 						break;
 				}
@@ -1389,9 +1385,9 @@ package schism.worlds
 			buildButton.toggle();
 			
 			if (buildButton.isDown())
-				mouse.setMap("build");
+				(FP.stage.getChildByName("CustomMouse") as CustomMouse).setCursor(Assets.MOUSE_BUILD);
 			else
-				mouse.setMap("main");
+				(FP.stage.getChildByName("CustomMouse") as CustomMouse).setCursor(Assets.MOUSE_NORMAL);
 		}
 		
 		public function toggleSpellMode():void
@@ -1401,7 +1397,12 @@ package schism.worlds
 			else
 				buildMode = BuildMode.SPELL;
 				
-			spellButton.toggle();			
+			spellButton.toggle();
+			
+			if (spellButton.isDown())
+				(FP.stage.getChildByName("CustomMouse") as CustomMouse).setCursor(Assets.MOUSE_SPELL);
+			else
+				(FP.stage.getChildByName("CustomMouse") as CustomMouse).setCursor(Assets.MOUSE_NORMAL);
 		}
 		
 		public function endWhiteHeartAnimation():void

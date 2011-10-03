@@ -40,7 +40,7 @@ package schism.ui
 			y = FP.screen.height - 100;
 			
 			width = FP.screen.width;
-			height = 58;
+			height = 68;
 			
 			_useableWidth = width - _leftPadding - _rightPadding - (_fadeZoneWidth * 2);
 			
@@ -65,7 +65,7 @@ package schism.ui
 			{
 				child.x = _children[_children.length - 1].x + _childWidth + _childSpacer;
 			}
-			child.y = y;
+			child.y = y + (height / 2) - (_childHeight / 2);
 			_children.push(child);
 			
 			if(world != null)
@@ -125,8 +125,8 @@ package schism.ui
 		
 		override public function render():void 
 		{
-			Draw.rectPlus(x, y - 10, width, height + 10, 0x000000, 0.75);
-			Draw.line(x, y - 10, FP.screen.width, y - 10);
+			Draw.rectPlus(x, y, width, height, 0x000000, 0.75);
+			Draw.line(x, y, FP.screen.width, y);
 			Draw.line(x, y + height, FP.screen.width, y + height);
 			
 			super.render();
@@ -137,13 +137,13 @@ package schism.ui
 			if (_children.length * (_childWidth + _childSpacer) > _useableWidth)
 			{
 				_widthBeyondVisible = true;
-				checkChildrenAlphaValues();
 			}
 			else
 			{
 				_widthBeyondVisible = false;
 				centerChildren();
 			}
+			checkChildrenAlphaValues();
 		}
 		
 		private function repositionChildrenOffLeft(left:int):void

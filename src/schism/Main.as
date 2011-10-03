@@ -11,6 +11,7 @@ package schism
 	import punk.ui.PunkUI;
 	import punk.ui.skins.RolpegeBlue;
 	import punk.ui.skins.SchismUI;
+	import schism.ui.CustomMouse;
 	import schism.ui.SchismSkin;
 	import schism.worlds.LoginWorld;
 	import schism.worlds.SiteLockWorld;
@@ -32,6 +33,7 @@ package schism
 		{
 			super.init();
 			
+			FP.stage.addChild(new CustomMouse());
 			FP.stage.scaleMode = StageScaleMode.SHOW_ALL;
 			
 			if (checkDomain(["www.schismtd.com", "schismtd.com", "schismtd.heroku.com"]))

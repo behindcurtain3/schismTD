@@ -10,7 +10,9 @@ package schism
 		public static const GAME_ID:String = "schismtd-3r3otmhvkki9ixublwca";
 		
 		[Embed(source = '../../assets/board/punkuimenus.png')] public static const SKIN:Class;
-		[Embed(source = '../../assets/board/pointers.png')] public static const MOUSE_MAIN:Class;
+		[Embed(source = '../../assets/board/pointer-normal.png')] public static const MOUSE_NORMAL:Class;
+		[Embed(source = '../../assets/board/pointer-build.png')] public static const MOUSE_BUILD:Class;
+		[Embed(source = '../../assets/board/pointer-spell.png')] public static const MOUSE_SPELL:Class;
 		
 		// Menus
 		[Embed(source = '../../assets/board/Title.png')] public static const GFX_TITLE:Class;

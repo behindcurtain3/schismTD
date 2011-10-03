@@ -7,6 +7,7 @@ package schism.worlds
 	import net.flashpunk.World;
 	import schism.Assets;
 	import schism.ui.CreepPanelItem;
+	import schism.ui.CustomMouse;
 	import schism.ui.MessageDisplay;
 	import schism.ui.ScrollPanel;
 	

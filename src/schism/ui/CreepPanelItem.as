@@ -34,6 +34,8 @@ package schism.ui
 			
 			_callback = callback;
 			
+			alpha = 0; // always start at zero to prevent weird things
+			
 			layer = 2;
 			width = 48;
 			height = 48;
@@ -43,6 +45,7 @@ package schism.ui
 			_creepImg.centerOrigin();
 			_creepImg.x = width / 2;
 			_creepImg.y = height / 2;
+			_creepImg.alpha = alpha;
 			
 			_pointsText = new Text(cost.toString());
 			_pointsText.size = 14;
@@ -51,6 +54,7 @@ package schism.ui
 				_pointsText.x = -1;
 			_pointsText.align = "center";
 			_pointsText.font = "Domo";
+			_pointsText.alpha = alpha;
 			
 			graphic = new Graphiclist(_creepImg, _pointsText);
 			

@@ -30,15 +30,10 @@ package schism
 		private static const BG_COLOR:uint = 0x000000;
 		private static const FG_COLOR:uint = 0xFFFFFF;
 
-		[Embed(source = '../../assets/DOMOAN__.ttf', embedAsCFF="false", fontFamily = 'default')]
-		private static const FONT:Class;
-
-
+		//[Embed(source = '../../assets/DOMOAN__.ttf', embedAsCFF="false", fontFamily = 'Domo')]
+		//private static const FONT:Class;
 
 		// Ignore everything else
-
-
-
 		private var progressBar: Shape;
 		private var text: TextField;
 

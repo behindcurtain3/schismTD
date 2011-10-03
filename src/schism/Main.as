@@ -36,7 +36,7 @@ package schism
 			
 			if (checkDomain(["www.schismtd.com", "schismtd.com", "schismtd.heroku.com"]))
 			{
-				PlayerIO.showLogo(FP.stage, "BC");
+				//PlayerIO.showLogo(FP.stage, "BC");
 				PunkUI.skin = new SchismSkin;
 				world = new LoginWorld();
 			}

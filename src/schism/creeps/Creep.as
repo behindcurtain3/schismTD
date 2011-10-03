@@ -6,6 +6,7 @@ package schism.creeps
 	import net.flashpunk.graphics.Image;
 	import net.flashpunk.graphics.Spritemap;
 	import net.flashpunk.tweens.misc.VarTween;
+	import schism.Assets;
 	import schism.Cell;
 	import schism.effects.EffectEntity;
 	import schism.util.Vector2;
@@ -175,6 +176,33 @@ package schism.creeps
 				return;
 				
 			spriteMap.angle = FP.angle(centerX, centerY, MovingTo.centerX, MovingTo.centerY) + 90;	
+		}
+		
+		public static function getIcon(type:String):Class
+		{
+			switch(type)
+			{
+				case "Armor":
+					return Assets.GFX_ICONS_ARMOR;
+					break;
+				case "Chigen":
+					return Assets.GFX_ICONS_CHIGEN;
+					break;
+				case "Magic":
+					return Assets.GFX_ICONS_MAGIC;
+					break;
+				case "Quick":
+					return Assets.GFX_ICONS_QUICK;
+					break;
+				case "Regen":
+					return Assets.GFX_ICONS_REGEN;
+					break;
+				case "Swarm":
+					return Assets.GFX_ICONS_SWARM;
+					break;				
+			}
+			
+			return null;
 		}
 	}
 

@@ -14,7 +14,7 @@ package schism.ui
 	 */
 	public class MessageDisplay extends Entity 
 	{
-		private var message:Text;
+		public var message:Text;
 		private var timeDisplayed:Number;
 		private var displayTime:Number;
 		private var backgroundAlpha:Number;

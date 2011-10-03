@@ -139,6 +139,10 @@ package schism.worlds
 		
 		override public function update():void
 		{
+			if (Input.pressed(Key.BACKSPACE))
+			{
+				FP.world = new WaveBuilder();
+			}			
 			
 			super.update();
 		}

@@ -19,6 +19,9 @@ package schism.ui
 		private var _childrenToAdd:Array;
 		
 		// Properties
+		private var _sort:Boolean = true;
+		public function get sort():Boolean { return _sort; }
+		public function set sort(value:Boolean):void { _sort = value; }
 		
 		// Values
 		private var _childWidth:int = 48;
@@ -37,7 +40,7 @@ package schism.ui
 			centerOrigin();
 			layer = 5;
 			x = 0;
-			y = FP.screen.height - 100;
+			y = FP.screen.height - 78;
 			
 			width = FP.screen.width;
 			height = 68;
@@ -67,6 +70,13 @@ package schism.ui
 			}
 			child.y = y + (height / 2) - (_childHeight / 2);
 			_children.push(child);
+			
+			if (_sort)
+			{
+				var left:int = _children[0].x;
+				_children.sortOn("cost", Array.NUMERIC);
+				repositionChildrenOffLeft(left);
+			}
 			
 			if(world != null)
 				world.add(child);

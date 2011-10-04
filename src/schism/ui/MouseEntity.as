@@ -34,11 +34,19 @@ package schism.ui
 		private var _lastMouseX:int = 0;
 		private var _lastMouseY:int = 0;
 		
+		private var _mouseDownListeners:Array;
+		private var _clickListeners:Array;
+		private var _dragListeners:Array;
+		
 		public function MouseEntity(x:Number = 0, y:Number = 0, graphic:Graphic = null, mask:Mask = null) 
 		{
 			super(x, y, graphic, mask);
 			
 			layer = _backLayer;
+			
+			_mouseDownListeners = new Array();
+			_clickListeners = new Array();
+			_dragListeners = new Array();
 		}
 		
 		override public function update():void 
@@ -49,7 +57,7 @@ package schism.ui
 					onMouseOver();
 				else
 				{
-					if (_lastMouseX != Input.mouseX && _lastMouseY != Input.mouseY)
+					if (_lastMouseX != Input.mouseX || _lastMouseY != Input.mouseY)
 					{
 						onMouseMove();
 					}
@@ -64,16 +72,33 @@ package schism.ui
 			{
 				if (_isBeingDragged)
 				{
-					if (_lastMouseX != Input.mouseX && _lastMouseY != Input.mouseY)
-					{
+					if (_lastMouseX != Input.mouseX || _lastMouseY != Input.mouseY)
 						onMouseMove();
-					}
+					
+					// This is necessary to catch cases where the mouse is let go on a frame its not over the entity but while its being dragged.
+					if (Input.mouseReleased)
+						onMouseUp();
 				}
 				else if (_isMouseOver)
 					onMouseOut();
 			}
 			
 			super.update();
+		}
+		
+		public function addClickListener(callback:Function):void
+		{
+			_clickListeners.push(callback);
+		}
+		
+		public function addDragHandler(callback:Function):void
+		{
+			_dragListeners.push(callback);
+		}
+		
+		public function addMouseDownListener(callback:Function):void
+		{
+			_mouseDownListeners.push(callback);
 		}
 		
 		public function onMouseOver():void
@@ -91,23 +116,6 @@ package schism.ui
 			_lastMouseX = Input.mouseX;
 			_lastMouseY = Input.mouseY;
 			
-			if (_isDraggable && Input.mousePressed)
-			{
-				if (!_isBeingDragged)
-				{
-					_isBeingDragged = true;
-					_dragXOffset = Input.mouseX - x;
-					_dragYOffset = Input.mouseY - y;
-				}
-				layer = _frontLayer;
-			}
-			
-			if (Input.mouseReleased)
-			{
-				_isBeingDragged = false;
-				layer = _backLayer;
-			}
-			
 			if (_isBeingDragged)
 			{
 				x = Input.mouseX - _dragXOffset;
@@ -117,12 +125,38 @@ package schism.ui
 		
 		public function onMouseDown():void
 		{
+			if (_isDraggable)
+			{
+				_isBeingDragged = true;
+				_dragXOffset = Input.mouseX - x;
+				_dragYOffset = Input.mouseY - y;
+
+				world.bringToFront(this);
+			}
 			
+			for (var i:int = 0; i < _mouseDownListeners.length; i++)
+			{
+				_mouseDownListeners[i](this);
+			}
 		}
 		
 		public function onMouseUp():void
 		{
+			var i:int;
+			if (_isBeingDragged)
+			{
+				for (i = 0; i < _dragListeners.length; i++)
+				{
+					_dragListeners[i](this);
+				}
+			}
 			
+			_isBeingDragged = false;
+			
+			for (i = 0; i < _clickListeners.length; i++)
+			{
+				_clickListeners[i](this);
+			}
 		}
 	}
 

@@ -34,15 +34,12 @@ package schism.ui
 			displayTime = time;
 			timeDisplayed = 0;
 			
-			var alignCenter:Boolean = false;
+			var alignCenter:Boolean = true;
 			
 			if (x != 0)
-			{
 				this.x = x;
-				alignCenter = true;
-			}
 			else
-				this.x = 200;
+				this.x = FP.screen.width / 2;
 			if (y != 0)
 				this.y = y;
 			else
@@ -108,7 +105,9 @@ package schism.ui
 		
 		override public function render():void 
 		{
-			Draw.rectPlus(this.x, this.y, width, height, 0x000000, backgroundAlpha, true, 1, 15);
+			Draw.rectPlus(this.x + 5, this.y + 5, width, height, 0x000000, backgroundAlpha - 0.35, true, 1, 15);
+			Draw.rectPlus(this.x, this.y, width, height, 0x111111, backgroundAlpha, true, 1, 15);
+			Draw.rectPlus(this.x, this.y, width, height, 0xFFFFFF, backgroundAlpha, false, 2, 15);
 			
 			super.render();
 		}
@@ -126,8 +125,8 @@ package schism.ui
 			}
 			
 			backgroundAlpha = message.alpha;
-			if (backgroundAlpha > 0.9)
-				backgroundAlpha = 0.9;
+			//if (backgroundAlpha > 0.9)
+			//	backgroundAlpha = 0.9;
 			
 			super.update();
 		}

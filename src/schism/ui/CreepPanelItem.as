@@ -28,7 +28,11 @@ package schism.ui
 		// values
 		private var _pointsDisplayOffset:int = 5;
 		
-		public function CreepPanelItem(creepType:String, cost:int, callback:Function)
+		private var _cost:int = 1;
+		public function get cost():int { return _cost; }
+		public function set cost(value:int):void { _cost = value; }
+		
+		public function CreepPanelItem(creepType:String, callback:Function)
 		{			
 			super();
 			
@@ -39,7 +43,8 @@ package schism.ui
 			layer = 2;
 			width = 48;
 			height = 48;
-			type = creepType;		
+			type = creepType;
+			_cost = Creep.getCost(type);
 			
 			_creepImg = new Image(Creep.getIcon(type));
 			_creepImg.centerOrigin();

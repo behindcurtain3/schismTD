@@ -204,6 +204,33 @@ package schism.creeps
 			
 			return null;
 		}
+		
+		public static function getCost(type:String):int
+		{
+			switch(type)
+			{
+				case "Armor":
+					return 3;
+					break;
+				case "Chigen":
+					return 2;
+					break;
+				case "Magic":
+					return 1;
+					break;
+				case "Quick":
+					return 1;
+					break;
+				case "Regen":
+					return 2;
+					break;
+				case "Swarm":
+					return 1;
+					break;				
+			}
+			
+			return 0;
+		}
 	}
 
 }

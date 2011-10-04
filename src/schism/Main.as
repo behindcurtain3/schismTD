@@ -15,6 +15,7 @@ package schism
 	import schism.ui.SchismSkin;
 	import schism.worlds.LoginWorld;
 	import schism.worlds.SiteLockWorld;
+	import schism.worlds.TitleWorld;
 	
 	/**
 	 * ...
@@ -40,7 +41,7 @@ package schism
 			{
 				//PlayerIO.showLogo(FP.stage, "BC");
 				PunkUI.skin = new SchismSkin;
-				world = new LoginWorld();
+				world = new TitleWorld();
 			}
 			else 
 			{

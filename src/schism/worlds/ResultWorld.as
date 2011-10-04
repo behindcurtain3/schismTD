@@ -10,6 +10,7 @@ package schism.worlds
 	import punk.ui.PunkPanel;
 	import punk.ui.PunkText;
 	import schism.Assets;
+	import schism.ui.MessageDisplay;
 	
 	/**
 	 * ...
@@ -42,66 +43,9 @@ package schism.worlds
 			b.label.font = "Domo";
 			add(b);
 			
-			result = new Text(resultStr, 0, 100);
-			result.font = "Domo";
-			result.size = 48;
-			result.width = FP.screen.width;
-			result.height = 100;
-			result.align = "center";
-			if (result.text.indexOf("Black") != -1)
-				result.color = 0x000000;
-
-			addGraphic(result);
-			
-			var centerx:int = 550;
-			
-			black = new Text("Black", FP.screen.width / 2 - 100, 175);
-			black.font = "Domo";
-			black.size = 24;
-			black.width = 500;
-			black.align = "center";
-			black.color = 0x000000;
-			addGraphic(black);
-			
-			blackLife = new Text("Life: " + blackLifeNum, FP.screen.width / 2 - 100, 225);
-			blackLife.font = "Domo";
-			blackLife.size = 18;
-			blackLife.width = black.width;
-			blackLife.align = "center";
-			blackLife.color = 0x000000;
-			addGraphic(blackLife);
-			
-			blackDamage = new Text("Damage: " + blackDamageNum, FP.screen.width / 2 - 100, 255);
-			blackDamage.font = "Domo";
-			blackDamage.size = 18;
-			blackDamage.width = black.width;
-			blackDamage.align = "center";
-			blackDamage.color = 0x000000;
-			addGraphic(blackDamage);
-			
-			centerx = 250;
-			
-			white = new Text("White", 0, 175);
-			white.font = "Domo";
-			white.size = 24;
-			white.width = 500;
-			white.align = "center";
-			addGraphic(white);
-			
-			whiteLife = new Text("Life: " + whiteLifeNum, 0, 225);
-			whiteLife.font = "Domo";
-			whiteLife.size = 18;
-			whiteLife.width = white.width;
-			whiteLife.align = "center";
-			addGraphic(whiteLife);
-			
-			whiteDamage = new Text("Damage: " + whiteDamageNum, 0, 255);
-			whiteDamage.font = "Domo";
-			whiteDamage.size = 18;
-			whiteDamage.width = white.width;
-			whiteDamage.align = "center";
-			addGraphic(whiteDamage);
-
+			add(new MessageDisplay(resultStr, 0, 48, 0, 100, 600, 100));
+			add(new MessageDisplay("Black\n\nLife: " + blackLifeNum + "\nDamage: " + blackDamageNum, 0, 18, 550, 250, 225));
+			add(new MessageDisplay("White\n\nLife: " + whiteLifeNum + "\nDamage: " + whiteDamageNum, 0, 18, 250, 250, 225));
 		}
 		
 		override public function end():void 
@@ -123,7 +67,7 @@ package schism.worlds
 		public function onExit():void
 		{
 			mConnection.disconnect();
-			FP.world = new LoginWorld();
+			FP.world = new TitleWorld();
 		}
 		
 	}

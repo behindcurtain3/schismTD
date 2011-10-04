@@ -139,8 +139,6 @@ package schism.worlds
 			this.gameId = gameId;
 			createServerRoom = createServer;
 			
-			Mouse.hide();
-			
 			FP.volume = 0.1;
 			
 			// UI elements
@@ -266,7 +264,6 @@ package schism.worlds
 				connection.disconnect();
 			}
 			removeAll();
-			Mouse.show();
 			super.end();
 		}
 		
@@ -529,7 +526,7 @@ package schism.worlds
 			if(connection != null)
 				connection.disconnect();
 				
-			FP.world = new LoginWorld(message);
+			FP.world = new TitleWorld(message);
 		}
 		
 		private function handleNewGame(c:Connection):void
@@ -1302,7 +1299,7 @@ package schism.worlds
 				connect();
 			else
 			{
-				FP.world = new LoginWorld("Unable to start a game on the server.");
+				FP.world = new TitleWorld("Unable to start a game on the server.");
 			}
 		}
 		
@@ -1318,7 +1315,7 @@ package schism.worlds
 		
 		private function handleDisconnect():void
 		{
-			FP.world = new LoginWorld("Connection to the server was lost, please try again.");
+			FP.world = new TitleWorld("Connection to the server was lost, please try again.");
 		}
 		
 		public function getCell(index:int):Cell

@@ -72,7 +72,7 @@ package schism.worlds
 		{
 			if (Input.pressed(Key.BACKSPACE))
 			{
-				FP.world = new LoginWorld();
+				FP.world = new TitleWorld();
 			}			
 			
 			pointsRemainingMessage.message.text = "Points Remaining\n" + _waves[_activeWave].pointsRemaining;

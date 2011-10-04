@@ -34,7 +34,7 @@ package schism.worlds
 	 * ...
 	 * @author Justin Brown
 	 */
-	public class LoginWorld extends World 
+	public class TitleWorld extends World 
 	{
 		// Login
 		protected var usernameL:PunkLabel;
@@ -44,11 +44,14 @@ package schism.worlds
 		
 		// Messages
 		protected var messageDisplay:MessageDisplay;
+
+		// Kongregate API reference
+		protected var kongregate:*;
 		
 		// Client
 		protected var _client:Client;
 		
-		public function LoginWorld ()
+		public function TitleWorld (error:String = "")
 		{
 			var width:int = 250;
 			var uiX:int = FP.screen.width / 2 - width / 2;
@@ -59,7 +62,7 @@ package schism.worlds
 			addGraphic(new Image(Assets.GFX_BACKGROUND), 100);
 			addGraphic(new Image(Assets.GFX_TITLE), 99, FP.screen.width / 2 - 275, 50);
 			
-			
+			/*
 			// Login
 			usernameL = new PunkLabel("Login Name", uiX, uiY, width, 50);
 			usernameL.font = "Domo";
@@ -74,18 +77,62 @@ package schism.worlds
 			add(username);
 			add(passwordL);
 			add(password);
-		
-			var b:PunkButton = new PunkButton(uiX, uiY + spacer * 4 + spacer / 2, width, 50, "Go", onPlayNow, Key.ENTER);
+			*/
+			var b:PunkButton = new PunkButton(uiX, FP.screen.height / 2 - 25, width, 50, "Play as Guest", onPlayTest)
+			b.label.font = "Domo";
+			add(b);
+			
+			b = new PunkButton(uiX, FP.screen.height / 2 - 25 + 60, width, 50, "Login", onLoginClick)
+			b.label.font = "Domo";
+			add(b);
+			
+			add(new MessageDisplay("", 0, 36, FP.screen.width / 2, FP.screen.height / 2 + 30, width + 35, 135));
+			/*
+			
+			var b:PunkButton = new PunkButton(uiX, uiY + spacer * 4 + spacer / 2, width, 50, "Play Now", onPlayNow, Key.ENTER);
 			b.label.font = "Domo";
 			b.label.size = 20;
 			add(b);
 			
-			add(new MessageDisplay("", 0, 36, FP.screen.width / 2, FP.screen.height / 2 + 10, width + 15, 200));
-			/*
 			b = new PunkButton(uiX, uiY + spacer * 7, width, 50, "Register", onRegister);
 			b.label.font = "Domo";
 			add(b);
-			*/			
+			
+			add(new MessageDisplay("", 0, 36, FP.screen.width / 2, FP.screen.height / 2 + 40, width + 15, 245));
+			*/
+			
+			
+			addGraphic(new Text(Assets.VERSION, 0, FP.screen.height - 15, 50, 15));
+			
+			if (error != "")
+			{
+				messageDisplay = new MessageDisplay(error, 5, 18, FP.screen.width / 2);
+				messageDisplay.sound();
+				add(messageDisplay);
+			}
+			
+		}
+		
+		override public function begin():void 
+		{
+			super.begin();
+			/*
+			// Pull the API path from the FlashVars
+			var paramObj:Object = LoaderInfo(FP.stage.loaderInfo).parameters;
+
+			// The API path. The "shadow" API will load if testing locally. 
+			var apiPath:String = paramObj.kongregate_api_path || "http://www.kongregate.com/flash/API_AS3_Local.swf";
+
+			// Allow the API access to this SWF
+			Security.allowDomain(apiPath);
+
+			// Load the API
+			var request:URLRequest = new URLRequest(apiPath);
+			var loader:Loader = new Loader();
+			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, kongLoadComplete);
+			loader.load(request);
+			FP.stage.addChild(loader);
+			*/
 		}
 		
 		override public function end():void
@@ -98,10 +145,15 @@ package schism.worlds
 		{
 			if (Input.pressed(Key.BACKSPACE))
 			{
-				FP.world = new TitleWorld();
+				FP.world = new WaveBuilder();
 			}			
 			
 			super.update();
+		}
+		
+		public function onLoginClick():void
+		{
+			FP.world = new LoginWorld();
 		}
 		
 		public function onPlayNow():void
@@ -157,6 +209,15 @@ package schism.worlds
 		public function onRegister():void
 		{			
 			FP.world = new RegisterWorld();
+		}
+		
+		public function kongLoadComplete(event:Event):void
+		{
+			trace("Kong loaded.");
+			kongregate = event.target.content;
+			
+			//trace(kongregate.services.getUserId());
+			trace(kongregate.services.getGameAuthToken());
 		}
 		
 	}

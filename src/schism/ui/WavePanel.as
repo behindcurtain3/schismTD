@@ -150,7 +150,7 @@ package schism.ui
 		
 		public function deactivate():void
 		{
-			_alpha = 0.75;
+			_alpha = 0.85;
 			for (var i:int = 0; i < _children.length; i++)
 			{
 				_children[i].draggable = false;
@@ -206,7 +206,7 @@ package schism.ui
 			if (_isActivePanel)
 				setAlpha(1);
 			else
-				setAlpha(0.75);
+				setAlpha(0.85);
 		}
 		
 		public function isVisible():Boolean

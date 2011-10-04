@@ -54,7 +54,7 @@ package schism.worlds
 		
 		private function handleDisconnect():void
 		{
-			FP.world = new LoginWorld("Connection to the lobby was lost, please try again.");
+			FP.world = new TitleWorld("Connection to the lobby was lost, please try again.");
 		}
 		
 		private function newDidYouKnow():void
@@ -96,7 +96,7 @@ package schism.worlds
 		
 		private function handleConnectionError(error:PlayerIOError):void
 		{
-			FP.world = new LoginWorld("Connection: " + error.message);
+			FP.world = new TitleWorld("Connection: " + error.message);
 		}
 		
 		
@@ -105,10 +105,10 @@ package schism.worlds
 			switch(error.type)
 			{
 				case PlayerIOError.NoServersAvailable:
-					FP.world = new LoginWorld("There are no game servers currently available.");
+					FP.world = new TitleWorld("There are no game servers currently available.");
 					break;
 				default:
-					FP.world = new LoginWorld("There was an error connecting to the servers.");
+					FP.world = new TitleWorld("There was an error connecting to the servers.");
 					break;
 			}						
 		}

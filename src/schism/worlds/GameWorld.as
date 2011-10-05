@@ -54,7 +54,7 @@ package schism.worlds
 	 * ...
 	 * @author Justin Brown
 	 */
-	public class GameWorld extends World 
+	public class GameWorld extends AuthWorld 
 	{
 		private var Mode:int = BuildMode.NONE;
 		
@@ -101,10 +101,6 @@ package schism.worlds
 		protected var sfx_tower_build:Sfx = new Sfx(Assets.SFX_BUILD_TOWER);
 		protected var sfx_player_hurt:Sfx = new Sfx(Assets.SFX_PLAYER_HURT);
 		
-		// Networking
-		protected var client:Client;
-		protected var connection:Connection;
-		
 		//Players
 		private var color:String = "";
 		private var blackId:int;
@@ -133,9 +129,10 @@ package schism.worlds
 		
 		private var connectionStatusDisplay:MessageDisplay;
 	 
-		public function GameWorld (client:Client, gameId:String, createServer:Boolean = false)
+		public function GameWorld (c:Client, guest:Boolean, gameId:String, createServer:Boolean = false)
 		{
-			this.client = client;
+			super(c, guest);
+
 			this.gameId = gameId;
 			createServerRoom = createServer;
 			
@@ -251,7 +248,7 @@ package schism.worlds
 		{
 			client.multiplayer.joinRoom(
 				roomId,								//Room id. If set to null a random roomid is used
-				{},									//User join data
+				{"guest":_isGuest},									//User join data
 				handleNewGame,						//Function executed on successful joining of the room
 				handleError							//Function executed if we got a join error
 			);
@@ -742,7 +739,7 @@ package schism.worlds
 				}
 				
 				gameFinished = true;
-				resultWorld = new ResultWorld(client, connection, result, m.getInt(1), m.getInt(2), m.getUInt(3), m.getUInt(4));
+				resultWorld = new ResultWorld(client, _isGuest, connection, result, m.getInt(1), m.getInt(2), m.getUInt(3), m.getUInt(4));
 				if(m.getString(5) != "")
 					add(new MessageDisplay(m.getString(5), 5, 24));
 					

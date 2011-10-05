@@ -35,13 +35,7 @@ package schism.worlds
 	 * @author Justin Brown
 	 */
 	public class TitleWorld extends World 
-	{
-		// Login
-		protected var usernameL:PunkLabel;
-		protected var username:PunkTextField;
-		protected var passwordL:PunkLabel;
-		protected var password:PunkPasswordField;
-		
+	{		
 		// Messages
 		protected var messageDisplay:MessageDisplay;
 
@@ -62,22 +56,6 @@ package schism.worlds
 			addGraphic(new Image(Assets.GFX_BACKGROUND), 100);
 			addGraphic(new Image(Assets.GFX_TITLE), 99, FP.screen.width / 2 - 275, 50);
 			
-			/*
-			// Login
-			usernameL = new PunkLabel("Login Name", uiX, uiY, width, 50);
-			usernameL.font = "Domo";
-			username = new PunkTextField("", uiX, uiY + spacer, width);
-			username.font = "Domo";
-			passwordL = new PunkLabel("Password", uiX, uiY + spacer * 2, width, 50);
-			passwordL.font = "Domo";
-			password = new PunkPasswordField(uiX, uiY + spacer * 3, width);
-			password.font = "Domo";
-			
-			add(usernameL);
-			add(username);
-			add(passwordL);
-			add(password);
-			*/
 			var b:PunkButton = new PunkButton(uiX, FP.screen.height / 2 - 25, width, 50, "Play as Guest", onPlayTest)
 			b.label.font = "Domo";
 			add(b);
@@ -86,21 +64,11 @@ package schism.worlds
 			b.label.font = "Domo";
 			add(b);
 			
-			add(new MessageDisplay("", 0, 36, FP.screen.width / 2, FP.screen.height / 2 + 30, width + 35, 135));
-			/*
-			
-			var b:PunkButton = new PunkButton(uiX, uiY + spacer * 4 + spacer / 2, width, 50, "Play Now", onPlayNow, Key.ENTER);
-			b.label.font = "Domo";
-			b.label.size = 20;
-			add(b);
-			
-			b = new PunkButton(uiX, uiY + spacer * 7, width, 50, "Register", onRegister);
+			b = new PunkButton(uiX, FP.screen.height / 2 - 25 + 120, width, 50, "Register", onRegister)
 			b.label.font = "Domo";
 			add(b);
 			
-			add(new MessageDisplay("", 0, 36, FP.screen.width / 2, FP.screen.height / 2 + 40, width + 15, 245));
-			*/
-			
+			add(new MessageDisplay("", 0, 36, FP.screen.width / 2, FP.screen.height / 2 + 60, width + 35, 205));
 			
 			addGraphic(new Text(Assets.VERSION, 0, FP.screen.height - 15, 50, 15));
 			
@@ -111,6 +79,12 @@ package schism.worlds
 				add(messageDisplay);
 			}
 			
+		}
+		
+		override public function end():void
+		{
+			removeAll();
+			super.end();
 		}
 		
 		override public function begin():void 
@@ -135,38 +109,9 @@ package schism.worlds
 			*/
 		}
 		
-		override public function end():void
-		{
-			removeAll();
-			super.end();
-		}
-		
-		override public function update():void
-		{
-			if (Input.pressed(Key.BACKSPACE))
-			{
-				FP.world = new WaveBuilder();
-			}			
-			
-			super.update();
-		}
-		
 		public function onLoginClick():void
 		{
 			FP.world = new LoginWorld();
-		}
-		
-		public function onPlayNow():void
-		{			
-			//Login for a user with QuickConnect for Simple Users
-			PlayerIO.quickConnect.simpleConnect(
-				FP.stage, 
-				Assets.GAME_ID,
-				username.text, 
-				password.text, 
-				onLoginSuccess,
-				onLoginError
-			);
 		}
 		
 		public function onPlayTest():void
@@ -185,7 +130,7 @@ package schism.worlds
 		private function onLoginSuccess(client:Client):void
 		{
 			_client = client;
-			FP.world = new MatchFinderWorld(_client);
+			FP.world = new MatchFinderWorld(_client, true);
 		}
 		
 		private function onLoginError(e:PlayerIOError):void

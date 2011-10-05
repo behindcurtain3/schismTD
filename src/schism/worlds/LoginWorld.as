@@ -80,12 +80,7 @@ package schism.worlds
 			b.label.size = 20;
 			add(b);
 			
-			add(new MessageDisplay("", 0, 36, FP.screen.width / 2, FP.screen.height / 2 + 10, width + 15, 200));
-			/*
-			b = new PunkButton(uiX, uiY + spacer * 7, width, 50, "Register", onRegister);
-			b.label.font = "Domo";
-			add(b);
-			*/			
+			add(new MessageDisplay("", 0, 36, FP.screen.width / 2, FP.screen.height / 2 + 10, width + 15, 200));			
 		}
 		
 		override public function end():void
@@ -96,7 +91,7 @@ package schism.worlds
 		
 		override public function update():void
 		{
-			if (Input.pressed(Key.BACKSPACE))
+			if (Input.pressed(Key.ESCAPE))
 			{
 				FP.world = new TitleWorld();
 			}			
@@ -105,7 +100,13 @@ package schism.worlds
 		}
 		
 		public function onPlayNow():void
-		{			
+		{		
+			if (messageDisplay != null)
+				remove(messageDisplay);
+				
+			messageDisplay = new MessageDisplay("Logging in...", 0);
+			add(messageDisplay);
+			
 			//Login for a user with QuickConnect for Simple Users
 			PlayerIO.quickConnect.simpleConnect(
 				FP.stage, 
@@ -117,23 +118,10 @@ package schism.worlds
 			);
 		}
 		
-		public function onPlayTest():void
-		{			
-			//Login for a user with QuickConnect for Simple Users
-			PlayerIO.quickConnect.simpleConnect(
-				FP.stage, 
-				Assets.GAME_ID,
-				"Admin", 
-				"password", 
-				onLoginSuccess,
-				onLoginError
-			);
-		}
-		
 		private function onLoginSuccess(client:Client):void
 		{
 			_client = client;
-			FP.world = new MatchFinderWorld(_client);
+			FP.world = new HomeWorld(_client, "Welcome back " + username.text);
 		}
 		
 		private function onLoginError(e:PlayerIOError):void
@@ -152,11 +140,6 @@ package schism.worlds
 			}				
 			messageDisplay.sound();
 			add(messageDisplay);
-		}
-		
-		public function onRegister():void
-		{			
-			FP.world = new RegisterWorld();
 		}
 		
 	}

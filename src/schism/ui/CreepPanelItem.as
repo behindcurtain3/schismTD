@@ -27,6 +27,11 @@ package schism.ui
 		
 		// values
 		private var _pointsDisplayOffset:int = 5;
+		private var _repeatDelayTimer:Number = 0.5;
+		private var _repeatFireTimer:Number = 0.15;
+		private var _repeatPosition:Number = 0;
+		private var _buttonIsDown:Boolean = false;
+		private var _repeatIsFiring:Boolean = false;
 		
 		private var _cost:int = 1;
 		public function get cost():int { return _cost; }
@@ -70,6 +75,30 @@ package schism.ui
 		{
 			_creepImg.alpha = alpha;
 			_pointsText.alpha = alpha;
+			
+			if (_buttonIsDown)
+			{
+				_repeatPosition += FP.elapsed;
+				
+				if (_repeatIsFiring)
+				{
+					if (_repeatPosition >= _repeatFireTimer)
+					{
+						_callback(type);
+						_repeatPosition = 0;
+					}
+				}
+				else
+				{
+					if (_repeatPosition >= _repeatDelayTimer)
+					{
+						_callback(type);
+						_repeatPosition = 0;
+						_repeatIsFiring = true;
+					}
+				}
+			}
+			
 			super.update();
 		}
 		
@@ -97,18 +126,27 @@ package schism.ui
 			super.onMouseOut();
 			
 			_bgColor = 0x000000;
+			_buttonIsDown = false;
+			_repeatPosition = 0;
+			_repeatIsFiring = false;
 		}
 		
 		override public function onMouseDown():void 
 		{
 			_bgColor = 0xCCCCCC;
+			_buttonIsDown = true;
 			super.onMouseDown();
 		}
 		
 		override public function onMouseUp():void 
 		{
-			_callback(type);
 			_bgColor = 0x999999;
+			
+			_callback(type);
+			_buttonIsDown = false;
+			_repeatPosition = 0;
+			_repeatIsFiring = false;
+			
 			super.onMouseUp();
 		}
 		

@@ -135,7 +135,7 @@ package schism.ui
 		
 		override public function render():void 
 		{
-			Draw.rectPlus(x, y, width, height, 0x000000, 0.75);
+			Draw.rectPlus(x, y, width, height, 0x111111, 0.75);
 			Draw.line(x, y, FP.screen.width, y);
 			Draw.line(x, y + height, FP.screen.width, y + height);
 			

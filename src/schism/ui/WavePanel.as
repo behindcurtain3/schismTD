@@ -14,7 +14,10 @@ package schism.ui
 	public class WavePanel extends MouseEntity 
 	{
 		private var _children:Array;
+		public function get children():Array { return _children; }
+		
 		private var _typesUsed:Array;
+		private var _errorListeners:Array;
 		
 		private var _isActivePanel:Boolean;
 		public function get activePanel():Boolean { return _isActivePanel; }
@@ -59,7 +62,14 @@ package schism.ui
 		
 			addGraphic(_positionDisplay);
 			
+			_errorListeners = new Array();
+			
 			deactivate();
+		}
+		
+		public function addErrorListener(callback:Function):void
+		{
+			_errorListeners.push(callback);
 		}
 		
 		public function addChild(child:DraggableCreepIcon):void
@@ -69,8 +79,7 @@ package schism.ui
 			{
 				if (_typesUsed.length >= 3)
 				{
-					if (world != null)
-						world.add(new MessageDisplay("Unable to add a " + child.type + " creep because there are already 3 types in this wave.", 3));
+					raiseError("Unable to add " + child.type + " creep because there are already 3 types of creep in this wave.");
 					return;
 				}
 				else
@@ -81,8 +90,7 @@ package schism.ui
 			var cost:int = Creep.getCost(child.type);
 			if (cost > pointsRemaining)
 			{
-				if (world != null)
-						world.add(new MessageDisplay("Unable to add a " + child.type + " creep because there are not enough points left.", 3));
+				raiseError("Unable to add a new " + child.type + " creep because there are not enough points left.");
 				return;
 			}
 			else
@@ -97,6 +105,7 @@ package schism.ui
 			child.y = y + (height / 2) - (_childHeight / 2);
 			child.lockY = child.y;
 			child.draggable = activePanel;
+			child.alpha = _alpha;
 			
 			// Add drag handler
 			child.addDragHandler(onChildDragDrop);
@@ -111,10 +120,20 @@ package schism.ui
 		
 		override public function render():void 
 		{
-			Draw.rectPlus(x, y, width, height, 0x000000, _alpha - 0.25);
-			Draw.linePlus(x, y, FP.screen.width, y, 0xFFFFFF, _alpha);
-			Draw.linePlus(x, y + height, FP.screen.width, y + height, 0xFFFFFF, _alpha);
-			
+			if (_isActivePanel)
+			{
+				Draw.rectPlus(x, y, width, height, 0xd8dfea, _alpha);
+				Draw.linePlus(x, y, FP.screen.width, y, 0x222222, _alpha);
+				Draw.linePlus(x, y + height, FP.screen.width, y + height, 0x111111, _alpha);
+				Draw.linePlus(_leftPadding - 5, y, _leftPadding - 5, y + height, 0x222222, _alpha - 0.25);
+			}
+			else
+			{
+				Draw.rectPlus(x, y, width, height, 0x000000, _alpha);
+				Draw.linePlus(x, y, FP.screen.width, y, 0xFFFFFF, _alpha);
+				Draw.linePlus(x, y + height, FP.screen.width, y + height, 0xFFFFFF, _alpha);
+				Draw.linePlus(_leftPadding - 7, y, _leftPadding - 7, y + height, 0xBBBBBB, _alpha - 0.25);
+			}
 			super.render();
 		}
 		
@@ -143,8 +162,9 @@ package schism.ui
 			}
 			activePanel = true;
 			
+			_positionDisplay.size = 24;
 			_positionDisplay.alpha = _alpha;
-			_positionDisplay.color = 0xFFFFFF;
+			_positionDisplay.color = 0x222222;
 			
 		}
 		
@@ -158,6 +178,7 @@ package schism.ui
 			}
 			activePanel = false;
 			
+			_positionDisplay.size = 18;
 			_positionDisplay.alpha = _alpha;
 			_positionDisplay.color = 0x888888;
 		}
@@ -168,6 +189,7 @@ package schism.ui
 				world.removeList(_children);
 				
 			_children = [];
+			_typesUsed = [];
 			pointsRemaining = 24;
 		}
 		
@@ -178,6 +200,7 @@ package schism.ui
 			for (var i:int = 0; i < _children.length; i++)
 			{
 				_children[i].y -= amount;
+				_children[i].lockY = _children[i].y;
 			}
 		}
 		
@@ -188,6 +211,7 @@ package schism.ui
 			for (var i:int = 0; i < _children.length; i++)
 			{
 				_children[i].y += amount;
+				_children[i].lockY = _children[i].y;
 			}
 		}
 		
@@ -212,6 +236,38 @@ package schism.ui
 		public function isVisible():Boolean
 		{
 			return _alpha > 0;
+		}
+		
+		public function removeLast():void
+		{
+			if (_children.length > 0)
+			{
+				var object:DraggableCreepIcon = _children.pop();
+				pointsRemaining += Creep.getCost(object.type);
+				
+				// Update types in array
+				var found:Boolean = false;
+				for (var i:int = 0; i < _children.length; i++)
+				{
+					if (_children[i].type == object.type)
+						found = true;
+				}
+				
+				if (!found)
+				{
+					_typesUsed.splice(_typesUsed.indexOf(object.type), 1);
+				}
+				
+				world.remove(object);
+			}
+		}
+		
+		private function raiseError(e:String):void
+		{
+			for (var i:int = 0; i < _errorListeners.length; i++)
+			{
+				_errorListeners[i](e);
+			}
 		}
 		
 	}

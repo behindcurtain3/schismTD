@@ -21,6 +21,9 @@ package schism.ui
 		private var doesMsgFade:Boolean = true;
 		private var callBack:Function = null;
 		
+		protected var _bgColor:uint = 0x111111;
+		protected var _borderColor:uint = 0xFFFFFF;
+		
 		public function MessageDisplay(msg:String, time:Number, fontSize:int = 18, x:int = 0, y:int = 0, w:int = 400, h:int = 50, callBack:Function = null) 
 		{
 			layer = 1;
@@ -106,8 +109,8 @@ package schism.ui
 		override public function render():void 
 		{
 			Draw.rectPlus(this.x + 5, this.y + 5, width, height, 0x000000, backgroundAlpha - 0.35, true, 1, 15);
-			Draw.rectPlus(this.x, this.y, width, height, 0x111111, backgroundAlpha, true, 1, 15);
-			Draw.rectPlus(this.x, this.y, width, height, 0xFFFFFF, backgroundAlpha, false, 2, 15);
+			Draw.rectPlus(this.x, this.y, width, height, _bgColor, backgroundAlpha, true, 1, 15);
+			Draw.rectPlus(this.x, this.y, width, height, _borderColor, backgroundAlpha, false, 2, 15);
 			
 			super.render();
 		}

@@ -16,24 +16,13 @@ package schism.worlds
 	 * ...
 	 * @author Justin Brown
 	 */
-	public class ResultWorld extends World 
+	public class ResultWorld extends AuthWorld 
 	{
-		private var mClient:Client;
-		private var mConnection:Connection;
 		
-		private var result:Text;
-		private var black:Text;
-		private var blackLife:Text;
-		private var blackDamage:Text;
-		private var white:Text; 
-		private var whiteLife:Text;
-		private var whiteDamage:Text;
-		
-		public function ResultWorld(client:Client, connection:Connection, resultStr:String, blackLifeNum:int, whiteLifeNum:int, blackDamageNum:uint, whiteDamageNum:uint)
+		public function ResultWorld(c:Client, guest:Boolean, con:Connection, resultStr:String, blackLifeNum:int, whiteLifeNum:int, blackDamageNum:uint, whiteDamageNum:uint)
 		{
-			mClient = client;
-			mConnection = connection;
-
+			super(c, guest);
+			connection = con;
 			addGraphic(new Image(Assets.GFX_BACKGROUND), 5);
 			
 			var b:PunkButton = new PunkButton(FP.screen.width / 2 - 250, FP.screen.height / 2 + 100, 200, 100, "Play Again", onPlayAgain);
@@ -61,13 +50,16 @@ package schism.worlds
 		
 		public function onPlayAgain():void
 		{
-			FP.world = new MatchFinderWorld(mClient);
+			FP.world = new MatchFinderWorld(client, _isGuest);
 		}
 		
 		public function onExit():void
 		{
-			mConnection.disconnect();
-			FP.world = new TitleWorld();
+			connection.disconnect();
+			if(_isGuest)
+				FP.world = new TitleWorld();
+			else
+				FP.world = new HomeWorld(client);
 		}
 		
 	}

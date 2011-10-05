@@ -58,10 +58,16 @@ package schism.worlds
 			add(new MessageDisplay("", 0, 36, FP.screen.width / 2, FP.screen.height / 2 + 40, width + 15, 245));
 		}
 		
+		override public function end():void 
+		{
+			removeAll();
+			super.end();
+		}
+		
 		override public function update():void 
 		{
 			if (Input.check(Key.ESCAPE))
-				FP.world = new LoginWorld();
+				FP.world = new TitleWorld();
 			
 			super.update();
 		}
@@ -86,7 +92,7 @@ package schism.worlds
 		
 		private function onRegisterSuccess(client:Client):void
 		{
-			FP.world = new MatchFinderWorld(client);
+			FP.world = new HomeWorld(client, "Welcome to SchismTD " + regUsername.text + "!");
 		}
 		
 		private function onRegisterError(e:PlayerIORegistrationError):void

@@ -40,7 +40,7 @@ package schism.ui
 		{
 			super();
 			var textColor:int = 0xFFFFFF;
-			punkButton = new PunkSkinButtonElement(gy(0, 0, 32, 32), gy(32, 0, 32, 32), gy(64, 0, 32, 32), gy(0, 0, 32, 32), { color: 0x000000, size: 16 } );
+			punkButton = new PunkSkinButtonElement(gy(0, 0, 32, 32), gy(32, 0, 32, 32), gy(64, 0, 32, 32), gy(0, 0, 32, 32), { color: 0xFFFFFF, size: 18 } );
 			punkLabel = new PunkSkinHasLabelElement( { color: textColor, size: 16 } );
 			punkTextField = new PunkSkinLabelElement( { color: 0x000000, size: 16 }, gy(0, 32, 32, 32));
 			punkPasswordField = new PunkSkinLabelElement( { color: 0x000000, size: 16 }, gy(0, 32, 32, 32));

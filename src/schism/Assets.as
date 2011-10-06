@@ -8,6 +8,7 @@ package schism
 	{		
 		public static const VERSION:String = "v0.4";
 		public static const GAME_ID:String = "schismtd-3r3otmhvkki9ixublwca";
+		public static const FB_APPID:String = "256712624370689";
 		
 		[Embed(source = '../../assets/board/punkuimenus.png')] public static const SKIN:Class;
 		[Embed(source = '../../assets/board/pointer-normal.png')] public static const MOUSE_NORMAL:Class;

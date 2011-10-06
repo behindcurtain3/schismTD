@@ -37,7 +37,7 @@ package schism
 			FP.stage.addChild(new CustomMouse());
 			FP.stage.scaleMode = StageScaleMode.SHOW_ALL;
 			
-			if (checkDomain(["www.schismtd.com", "schismtd.com", "schismtd.heroku.com"]))
+			if (checkDomain(["www.schismtd.com", "schismtd.com", "schismtd.heroku.com", "www.kongregate.com", "kongregate.com"]))
 			{
 				//PlayerIO.showLogo(FP.stage, "BC");
 				PunkUI.skin = new SchismSkin;

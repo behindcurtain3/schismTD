@@ -1,9 +1,11 @@
 package schism.worlds 
 {
+	import flash.net.SharedObject;
 	import net.flashpunk.Entity;
 	import net.flashpunk.FP;
 	import playerio.Client;
 	import punk.ui.PunkButton;
+	import schism.Assets;
 	import schism.ui.MessageDisplay;
 	
 	/**
@@ -39,7 +41,7 @@ package schism.worlds
 				add(messageDisplay);
 			}
 		}
-	
+			
 		override public function end():void
 		{
 			removeAll();

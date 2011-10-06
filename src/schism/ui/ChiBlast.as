@@ -2,6 +2,7 @@ package schism.ui
 {
 	import net.flashpunk.Entity;
 	import net.flashpunk.graphics.Spritemap;
+	import net.flashpunk.Sfx;
 	import schism.Assets;
 	import schism.creeps.Creep;
 	
@@ -13,6 +14,7 @@ package schism.ui
 	{
 		private var _map:Spritemap;
 		private var _target:Creep;
+		private var _sfx:Sfx;
 		
 		public function ChiBlast(_x:int, _y:int, target:Creep = null, color:String = "white") 
 		{
@@ -41,6 +43,9 @@ package schism.ui
 			
 			graphic = _map;
 			layer = 2;
+			
+			_sfx = new Sfx(Assets.SFX_CHIBLAST);
+			_sfx.play();
 		}
 		
 		override public function update():void 

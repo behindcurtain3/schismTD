@@ -3,6 +3,7 @@ package schism.worlds
 	import flash.net.SharedObject;
 	import net.flashpunk.Entity;
 	import net.flashpunk.FP;
+	import net.flashpunk.Sfx;
 	import playerio.Client;
 	import punk.ui.PunkButton;
 	import schism.Assets;
@@ -15,6 +16,8 @@ package schism.worlds
 	public class HomeWorld extends AuthWorld 
 	{
 		private var messageDisplay:MessageDisplay;
+		private var startSfx:Sfx;
+		
 		public function HomeWorld(c:Client, error:String = "") 
 		{
 			super(c);
@@ -40,6 +43,8 @@ package schism.worlds
 				messageDisplay.sound();
 				add(messageDisplay);
 			}
+			
+			startSfx = new Sfx(Assets.SFX_BUTTON_START);
 		}
 			
 		override public function end():void
@@ -50,6 +55,7 @@ package schism.worlds
 		
 		public function onPlay():void
 		{
+			startSfx.play();
 			FP.world = new MatchFinderWorld(client);
 		}
 		

@@ -25,10 +25,10 @@ package schism.worlds
 			connection = con;
 			addGraphic(new Image(Assets.GFX_BACKGROUND), 5);
 			
-			var b:PunkButton = new PunkButton(FP.screen.width / 2 - 250, FP.screen.height / 2 + 100, 200, 100, "Play Again", onPlayAgain);
+			var b:PunkButton = new PunkButton(FP.screen.width / 2 - 250, FP.screen.height / 2 + 100, 200, 75, "Play Again", onPlayAgain);
 			b.label.font = "Domo";
 			add(b); 
-			b = new PunkButton(FP.screen.width / 2 + 50, FP.screen.height / 2 + 100, 200, 100, "Exit", onExit);
+			b = new PunkButton(FP.screen.width / 2 + 50, FP.screen.height / 2 + 100, 200, 75, "Return Home", onExit);
 			b.label.font = "Domo";
 			add(b);
 			

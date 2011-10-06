@@ -51,6 +51,9 @@ package schism.worlds
 		{
 			if (Input.pressed(Key.ESCAPE))
 			{
+				if (connection != null && connection.connected)
+					connection.disconnect();
+				
 				if (_isGuest)
 					FP.world = new TitleWorld();
 				else

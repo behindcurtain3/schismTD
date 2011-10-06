@@ -1,7 +1,9 @@
 package schism.creeps 
 {
+	import net.flashpunk.graphics.Graphiclist;
 	import net.flashpunk.graphics.Image;
 	import net.flashpunk.graphics.Spritemap;
+	import net.flashpunk.Sfx;
 	import schism.Assets;
 	/**
 	 * ...
@@ -29,9 +31,14 @@ package schism.creeps
 			spriteMap.add("walk", [0, 1], 3, true);
 			spriteMap.play("walk");			
 			
-			graphic = spriteMap;
+			graphicList.add(spriteMap);
+			graphic = graphicList;
 			
 			updateAngle();
+			
+			deathSounds.push(new Sfx(Assets.SFX_CREEP_DEATH_LARGE1));
+			deathSounds.push(new Sfx(Assets.SFX_CREEP_DEATH_LARGE2));
+			deathSounds.push(new Sfx(Assets.SFX_CREEP_DEATH_LARGE3));
 		}
 				
 	}

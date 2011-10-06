@@ -3,9 +3,12 @@ package schism.creeps
 	import flash.geom.Point;
 	import net.flashpunk.Entity;
 	import net.flashpunk.FP;
+	import net.flashpunk.graphics.Emitter;
+	import net.flashpunk.graphics.Graphiclist;
 	import net.flashpunk.graphics.Image;
 	import net.flashpunk.graphics.Spritemap;
 	import net.flashpunk.tweens.misc.VarTween;
+	import net.flashpunk.utils.Ease;
 	import schism.Assets;
 	import schism.Cell;
 	import schism.effects.EffectEntity;
@@ -34,6 +37,17 @@ package schism.creeps
 		public var isActive:Boolean;
 		private var mActivationTime:Number = 0;
 		
+		protected var deathSounds:Array;
+		
+		protected var deathEmitter:Emitter;
+		protected var healEmitter:Emitter;
+		protected var particleCount:int = 20;
+		protected var graphicList:Graphiclist;
+		
+		protected var destroyTimer:Number = 0.5;
+		protected var destroyPosition:Number = 0;
+		protected var destroy:Boolean = false;
+		
 		public function Creep(s:String, pId:int, _x:int, _y:int, sp:int, _path:Array) 
 		{
 			super();
@@ -48,6 +62,22 @@ package schism.creeps
 			updatePath(_path);
 			
 			isActive = false;
+			
+			deathSounds = new Array();
+			
+			healEmitter = new Emitter(Assets.GFX_CREEP_HEAL, 7, 7);
+			healEmitter.newType("Heal", [0, 1, 0, 1, 0]);
+			healEmitter.setAlpha("Heal", 1, 0.25, Ease.bounceInOut);
+			healEmitter.setMotion("Heal", 90, 30, 0.5);
+			
+			deathEmitter = new Emitter(Assets.GFX_CREEP_DEATH);
+			deathEmitter.newType("die", [0]);
+			deathEmitter.setAlpha("die", 1, 0.5, Ease.circOut);
+			deathEmitter.setMotion("die", 0, 3, destroyTimer, 360, 15, 0.05);
+			deathEmitter.setGravity("die", 0.1);
+			
+			graphicList = new Graphiclist(healEmitter, deathEmitter);
+			
 		}
 		
 		public function flash():void
@@ -61,6 +91,16 @@ package schism.creeps
 		
 		override public function update():void 
 		{
+			if (destroy)
+			{
+				destroyPosition += FP.elapsed;
+				
+				if (world != null && destroyPosition >= destroyTimer)
+					world.remove(this);
+				
+				return;
+			}			
+			
 			if (!isActive)
 			{
 				mActivationTime += FP.elapsed;
@@ -118,11 +158,30 @@ package schism.creeps
 			super.update();
 		}
 		
+		public function die():void
+		{
+			path = [];
+			for (var i:int = 0; i < particleCount; i++)
+			{
+				deathEmitter.emit("die", 0, 0);
+			}
+			destroy = true;
+			destroyPosition = 0;
+			playDeathSound();
+			spriteMap.visible = false;
+		}
+		
 		public function updateLife(value:int):void
 		{
 			if (life == -1)
 			{
 				startingLife = value;
+			}
+			else if (value > life)
+			{
+				healEmitter.emit("Heal", -8, 0);
+				healEmitter.emit("Heal", 0, 5);
+				healEmitter.emit("Heal", 7, 0);
 			}
 			life = value;
 		}
@@ -176,6 +235,15 @@ package schism.creeps
 				return;
 				
 			spriteMap.angle = FP.angle(centerX, centerY, MovingTo.centerX, MovingTo.centerY) + 90;	
+		}
+		
+		public function playDeathSound():void
+		{
+			var i:int = Math.round(Math.random() * deathSounds.length) - 1;
+			if (i < 0)
+				i = deathSounds.length - 1;
+				
+			deathSounds[i].play();
 		}
 		
 		public static function getIcon(type:String):Class

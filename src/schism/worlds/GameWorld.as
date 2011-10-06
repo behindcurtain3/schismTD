@@ -858,12 +858,15 @@ package schism.worlds
 
 			});
 			
-			connection.addMessageHandler(Messages.GAME_CREEP_REMOVE, function(m:Message, id:String):void {
+			connection.addMessageHandler(Messages.GAME_CREEP_REMOVE, function(m:Message, id:String, type:String):void {
 				for each(var cr:Creep in getCreeps())
 				{
 					if (cr.ID == id)
 					{
-						remove(cr);
+						if (type == "Death")
+							cr.die();
+						else
+							remove(cr);
 						
 						for each(var p:Projectile in getProjectiles())
 						{
@@ -1312,7 +1315,10 @@ package schism.worlds
 		
 		private function handleDisconnect():void
 		{
-			FP.world = new TitleWorld("Connection to the server was lost, please try again.");
+			if(_isGuest)
+				FP.world = new TitleWorld("Connection to the server was lost, please try again.");
+			else
+				FP.world = new HomeWorld(client, "Connection to the server was lost, please try again.");
 		}
 		
 		public function getCell(index:int):Cell

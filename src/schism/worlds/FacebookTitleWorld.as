@@ -101,6 +101,7 @@ package schism.worlds
 						trace("FBID: " + facebookUserId);
 						sharedObject.data.fbtoken = access_token;
 						sharedObject.flush();
+						FP.world = new HomeWorld(c, "Welcome to SchismTD");
 					},
 					function(e:PlayerIOError):void {
 						showMessage(e.message);

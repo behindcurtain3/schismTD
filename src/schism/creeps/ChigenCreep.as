@@ -29,9 +29,6 @@ package schism.creeps
 			spriteMap.add("walk", [0, 1], 4, true);
 			spriteMap.play("walk");			
 			
-			graphicList.add(spriteMap);
-			graphic = graphicList;
-			
 			updateAngle();
 			
 			deathSounds.push(new Sfx(Assets.SFX_CREEP_DEATH_MEDIUM1));

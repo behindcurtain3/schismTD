@@ -55,6 +55,9 @@ package schism.ui
 			message.font = "Domo";
 			message.size = fontSize;
 			message.color = 0xFFFFFF;
+			message.outlineColor = 0x000000;
+			message.outlineStrength = 2;
+			message.updateTextBuffer();
 			
 			var edited:Boolean = false;
 			while (message.textWidth + message.size > FP.screen.width)

@@ -68,6 +68,7 @@ package schism
 		[Embed(source = '../../assets/creeps/Swarm.png')] public static const GFX_CREEP_SWARM:Class;
 		[Embed(source = '../../assets/creeps/heal.png')] public static const GFX_CREEP_HEAL:Class;
 		[Embed(source = '../../assets/creeps/death.png')] public static const GFX_CREEP_DEATH:Class;
+		[Embed(source = '../../assets/creeps/target.png')] public static const GFX_CREEP_TARGET:Class;
 		
 		// Projectiles
 		[Embed(source = '../../assets/towers/Bullets/basicbullet.png')] public static const GFX_BULLET_BASIC:Class;

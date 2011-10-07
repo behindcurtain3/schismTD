@@ -59,6 +59,9 @@ package schism.ui
 			_positionDisplay.size = 18;
 			_positionDisplay.color = 0x888888;
 			_positionDisplay.y = height / 2 - _positionDisplay.height / 2;
+			_positionDisplay.outlineColor = 0x000000;
+			_positionDisplay.outlineStrength = 2;
+			_positionDisplay.updateTextBuffer();
 		
 			addGraphic(_positionDisplay);
 			
@@ -164,7 +167,7 @@ package schism.ui
 			
 			_positionDisplay.size = 24;
 			_positionDisplay.alpha = _alpha;
-			_positionDisplay.color = 0x222222;
+			_positionDisplay.color = 0x555555;
 			
 		}
 		

@@ -53,6 +53,10 @@ package schism.worlds
 			pointsRemainingMessage.font = "Domo";
 			pointsRemainingMessage.x = FP.screen.width - pointsRemainingMessage.textWidth - 5;
 			pointsRemainingMessage.y = _vertPadding - _panelSpacing + (_panelSpacing / 2) - (pointsRemainingMessage.height / 2);
+			pointsRemainingMessage.color = 0x555555;
+			pointsRemainingMessage.outlineColor = 0x000000;
+			pointsRemainingMessage.outlineStrength = 2;
+			pointsRemainingMessage.updateTextBuffer();
 			
 			addGraphic(pointsRemainingMessage);
 			
@@ -83,11 +87,9 @@ package schism.worlds
 			add(new WavePanelHeader(0, _vertPadding - _panelSpacing));
 			
 			var b:PunkButton = new PunkButton(225, FP.screen.height - 138, 150, 50, "Save", onSave)
-			b.label.font = "Domo";
 			add(b);
 			
 			b = new PunkButton(425, FP.screen.height - 138, 150, 50, "Return to Home", onExit)
-			b.label.font = "Domo";
 			add(b);
 		}
 		
@@ -119,7 +121,7 @@ package schism.worlds
 			if (_waves[_activeWave].pointsRemaining > _pointsAllowedRemaining)
 				pointsRemainingMessage.color = 0xFF0000;
 			else
-				pointsRemainingMessage.color = 0x222222;
+				pointsRemainingMessage.color = 0x555555;
 			
 			if (Input.pressed(Key.DELETE))
 				_waves[_activeWave].clear();
@@ -230,7 +232,7 @@ package schism.worlds
 				showMessage("Invalid authentication, please login again.");
 				return;				
 			}
-
+			showMessage("Loading creeps from server...");
 			client.bigDB.loadMyPlayerObject(onRoomLoad, onRoomError);
 		}
 		
@@ -287,7 +289,10 @@ package schism.worlds
 		public function onRoomLoad(dbObject:DatabaseObject):void
 		{
 			if (dbObject["Waves"] == undefined)
+			{
+				showMessage("There were no waves found.");
 				return;
+			}
 			
 			for (var i:int = 0; i < dbObject["Waves"].length; i++)
 			{
@@ -296,6 +301,7 @@ package schism.worlds
 					_waves[i].addChild(new DraggableCreepIcon(dbObject["Waves"][i][j], 0, 0));
 				}
 			}
+			showMessage("Creeps loaded.");
 		}
 		
 		public function onRoomError(e:PlayerIOError):void

@@ -51,20 +51,17 @@ package schism.worlds
 				
 				// Background				
 				var b:PunkButton = new PunkButton(uiX, FP.screen.height / 2 - 25, width, 50, "Play as Guest", onPlayTest)
-				b.label.font = "Domo";
 				add(b);
 				
 				b = new PunkButton(uiX, FP.screen.height / 2 - 25 + 60, width, 50, "Login", onLoginClick)
-				b.label.font = "Domo";
 				add(b);
 				
 				b = new PunkButton(uiX, FP.screen.height / 2 - 25 + 120, width, 50, "Register", onRegister)
-				b.label.font = "Domo";
 				add(b);
 				
 				add(new MessageDisplay("", 0, 36, FP.screen.width / 2, FP.screen.height / 2 + 60, width + 35, 205));
 				
-				addGraphic(new Text(Assets.VERSION, 0, FP.screen.height - 15, 50, 15));			
+				addGraphic(new Text(Assets.VERSION, 0, FP.screen.height - 15, 50, 15));
 				
 			}
 			// Use the token we have
@@ -72,15 +69,13 @@ package schism.worlds
 			{
 				showMessage("Logging in ...");
 				
-				trace(sharedObject.data.fbtoken);
 				PlayerIO.quickConnect.facebookOAuthConnect(
 					FP.stage, Assets.GAME_ID, sharedObject.data.fbtoken, "",
 					function(c:Client, facebookUserId:String):void {
-						trace("Loggin in user " + facebookUserId);
 						FP.world = new HomeWorld(c);
 					},
 					function(e:PlayerIOError):void {
-						trace(e.message);
+						showMessage(e.message);
 					});
 			}
 		}
@@ -96,9 +91,6 @@ package schism.worlds
 			PlayerIO.quickConnect.facebookOAuthConnectPopup(
 					FP.stage, Assets.GAME_ID, "_blank", ["publish_stream","offline_access"], "",
 					function(c:Client, access_token:String, facebookUserId:String):void {
-						trace("Client is connected...");
-						trace("Token: " + access_token);
-						trace("FBID: " + facebookUserId);
 						sharedObject.data.fbtoken = access_token;
 						sharedObject.flush();
 						FP.world = new HomeWorld(c, "Welcome to SchismTD");

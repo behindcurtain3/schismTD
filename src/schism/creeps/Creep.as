@@ -47,6 +47,7 @@ package schism.creeps
 		protected var destroyTimer:Number = 0.5;
 		protected var destroyPosition:Number = 0;
 		protected var destroy:Boolean = false;
+		protected var target:Image;
 		
 		public function Creep(s:String, pId:int, _x:int, _y:int, sp:int, _path:Array) 
 		{
@@ -76,17 +77,32 @@ package schism.creeps
 			deathEmitter.setMotion("die", 0, 3, destroyTimer, 360, 15, 0.05);
 			deathEmitter.setGravity("die", 0.1);
 			
-			graphicList = new Graphiclist(healEmitter, deathEmitter);
+			target = new Image(Assets.GFX_CREEP_TARGET);
+			target.centerOrigin();
+			target.visible = false;
 			
+		}
+		
+		override public function added():void 
+		{
+			graphicList = new Graphiclist(spriteMap, healEmitter, deathEmitter, target);
+			graphic = graphicList;
+			super.added();
 		}
 		
 		public function flash():void
 		{
-			spriteMap.color = 0xFF0000;
-
-			var colorTween:VarTween = new VarTween();
-			colorTween.tween(spriteMap, "color", 0xFFFFFF, 2.5);
-			addTween(colorTween, true);
+			target.visible = true;
+			target.scale = 1.5;
+			
+			var t:VarTween = new VarTween();
+			t.tween(target, "scale", 1, 0.25);
+			addTween(t);
+		}
+		
+		public function removeTarget():void
+		{
+			target.visible = false;
 		}
 		
 		override public function update():void 
@@ -169,6 +185,7 @@ package schism.creeps
 			destroyPosition = 0;
 			playDeathSound();
 			spriteMap.visible = false;
+			target.visible = false;
 		}
 		
 		public function updateLife(value:int):void
@@ -195,7 +212,7 @@ package schism.creeps
 		
 		public function setPositionFromServer(_x:Number, _y:Number, length:int):void
 		{
-			// If we are further than 15px away do something about it
+			// If we are further than x away do something about it
 			if (getDistanceFromXY(_x, _y) > 30)
 			{
 				this.x = _x;
@@ -211,12 +228,7 @@ package schism.creeps
 			{
 				this.path = this.path.splice(0, 1);
 			}
-			
-			if (this.path.length != 0)
-			{
-				MovingTo = this.path[0];
-				updateAngle();
-			}
+			MovingTo = null;
 		}
 		
 		public function getDistanceFromXY(x:Number, y:Number):Number

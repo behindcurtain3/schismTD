@@ -26,10 +26,8 @@ package schism.worlds
 			addGraphic(new Image(Assets.GFX_BACKGROUND), 5);
 			
 			var b:PunkButton = new PunkButton(FP.screen.width / 2 - 250, FP.screen.height / 2 + 100, 200, 75, "Play Again", onPlayAgain);
-			b.label.font = "Domo";
 			add(b); 
 			b = new PunkButton(FP.screen.width / 2 + 50, FP.screen.height / 2 + 100, 200, 75, "Return Home", onExit);
-			b.label.font = "Domo";
 			add(b);
 			
 			add(new MessageDisplay(resultStr, 0, 48, 0, 100, 600, 100));

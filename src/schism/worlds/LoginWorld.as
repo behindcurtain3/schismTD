@@ -76,7 +76,6 @@ package schism.worlds
 			add(password);
 		
 			var b:PunkButton = new PunkButton(uiX, uiY + spacer * 4 + spacer / 2, width, 50, "Go", onPlayNow, Key.ENTER);
-			b.label.font = "Domo";
 			b.label.size = 20;
 			add(b);
 			

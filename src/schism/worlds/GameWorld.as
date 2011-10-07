@@ -261,6 +261,7 @@ package schism.worlds
 				connection.disconnect();
 			}
 			removeAll();
+			(FP.stage.getChildByName("CustomMouse") as CustomMouse).setCursor(Assets.MOUSE_NORMAL);
 			super.end();
 		}
 		
@@ -539,13 +540,19 @@ package schism.worlds
 			whiteHealthUI.visible = false;
 			whiteHealthUI.font = "Domo";
 			whiteHealthUI.size = 16;
-			whiteHealthUI.color = 0x000000;
+			whiteHealthUI.color = 0xFF0000;
+			whiteHealthUI.outlineColor = 0x000000;
+			whiteHealthUI.outlineStrength = 2;
+			whiteHealthUI.updateTextBuffer();
 			
 			whiteManaUI = new Text("100", 180, 5);
 			whiteManaUI.visible = false;
 			whiteManaUI.font = "Domo";
 			whiteManaUI.size = 16;
-			whiteManaUI.color = 0x000000;
+			whiteManaUI.color = 0x0000FF;
+			whiteManaUI.outlineColor = 0x000000;
+			whiteManaUI.outlineStrength = 2;
+			whiteManaUI.updateTextBuffer();
 			addGraphic(whiteHealthUI);
 			addGraphic(whiteManaUI);
 			
@@ -555,6 +562,9 @@ package schism.worlds
 			blackHealthUI.size = 16;
 			blackHealthUI.width = 100;
 			blackHealthUI.align = "right";
+			blackHealthUI.outlineColor = 0xFF0000;
+			blackHealthUI.outlineStrength = 2;
+			blackHealthUI.updateTextBuffer();
 			
 			blackManaUI = new Text("100", FP.screen.width - 280, FP.screen.height - 22);
 			blackManaUI.visible = false;
@@ -562,6 +572,9 @@ package schism.worlds
 			blackManaUI.size = 16;
 			blackManaUI.width = 100;
 			blackManaUI.align = "right";
+			blackManaUI.outlineColor = 0x0000FF;
+			blackManaUI.outlineStrength = 2;
+			blackManaUI.updateTextBuffer();
 			
 			addGraphic(blackHealthUI);
 			addGraphic(blackManaUI);
@@ -885,7 +898,10 @@ package schism.worlds
 				{
 					if (cr.ID == id)
 					{
-						cr.setPositionFromServer(x, y, length);
+						if (cr.getDistanceFromXY(x, y) > 60)
+						{
+							// request updated path from server
+						}
 						cr.updateLife(value);
 						break;
 					}
@@ -967,6 +983,17 @@ package schism.worlds
 								creep.addEffect(new SlowEffect(creep, duration / 1000));
 								break;
 						}
+					}
+				}
+			});
+			
+			connection.addMessageHandler(Messages.GAME_FIRE_REMOVE, function(m:Message, id:String):void {
+				for each(var cr:Creep in getCreeps())
+				{
+					if (cr.ID == id)
+					{
+						cr.removeTarget();
+						break;
 					}
 				}
 			});

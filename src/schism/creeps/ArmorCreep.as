@@ -30,10 +30,7 @@ package schism.creeps
 			spriteMap.centerOrigin();
 			spriteMap.add("walk", [0, 1], 3, true);
 			spriteMap.play("walk");			
-			
-			graphicList.add(spriteMap);
-			graphic = graphicList;
-			
+						
 			updateAngle();
 			
 			deathSounds.push(new Sfx(Assets.SFX_CREEP_DEATH_LARGE1));

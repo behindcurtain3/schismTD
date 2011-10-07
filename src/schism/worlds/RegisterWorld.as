@@ -52,7 +52,6 @@ package schism.worlds
 			add(regPassword);
 			add(regEmail);
 			var b:PunkButton = new PunkButton(uiX, uiY + spacer * 7, width, 50, "Register", onRegister, Key.ENTER);
-			b.label.font = "Domo";
 			add(b);
 			
 			add(new MessageDisplay("", 0, 36, FP.screen.width / 2, FP.screen.height / 2 + 40, width + 15, 245));

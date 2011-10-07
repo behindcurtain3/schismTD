@@ -39,11 +39,9 @@ package schism.worlds
 			{
 				// Background				
 				var b:PunkButton = new PunkButton(FP.screen.width / 2 - 125, FP.screen.height / 2, 250, 50, "Play as Guest", onPlayTest)
-				b.label.font = "Domo";
 				add(b);
 				
-				var b:PunkButton = new PunkButton(FP.screen.width / 2 - 125, FP.screen.height / 2 - 75, 250, 50, "Login with Kongregate", QuickKong.services.showSignInBox)
-				b.label.font = "Domo";
+				b = new PunkButton(FP.screen.width / 2 - 125, FP.screen.height / 2 - 75, 250, 50, "Login with Kongregate", QuickKong.services.showSignInBox)
 				add(b);
 				
 				// Listen for a guest->user conversion, which can happen without a refresh

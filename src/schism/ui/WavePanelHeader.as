@@ -26,7 +26,7 @@ package schism.ui
 			var text:Text = new Text("Wave");
 			text.width = _leftPadding;
 			text.y = height / 2 - text.height / 2;
-			text.color = 0x555555;
+			text.color = 0xAAAAAA;
 			text.align = "center";
 			text.font = "Domo";
 			text.size = 24;
@@ -39,7 +39,7 @@ package schism.ui
 			text = new Text("Creeps");
 			text.x = _leftPadding + 5;
 			text.y = height / 2 - text.height / 2;
-			text.color = 0x555555;
+			text.color = 0xAAAAAA;
 			text.align = "center";
 			text.font = "Domo";
 			text.size = 24;

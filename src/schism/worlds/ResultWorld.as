@@ -19,7 +19,7 @@ package schism.worlds
 	public class ResultWorld extends AuthWorld 
 	{
 		
-		public function ResultWorld(c:Client, guest:Boolean, con:Connection, resultStr:String, blackLifeNum:int, whiteLifeNum:int, blackDamageNum:uint, whiteDamageNum:uint)
+		public function ResultWorld(c:Client, guest:Boolean, con:Connection, blackName:String, whiteName:String, resultStr:String, blackLifeNum:int, whiteLifeNum:int, blackDamageNum:uint, whiteDamageNum:uint, blackRating:Number, whiteRating:Number)
 		{
 			super(c, guest);
 			connection = con;
@@ -31,8 +31,8 @@ package schism.worlds
 			add(b);
 			
 			add(new MessageDisplay(resultStr, 0, 48, 0, 100, 600, 100));
-			add(new MessageDisplay("Black\n\nLife: " + blackLifeNum + "\nDamage: " + blackDamageNum, 0, 18, 550, 250, 225));
-			add(new MessageDisplay("White\n\nLife: " + whiteLifeNum + "\nDamage: " + whiteDamageNum, 0, 18, 250, 250, 225));
+			add(new MessageDisplay("" + blackName + "\n\nLife: " + blackLifeNum + "\nDamage: " + blackDamageNum + "\nRating: " + blackRating, 0, 18, 550, 250, 225));
+			add(new MessageDisplay("" + whiteName + "\n\nLife: " + whiteLifeNum + "\nDamage: " + whiteDamageNum + "\nRating: " + whiteRating, 0, 18, 250, 250, 225));
 		}
 		
 		override public function end():void 

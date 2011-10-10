@@ -121,7 +121,7 @@ package schism.worlds
 			if (_waves[_activeWave].pointsRemaining > _pointsAllowedRemaining)
 				pointsRemainingMessage.color = 0xFF0000;
 			else
-				pointsRemainingMessage.color = 0x555555;
+				pointsRemainingMessage.color = 0xAAAAAA;
 			
 			if (Input.pressed(Key.DELETE))
 				_waves[_activeWave].clear();
@@ -301,7 +301,7 @@ package schism.worlds
 					_waves[i].addChild(new DraggableCreepIcon(dbObject["Waves"][i][j], 0, 0));
 				}
 			}
-			showMessage("Creeps loaded.");
+			showMessage("Creeps loaded.", 2.5);
 		}
 		
 		public function onRoomError(e:PlayerIOError):void
@@ -339,12 +339,12 @@ package schism.worlds
 			return true;
 		}
 		
-		private function showMessage(msg:String):void
+		private function showMessage(msg:String, time:Number = 5):void
 		{
 			if (messageDisplay != null)
 				remove(messageDisplay);
 				
-			messageDisplay = new MessageDisplay(msg, 5, 20, 0, FP.screen.height / 2);
+			messageDisplay = new MessageDisplay(msg, time, 20, 0, FP.screen.height / 2);
 			add(messageDisplay);
 		}
 		

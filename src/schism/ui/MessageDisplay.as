@@ -113,7 +113,7 @@ package schism.ui
 		{
 			Draw.rectPlus(this.x + 5, this.y + 5, width, height, 0x000000, backgroundAlpha - 0.35, true, 1, 15);
 			Draw.rectPlus(this.x, this.y, width, height, _bgColor, backgroundAlpha, true, 1, 15);
-			Draw.rectPlus(this.x, this.y, width, height, _borderColor, backgroundAlpha, false, 2, 15);
+			Draw.rectPlus(this.x + 3, this.y + 3, width - 6, height - 6, _borderColor, backgroundAlpha, false, 2, 15);
 			
 			super.render();
 		}

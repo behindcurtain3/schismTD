@@ -23,7 +23,7 @@ package schism.creeps
 			y = _y;
 			width = 32;
 			height = 48;
-			setHitbox(width, height);
+			setHitbox(width, height, -width / 2, -height / 2);
 			centerOrigin();
 			
 			spriteMap = new Spritemap(Assets.GFX_CREEP_ARMOR, 32, 48);

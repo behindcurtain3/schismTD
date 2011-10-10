@@ -96,8 +96,7 @@ package schism.projectiles
 			
 			var velocity:Number = speed * FP.elapsed;			
 			moveTowards(target.centerX, target.centerY, velocity);
-			
-			if (collideRect(x, y, target.x, target.y, target.width, target.height))
+			if(collideRect(x, y, target.centerX - 2, target.centerY - 2, 4, 4))
 			{
 				destroy();
 			}			

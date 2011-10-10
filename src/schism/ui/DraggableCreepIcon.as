@@ -24,7 +24,7 @@ package schism.ui
 		public function DraggableCreepIcon(creepType:String, x:Number = 0, y:Number = 0) 
 		{
 			super(x, y);
-			
+
 			_lockedY = y;
 			draggable = true;
 			type = creepType;

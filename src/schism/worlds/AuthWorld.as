@@ -22,7 +22,7 @@ package schism.worlds
 			client = c;
 			_isGuest = isGuest;
 			
-			if(client != null)
+			if (client != null)
 				client.multiplayer.developmentServer = "72.220.227.32:8184";
 				
 			addGraphic(new Image(Assets.GFX_BACKGROUND), 100);

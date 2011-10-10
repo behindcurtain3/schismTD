@@ -58,6 +58,9 @@ package schism.worlds
 	{
 		private var Mode:int = BuildMode.NONE;
 		
+		private var whiteName:String;
+		private var blackName:String;
+		
 		// Settings
 		private var gameId:String;
 		private var connectionAttempts:int = 0;
@@ -89,6 +92,10 @@ package schism.worlds
 		protected var white2:Button;
 		protected var white3:Button;
 		
+		protected var blackIntro:Text;
+		protected var whiteIntro:Text;
+		protected var vsIntro:Text;
+		
 		// Gfx
 		protected var board:Image;
 		protected var boardOverlay:Image;
@@ -100,6 +107,8 @@ package schism.worlds
 		protected var sfx_invalid:Sfx = new Sfx(Assets.SFX_INVALID);
 		protected var sfx_tower_build:Sfx = new Sfx(Assets.SFX_BUILD_TOWER);
 		protected var sfx_player_hurt:Sfx = new Sfx(Assets.SFX_PLAYER_HURT);
+		protected var sfx_music:Sfx = new Sfx(Assets.SFX_MUSIC1);
+		protected var sfx_start:Sfx = new Sfx(Assets.SFX_GAME_START, sfx_music.loop);
 		
 		//Players
 		private var color:String = "";
@@ -246,9 +255,10 @@ package schism.worlds
 		
 		public function joinRoom(roomId:String):void
 		{
+			var username:String = QuickKong.userName == "" ? "Guest" : QuickKong.userName;
 			client.multiplayer.joinRoom(
 				roomId,								//Room id. If set to null a random roomid is used
-				{"guest":_isGuest},									//User join data
+				{guest:_isGuest, name: username},	//User join data
 				handleNewGame,						//Function executed on successful joining of the room
 				handleError							//Function executed if we got a join error
 			);
@@ -260,6 +270,7 @@ package schism.worlds
 			{
 				connection.disconnect();
 			}
+			sfx_music.stop();
 			removeAll();
 			(FP.stage.getChildByName("CustomMouse") as CustomMouse).setCursor(Assets.MOUSE_NORMAL);
 			super.end();
@@ -580,12 +591,12 @@ package schism.worlds
 			addGraphic(blackManaUI);
 			
 			connection.addMessageHandler(Messages.CHAT, function(m:Message):void {
-				trace(m.getString(0));
+				//trace(m.getString(0));
 			});
 			
 			connection.addMessageHandler(Messages.GAME_JOINED, function(m:Message):void {
-				connectionStatusDisplay = new MessageDisplay("Game joined!", 1.5, 24);
-				add(connectionStatusDisplay);
+				if (connectionStatusDisplay != null)
+					remove(connectionStatusDisplay);
 			});
 			
 			connection.addMessageHandler(Messages.GAME_INFO, function(m:Message):void {				
@@ -712,11 +723,32 @@ package schism.worlds
 				}				
 			});
 			
+			connection.addMessageHandler(Messages.GAME_USER_INFO, function(m:Message):void {
+				blackName = m.getString(0);
+				whiteName = m.getString(1);
+				whiteIntro = new Text(m.getString(1), 0, 100, { font: "Domo", size: 72, outlineColor: 0x000000, outlineStrength: 4 } );
+				whiteIntro.x = -whiteIntro.textWidth;
+				
+				blackIntro = new Text(m.getString(0), FP.screen.width, FP.screen.height - 200, { color: 0x000000, font: "Domo", size: 72 } );
+				
+				addGraphic(whiteIntro);
+				addGraphic(blackIntro);
+				
+				var t:VarTween = new VarTween(whiteIntroComplete);
+				t.tween(whiteIntro, "x", FP.screen.width / 2 - whiteIntro.textWidth * 0.66, 0.3);
+				addTween(t, true);
+			});
+			
 			connection.addMessageHandler(Messages.GAME_START, function(m:Message):void {
 				add(new MessageDisplay("Go!", 2, 96, FP.screen.width / 2, FP.screen.height / 2, 250));
+				sfx_start.play();
 			});
 			
 			connection.addMessageHandler(Messages.GAME_FINISHED, function(m:Message):void {
+				whiteIntro.visible = false;
+				blackIntro.visible = false;
+				vsIntro.visible = false;
+				sfx_music.stop();
 				gameActive = false;
 				objectSelected = null;
 				buildMenu.visible = false;
@@ -752,9 +784,9 @@ package schism.worlds
 				}
 				
 				gameFinished = true;
-				resultWorld = new ResultWorld(client, _isGuest, connection, result, m.getInt(1), m.getInt(2), m.getUInt(3), m.getUInt(4));
-				if(m.getString(5) != "")
-					add(new MessageDisplay(m.getString(5), 5, 24));
+				resultWorld = new ResultWorld(client, _isGuest, connection, blackName, whiteName, result, m.getInt(1), m.getInt(2), m.getUInt(3), m.getUInt(4), m.getNumber(5), m.getNumber(6));
+				if(m.getString(7) != "")
+					add(new MessageDisplay(m.getString(7), 5, 24));
 					
 				add(new MessageDisplay(result, gameFinishCountdown, 48, FP.screen.width / 2, FP.screen.height / 2));
 			});
@@ -1144,6 +1176,26 @@ package schism.worlds
 		
 		private function activateGame(m:Message):void 
 		{	
+			var t:VarTween = new VarTween();
+			t.tween(whiteIntro, "x", 0, 0.3);
+			addTween(t);
+			t = new VarTween();			
+			t.tween(whiteIntro, "alpha", 0, 0.3);
+			addTween(t);
+			t = new VarTween();
+			t.tween(blackIntro, "x", FP.screen.width, 0.3);
+			addTween(t);
+			t = new VarTween();
+			t.tween(blackIntro, "alpha", 0, 0.3);
+			addTween(t);
+			t = new VarTween();
+			t.tween(vsIntro, "scale", 5, 0.3);
+			addTween(t);
+			t = new VarTween();
+			t.tween(vsIntro, "alpha", 0, 0.3);
+			addTween(t);
+			
+			
 			var vt:VarTween = new VarTween(activateCells);
 			vt.tween(board, "alpha", 1, 2.5, Ease.expoOut);
 			addTween(vt, true);
@@ -1342,6 +1394,8 @@ package schism.worlds
 		
 		private function handleDisconnect():void
 		{
+			if(sfx_music.playing)
+				sfx_music.stop();
 			if(_isGuest)
 				FP.world = new TitleWorld("Connection to the server was lost, please try again.");
 			else
@@ -1455,6 +1509,31 @@ package schism.worlds
 		public function setWave(i:int):void
 		{
 			connection.send(Messages.GAME_WAVE_NEXT, i);
+		}
+	
+		
+		public function whiteIntroComplete():void
+		{
+			vsIntro = new Text("VS", FP.screen.width / 2, FP.screen.height / 2, { color: 0x888888, font: "Domo", size: 72, outlineColor: 0x000000, outlineStrength: 4 } );
+			vsIntro.centerOrigin();
+			vsIntro.scale = 5;
+			vsIntro.alpha = 0;
+			addGraphic(vsIntro);
+			
+			var t:VarTween = new VarTween(vsIntroComplete);
+			t.tween(vsIntro, "scale", 1, 0.3);
+			addTween(t, true);
+			
+			t = new VarTween();
+			t.tween(vsIntro, "alpha", 1, 0.3);
+			addTween(t, true);
+		}
+		
+		public function vsIntroComplete():void
+		{
+			var t:VarTween = new VarTween();
+			t.tween(blackIntro, "x", FP.screen.width / 2 - blackIntro.textWidth * 0.33, 0.3);
+			addTween(t, true);
 		}
 	}
 }

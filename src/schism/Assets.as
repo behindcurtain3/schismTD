@@ -90,6 +90,8 @@ package schism
 		[Embed(source = '../../assets/Board/spell-white.png')] public static const GFX_SPELL_WHITE:Class;
 		
 		// Sounds
+		[Embed(source = '../../assets/sfx/Wave8Start.mp3')] public static const SFX_GAME_START:Class;
+		[Embed(source = '../../assets/sfx/Music1.mp3')] public static const SFX_MUSIC1:Class;
 		[Embed(source = '../../assets/sfx/error.mp3')] public static const SFX_INVALID:Class;
 		[Embed(source = '../../assets/sfx/BuildTower.mp3')] public static const SFX_BUILD_TOWER:Class;
 		[Embed(source = '../../assets/sfx/GameStartHighlightSound.mp3')] public static const SFX_START_HIGHLIGHT:Class;

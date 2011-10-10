@@ -6,10 +6,12 @@ package schism.worlds
 	import net.flashpunk.graphics.Image;
 	import net.flashpunk.graphics.Text;
 	import net.flashpunk.Sfx;
+	import net.flashpunk.utils.Input;
 	import playerio.Client;
 	import punk.ui.PunkButton;
 	import schism.Assets;
 	import schism.ui.MessageDisplay;
+	import schism.ui.Tooltip;
 	
 	/**
 	 * ...
@@ -36,6 +38,7 @@ package schism.worlds
 			
 			b = new PunkButton(uiX, FP.screen.height / 2 - 25 + 60, width, 50, "Wave Builder", onWaveBuilderClick)
 			add(b);
+			//add(new Tooltip("Build your own custom waves!", b.x + b.width + 5, b.y));
 			
 			add(new MessageDisplay("", 0, 36, FP.screen.width / 2, FP.screen.height / 2 + 30, width + 35, 135));
 			
@@ -51,10 +54,7 @@ package schism.worlds
 			if (QuickKong.api != null)
 			{
 				var loginName:String = QuickKong.userName;
-				var t:Text = new Text("Logged in as: " + loginName);
-				t.color = 0xFFFFFF;
-				t.outlineColor = 0x000000;
-				t.outlineStrength = 2;
+				var t:Text = new Text("Logged in as: " + loginName, 0, 0, { font: "Domo", color: 0xFFFFFF, outlineColor: 0x000000, outlineStrength: 2 });
 				t.x = FP.screen.width - t.textWidth;
 				t.y = FP.screen.height - t.textHeight;
 				addGraphic(t);

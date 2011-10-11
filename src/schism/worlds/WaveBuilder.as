@@ -40,9 +40,14 @@ package schism.worlds
 		private var _waves:Array;
 		private var _activeWave:int = 0;
 		
-		private var _vertPadding:int = 60;
-		private var _panelSpacing:int = 50;
-		private var _yCutoff:int = 150 + (50 * 7);
+		private var _vertPadding:int = 50;
+		private var _panelSpacing:int = 46;
+		private var _yCutoff:int = FP.screen.height - 88;
+		
+		private var _repeatDelayTimer:Number = 0.5;
+		private var _repeatFireTimer:Number = 0.25;
+		private var _repeatPosition:Number = 0;
+		private var _repeatIsFiring:Boolean = false;
 		
 		public function WaveBuilder(c:Client) 
 		{
@@ -52,7 +57,7 @@ package schism.worlds
 			pointsRemainingMessage.size = 24;
 			pointsRemainingMessage.font = "Domo";
 			pointsRemainingMessage.x = FP.screen.width - pointsRemainingMessage.textWidth - 5;
-			pointsRemainingMessage.y = _vertPadding - _panelSpacing + (_panelSpacing / 2) - (pointsRemainingMessage.height / 2);
+			pointsRemainingMessage.y = (_panelSpacing / 2) - (pointsRemainingMessage.height / 2);
 			pointsRemainingMessage.color = 0x555555;
 			pointsRemainingMessage.outlineColor = 0x000000;
 			pointsRemainingMessage.outlineStrength = 2;
@@ -74,7 +79,7 @@ package schism.worlds
 			
 			for (var i:int = 0; i < 10; i++)
 			{
-				var w:WavePanel = new WavePanel(0, _vertPadding + (i * 50), i);
+				var w:WavePanel = new WavePanel(0, _vertPadding + (i * _panelSpacing), i);
 				if (i == 0)
 					w.activate();
 				w.addMouseDownListener(onWavePanelClicked);
@@ -84,12 +89,12 @@ package schism.worlds
 			updateAlpha();
 			addList(_waves);
 			
-			add(new WavePanelHeader(0, _vertPadding - _panelSpacing));
+			add(new WavePanelHeader(0, 0));
 			
-			var b:PunkButton = new PunkButton(225, FP.screen.height - 138, 150, 50, "Save", onSave)
+			var b:PunkButton = new PunkButton(45, FP.screen.height - 68, 150, 50, "Save", onSave)
 			add(b);
 			
-			b = new PunkButton(425, FP.screen.height - 138, 150, 50, "Return to Home", onExit)
+			b = new PunkButton(FP.screen.width - 150 - 45, FP.screen.height - 68, 150, 50, "Return to Home", onExit)
 			add(b);
 		}
 		
@@ -154,16 +159,43 @@ package schism.worlds
 				}
 			}
 				
+			if (Input.released(Key.DOWN) || Input.released(Key.UP))
+			{
+				_repeatPosition = 0;
+				_repeatIsFiring = false;
+			}
+			
 			if (Input.pressed(Key.DOWN))
 			{
 				if (_activeWave + 1 < _waves.length)
 				{
-					_waves[_activeWave].deactivate();
-					_activeWave++;
-					_waves[_activeWave].activate();
-					
-					if (_waves[_activeWave].y + _waves[_activeWave].height > _yCutoff)
-						moveListUp();
+					moveListUp();
+				}
+			}
+			
+			if (Input.check(Key.DOWN))
+			{
+				if (_activeWave + 1 < _waves.length)
+				{
+					_repeatPosition += FP.elapsed;
+				
+					if (_repeatIsFiring)
+					{
+						if (_repeatPosition >= _repeatFireTimer)
+						{
+							moveListUp();
+							_repeatPosition = 0;
+						}
+					}
+					else
+					{
+						if (_repeatPosition >= _repeatDelayTimer)
+						{
+							moveListUp();
+							_repeatPosition = 0;
+							_repeatIsFiring = true;
+						}
+					}
 				}
 			}
 			
@@ -171,12 +203,32 @@ package schism.worlds
 			{
 				if (_activeWave > 0)
 				{
-					_waves[_activeWave].deactivate();
-					_activeWave--;
-					_waves[_activeWave].activate();
-					
-					if (_waves[_activeWave].y < _vertPadding)
-						moveListDown();
+					moveListDown();
+				}
+			}
+			if (Input.check(Key.UP))
+			{
+				if (_activeWave > 0)
+				{
+					_repeatPosition += FP.elapsed;
+				
+					if (_repeatIsFiring)
+					{
+						if (_repeatPosition >= _repeatFireTimer)
+						{
+							moveListDown();
+							_repeatPosition = 0;
+						}
+					}
+					else
+					{
+						if (_repeatPosition >= _repeatDelayTimer)
+						{
+							moveListDown();
+							_repeatPosition = 0;
+							_repeatIsFiring = true;
+						}
+					}
 				}
 			}
 				
@@ -190,16 +242,30 @@ package schism.worlds
 		
 		public function moveListUp():void
 		{
-			for (var i:int = 0; i < _waves.length; i++)
-				_waves[i].moveUp(_panelSpacing);
+			_waves[_activeWave].deactivate();
+			_activeWave++;
+			_waves[_activeWave].activate();
+					
+			if (_waves[_activeWave].y + _waves[_activeWave].height > _yCutoff)
+			{
+				for (var i:int = 0; i < _waves.length; i++)
+					_waves[i].moveUp(_panelSpacing);
+			}
 				
 			updateAlpha();
 		}
 		
 		public function moveListDown():void
 		{
-			for (var i:int = 0; i < _waves.length; i++)
-				_waves[i].moveDown(_panelSpacing);
+			_waves[_activeWave].deactivate();
+			_activeWave--;
+			_waves[_activeWave].activate();
+					
+			if (_waves[_activeWave].y < _vertPadding)
+			{
+				for (var i:int = 0; i < _waves.length; i++)
+					_waves[i].moveDown(_panelSpacing);
+			}
 				
 			updateAlpha();
 		}
@@ -232,8 +298,12 @@ package schism.worlds
 				showMessage("Invalid authentication, please login again.");
 				return;				
 			}
-			showMessage("Loading creeps from server...");
-			client.bigDB.loadMyPlayerObject(onRoomLoad, onRoomError);
+			showMessage("Loading creeps from server...", 0);
+			
+			if (playerObject != null)
+				onRoomLoad(playerObject);
+			else
+				client.bigDB.loadMyPlayerObject(onRoomLoad, onRoomError);
 		}
 		
 		public function onSave():void
@@ -249,7 +319,7 @@ package schism.worlds
 			}
 			if (connection == null || !connection.connected)
 			{
-				showMessage("Connecting to server...");
+				showMessage("Connecting to server...", 0);
 				//Create pr join the room test
 				client.multiplayer.createJoinRoom(
 					"wavebuilder",						//Room id. If set to null a random roomid is used
@@ -280,7 +350,7 @@ package schism.worlds
 				connection.disconnect();
 			});
 			connection.addMessageHandler(WaveBuilderMessages.WAVES_SAVED, function(m:Message):void {
-				showMessage("Saved");
+				showMessage("Saved", 3);
 				connection.disconnect();
 			});
 			saveAllWaves();
@@ -301,7 +371,7 @@ package schism.worlds
 					_waves[i].addChild(new DraggableCreepIcon(dbObject["Waves"][i][j], 0, 0));
 				}
 			}
-			showMessage("Creeps loaded.", 2.5);
+			showMessage("Creeps loaded.", 1.5);
 		}
 		
 		public function onRoomError(e:PlayerIOError):void

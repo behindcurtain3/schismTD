@@ -17,7 +17,7 @@ package schism.worlds
 		protected var client:Client;
 		protected var connection:Connection;
 		protected var _isGuest:Boolean;
-		protected var playerObject:DatabaseObject;
+		protected static var playerObject:DatabaseObject;
 		
 		public function AuthWorld(c:Client, isGuest:Boolean = false) 
 		{

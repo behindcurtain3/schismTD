@@ -755,6 +755,8 @@ package schism.worlds
 				objectSelected = null;
 				buildMenu.visible = false;
 				
+				var submitStats:Boolean = QuickKong.stats == null ? false : true;
+				
 				for each(var p:Projectile in getProjectiles())
 					p.active = false;
 				
@@ -779,10 +781,40 @@ package schism.worlds
 				else if (m.getInt(0) == blackId)
 				{
 					result = "Black wins!";
+					if(color == "black" && !_isGuest && submitStats)
+						QuickKong.stats.submit("MatchesWon", 1);
 				}
 				else if (m.getInt(0) == whiteId)
 				{
 					result = "White wins!";
+					
+					if(color == "white" && !_isGuest && submitStats)
+						QuickKong.stats.submit("MatchesWon", 1);
+				}
+				
+				if (color == "black" && !_isGuest)
+				{
+					if (submitStats)
+					{
+						var rating:Number = m.getUInt(3);
+						QuickKong.stats.submit("MaxDamageDealt", rating);
+						QuickKong.stats.submit("Rating", m.getNumber(5));
+					}
+					
+					if (playerObject != null)
+						playerObject["rating"] = m.getNumber(5);
+				}
+				if (color == "white" && !_isGuest)
+				{
+					if (submitStats)
+					{
+						var rating:Number = m.getUInt(4);
+						QuickKong.stats.submit("MaxDamageDealt", rating);
+						QuickKong.stats.submit("Rating", m.getNumber(6));
+					}
+					
+					if (playerObject != null)
+						playerObject["rating"] = m.getNumber(6);
 				}
 				
 				gameFinished = true;

@@ -1,6 +1,10 @@
 package schism.worlds 
 {
+	import flash.net.navigateToURL;
 	import flash.net.SharedObject;
+	import flash.net.URLRequest;
+	import flash.ui.Mouse;
+	import flash.ui.MouseCursor;
 	import net.flashpunk.Entity;
 	import net.flashpunk.FP;
 	import net.flashpunk.graphics.Image;
@@ -10,6 +14,7 @@ package schism.worlds
 	import playerio.Client;
 	import punk.ui.PunkButton;
 	import schism.Assets;
+	import schism.ui.CustomMouse;
 	import schism.ui.MessageDisplay;
 	import schism.ui.Tooltip;
 	
@@ -22,6 +27,7 @@ package schism.worlds
 		private var messageDisplay:MessageDisplay;
 		private var startSfx:Sfx;
 		private var ratingDisplay:Text;
+		private var facebook:Image;
 		
 		public function HomeWorld(c:Client, error:String = "") 
 		{
@@ -64,7 +70,12 @@ package schism.worlds
 			if(playerObject == null)
 				loadPlayerObject();
 			
-			addGraphic(new Text(Assets.VERSION, 0, FP.screen.height - 15, { outlineColor: 0x000000, outlineStrength: 2, font: "Domo" } ));
+			facebook = new Image(Assets.GFX_MISC_FB);
+			facebook.x = 0;
+			facebook.y = FP.screen.height - facebook.height;
+			addGraphic(facebook);
+				
+			addGraphic(new Text(Assets.VERSION, facebook.width + 5, FP.screen.height - 15, { outlineColor: 0x000000, outlineStrength: 2, font: "Domo" } ));
 		}
 			
 		override public function end():void
@@ -82,6 +93,25 @@ package schism.worlds
 				ratingDisplay = new Text("Rating: " + rating, FP.screen.width / 2, FP.screen.height / 2 + 105, { font: "Domo", size: 24, outlineStrength: 2 } );
 				ratingDisplay.x -= ratingDisplay.textWidth / 2;
 				addGraphic(ratingDisplay);
+			}
+			
+			if (Input.mouseX > facebook.x && Input.mouseX < facebook.x + facebook.width && Input.mouseY > facebook.y && Input.mouseY < facebook.y + facebook.height)
+			{
+				Mouse.show();
+				Mouse.cursor = MouseCursor.BUTTON;
+				(FP.stage.getChildByName("CustomMouse") as CustomMouse).visible = false;
+				
+				if (Input.mousePressed)
+				{
+					var goto:URLRequest = new URLRequest("https://www.facebook.com/pages/SchismTD/231809410207524");
+					navigateToURL(goto, "_blank");
+				}
+			}
+			else
+			{
+				Mouse.hide();
+				Mouse.cursor = MouseCursor.ARROW;
+				(FP.stage.getChildByName("CustomMouse") as CustomMouse).visible = true;
 			}
 			
 			super.update();

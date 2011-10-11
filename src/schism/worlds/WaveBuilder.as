@@ -382,6 +382,9 @@ package schism.worlds
 			connection.addMessageHandler(WaveBuilderMessages.WAVES_SAVED, function(m:Message):void {
 				showMessage("Saved", 3);
 				connection.disconnect();
+				
+				// reload the player object
+				loadPlayerObject();
 			});
 			saveAllWaves();
 		}

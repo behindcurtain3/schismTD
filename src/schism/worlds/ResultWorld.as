@@ -48,12 +48,16 @@ package schism.worlds
 		
 		public function onPlayAgain():void
 		{
+			if(connection.connected)
+				connection.disconnect();
+				
 			FP.world = new MatchFinderWorld(client, _isGuest);
 		}
 		
 		public function onExit():void
 		{
-			connection.disconnect();
+			if(connection.connected)
+				connection.disconnect();
 			if(_isGuest)
 				FP.world = new TitleWorld();
 			else

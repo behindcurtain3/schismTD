@@ -116,6 +116,7 @@ package schism
 		
 		// Misc
 		[Embed(source = '../../assets/Board/glow.png')] public static const GFX_GLOW:Class;
+		[Embed(source = '../../assets/misc/facebook45px.png')] public static const GFX_MISC_FB:Class;
 		
 		// Fonts
 		[Embed(source = '../../assets/DOMOAN__.ttf', embedAsCFF="false", fontFamily = 'Domo')] public static const FONT_DOMO:Class

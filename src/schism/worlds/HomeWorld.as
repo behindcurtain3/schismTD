@@ -21,6 +21,7 @@ package schism.worlds
 	{
 		private var messageDisplay:MessageDisplay;
 		private var startSfx:Sfx;
+		private var ratingDisplay:Text;
 		
 		public function HomeWorld(c:Client, error:String = "") 
 		{
@@ -40,7 +41,7 @@ package schism.worlds
 			add(b);
 			//add(new Tooltip("Build your own custom waves!", b.x + b.width + 5, b.y));
 			
-			add(new MessageDisplay("", 0, 36, FP.screen.width / 2, FP.screen.height / 2 + 30, width + 35, 135));
+			add(new MessageDisplay("", 0, 36, FP.screen.width / 2, FP.screen.height / 2 + 55, width + 35, 185));
 			
 			if (error != "")
 			{
@@ -60,6 +61,9 @@ package schism.worlds
 				addGraphic(t);
 			}
 			
+			if(playerObject == null)
+				loadPlayerObject();
+			
 			addGraphic(new Text(Assets.VERSION, 0, FP.screen.height - 15, { outlineColor: 0x000000, outlineStrength: 2, font: "Domo" } ));
 		}
 			
@@ -67,6 +71,20 @@ package schism.worlds
 		{
 			removeAll();
 			super.end();
+		}
+		
+		override public function update():void 
+		{
+			if (playerObject != null && ratingDisplay == null)
+			{
+				var rating:String = playerObject["rating"] == undefined ? "1500" : playerObject["rating"];
+				
+				ratingDisplay = new Text("Rating: " + rating, FP.screen.width / 2, FP.screen.height / 2 + 105, { font: "Domo", size: 24, outlineStrength: 2 } );
+				ratingDisplay.x -= ratingDisplay.textWidth / 2;
+				addGraphic(ratingDisplay);
+			}
+			
+			super.update();
 		}
 		
 		public function onPlay():void
@@ -79,6 +97,7 @@ package schism.worlds
 		{
 			FP.world = new WaveBuilder(client);
 		}
+		
 	}
 
 }

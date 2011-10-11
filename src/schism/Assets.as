@@ -6,7 +6,7 @@ package schism
 	 */
 	public class Assets 
 	{		
-		public static const VERSION:String = "v0.4.1";
+		public static const VERSION:String = "v0.4.2";
 		public static const GAME_ID:String = "schismtd-3r3otmhvkki9ixublwca";
 		public static const FB_APPID:String = "256712624370689";
 		
@@ -97,22 +97,21 @@ package schism
 		[Embed(source = '../../assets/sfx/GameStartHighlightSound.mp3')] public static const SFX_START_HIGHLIGHT:Class;
 		[Embed(source = '../../assets/sfx/PlayerHurt.mp3')] public static const SFX_PLAYER_HURT:Class;
 		[Embed(source = '../../assets/sfx/PopupSound.mp3')] public static const SFX_POPUP:Class;
-		[Embed(source = '../../assets/sfx/SwarmCreepDeath.mp3')] public static const SFX_SWARM_CREEP_DEATH:Class;
 		[Embed(source = '../../assets/sfx/chiblast.mp3')] public static const SFX_CHIBLAST:Class;
 		[Embed(source = '../../assets/sfx/StartButton.mp3')] public static const SFX_BUTTON_START:Class;
 		[Embed(source = '../../assets/sfx/LargeCreep1Death.mp3')] public static const SFX_CREEP_DEATH_LARGE1:Class;
 		[Embed(source = '../../assets/sfx/LargeCreep2Death.mp3')] public static const SFX_CREEP_DEATH_LARGE2:Class;
 		[Embed(source = '../../assets/sfx/LargeCreep3Death.mp3')] public static const SFX_CREEP_DEATH_LARGE3:Class;
 		[Embed(source = '../../assets/sfx/MediumCreep1Death.mp3')] public static const SFX_CREEP_DEATH_MEDIUM1:Class;
+		[Embed(source = '../../assets/sfx/MediumCreep2Death.mp3')] public static const SFX_CREEP_DEATH_MEDIUM2:Class;
 		[Embed(source = '../../assets/sfx/MediumCreep3Death.mp3')] public static const SFX_CREEP_DEATH_MEDIUM3:Class;
 		[Embed(source = '../../assets/sfx/MediumCreep4Death.mp3')] public static const SFX_CREEP_DEATH_MEDIUM4:Class;
-		[Embed(source = '../../assets/sfx/MediumCreep6Death.mp3')] public static const SFX_CREEP_DEATH_MEDIUM6:Class;
-		[Embed(source = '../../assets/sfx/MediumCreep7Death.mp3')] public static const SFX_CREEP_DEATH_MEDIUM7:Class;
+		[Embed(source = '../../assets/sfx/MediumCreep5Death.mp3')] public static const SFX_CREEP_DEATH_MEDIUM5:Class;
 		[Embed(source = '../../assets/sfx/SmallCreep1Death.mp3')] public static const SFX_CREEP_DEATH_SMALL1:Class;
-		[Embed(source = '../../assets/sfx/SmallCreep3Death.mp3')] public static const SFX_CREEP_DEATH_SMALL3:Class;
-		[Embed(source = '../../assets/sfx/SmallCreep4Death.mp3')] public static const SFX_CREEP_DEATH_SMALL4:Class;
-		[Embed(source = '../../assets/sfx/SmallCreep6Death.mp3')] public static const SFX_CREEP_DEATH_SMALL6:Class;
-		[Embed(source = '../../assets/sfx/SmallCreep7Death.mp3')] public static const SFX_CREEP_DEATH_SMALL7:Class;
+		[Embed(source = '../../assets/sfx/SmallCreep2Death.mp3')] public static const SFX_CREEP_DEATH_SMALL3:Class;
+		[Embed(source = '../../assets/sfx/SmallCreep3Death.mp3')] public static const SFX_CREEP_DEATH_SMALL4:Class;
+		[Embed(source = '../../assets/sfx/SmallCreep4Death.mp3')] public static const SFX_CREEP_DEATH_SMALL6:Class;
+		[Embed(source = '../../assets/sfx/SmallCreep5Death.mp3')] public static const SFX_CREEP_DEATH_SMALL7:Class;
 		
 		
 		// Misc

@@ -231,6 +231,36 @@ package schism.worlds
 					}
 				}
 			}
+			
+			if (Input.pressed(Key.NUMPAD_ADD))
+			{
+				if (_activeWave < _waves.length - 1)
+				{
+					_waves[_activeWave].position += 1;
+					_waves[_activeWave].moveDown(_panelSpacing);
+					_waves[_activeWave+1].position -= 1;
+					_waves[_activeWave+1].moveUp(_panelSpacing);
+					_waves[_activeWave].deactivate();
+					_waves.sortOn("position", Array.NUMERIC);
+					_activeWave++;
+					_waves[_activeWave].activate();
+				}
+			}
+			
+			if (Input.pressed(Key.NUMPAD_SUBTRACT))
+			{
+				if (_activeWave > 0)
+				{
+					_waves[_activeWave].position -= 1;
+					_waves[_activeWave].moveUp(_panelSpacing);
+					_waves[_activeWave-1].position += 1;
+					_waves[_activeWave-1].moveDown(_panelSpacing);
+					_waves[_activeWave].deactivate();
+					_waves.sortOn("position", Array.NUMERIC);
+					_activeWave--;
+					_waves[_activeWave].activate();
+				}
+			}
 				
 			super.update();
 		}

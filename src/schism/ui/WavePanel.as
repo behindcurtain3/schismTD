@@ -29,7 +29,12 @@ package schism.ui
 		
 		private var _position:int;
 		public function get position():int { return _position; }
-		public function set position(value:int):void { _position = value; }
+		public function set position(value:int):void 
+		{ 
+			_position = value;
+			if (_positionDisplay != null)
+				_positionDisplay.text = _position.toString();
+		}
 		
 		private var _positionDisplay:Text;
 		private var _alpha:Number = 1;

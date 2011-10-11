@@ -28,6 +28,7 @@ package schism
 		public static const GAME_ACTIVATE:String = "ga";
         public static const GAME_START:String = "gs";
         public static const GAME_FINISHED:String = "gf";
+		public static const GAME_SET_SPAWN:String = "gss";
 		
 		public static const GAME_CELL_ADD:String = "gca";
 		

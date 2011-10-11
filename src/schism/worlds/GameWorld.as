@@ -91,6 +91,7 @@ package schism.worlds
 		protected var white1:Button;
 		protected var white2:Button;
 		protected var white3:Button;
+		protected var incomingArrow:Image;
 		
 		protected var blackIntro:Text;
 		protected var whiteIntro:Text;
@@ -601,6 +602,18 @@ package schism.worlds
 					remove(connectionStatusDisplay);
 			});
 			
+			connection.addMessageHandler(Messages.GAME_SET_SPAWN, function(m:Message):void {
+				trace(m.toString());
+				incomingArrow = new Image(Assets.GFX_INCOMING);
+				incomingArrow.x = m.getNumber(0);
+				incomingArrow.y = m.getNumber(1);
+				incomingArrow.centerOrigin();
+				if(incomingArrow.y < FP.screen.height / 2)
+					incomingArrow.angle = 180;
+
+				addGraphic(incomingArrow);
+			});
+			
 			connection.addMessageHandler(Messages.GAME_INFO, function(m:Message):void {				
 				if (m.getString(0) == "black")
 				{
@@ -661,7 +674,6 @@ package schism.worlds
 					white3._map.x = -boardWhite.width;
 					
 					addList(white1, white2, white3);
-					
 				} 
 				else if (m.getString(0) == "white")
 				{
@@ -742,6 +754,7 @@ package schism.worlds
 			});
 			
 			connection.addMessageHandler(Messages.GAME_START, function(m:Message):void {
+				incomingArrow.visible = false;
 				add(new MessageDisplay("Go!", 2, 96, FP.screen.width / 2, FP.screen.height / 2, 250));
 				sfx_start.play();
 			});
@@ -1383,11 +1396,14 @@ package schism.worlds
 			var vt:VarTween = new VarTween();
 			vt.tween(boardWaveHighlight.image, "alpha", 1, 1, Ease.expoOut);
 			addTween(vt, true);			
-			
+			/*
 			for each(var c:Cell in getCells())
 			{
 				c.flash();
 			}
+			*/
+			
+			toggleIncomingArrow();
 		}
 		
 		private function fadeInText():void
@@ -1568,6 +1584,24 @@ package schism.worlds
 			var t:VarTween = new VarTween();
 			t.tween(blackIntro, "x", FP.screen.width / 2 - blackIntro.textWidth * 0.33, 0.3);
 			addTween(t, true);
+		}
+	
+		
+		public function toggleIncomingArrow():void
+		{
+			if (incomingArrow.visible == false)
+				return;
+				
+			var t:VarTween = new VarTween(toggleIncomingArrow);
+			if (incomingArrow.alpha == 1)
+			{
+				t.tween(incomingArrow, "alpha", 0, 0.5);
+			}
+			else
+			{
+				t.tween(incomingArrow, "alpha", 1, 0.5);
+			}
+			addTween(t);
 		}
 	}
 }

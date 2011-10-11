@@ -256,9 +256,11 @@ package schism.worlds
 		public function joinRoom(roomId:String):void
 		{
 			var username:String = QuickKong.userName == "" ? "Guest" : QuickKong.userName;
+			var userid:String = QuickKong.userId == "" ? "" : QuickKong.userId;
+			var user_auth_token:String = QuickKong.userToken == "" ? "" : QuickKong.userToken;
 			client.multiplayer.joinRoom(
 				roomId,								//Room id. If set to null a random roomid is used
-				{guest:_isGuest, name: username},	//User join data
+				{guest:_isGuest, name: username, id: userid, auth_token: user_auth_token },	//User join data
 				handleNewGame,						//Function executed on successful joining of the room
 				handleError							//Function executed if we got a join error
 			);

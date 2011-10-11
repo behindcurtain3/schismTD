@@ -274,7 +274,7 @@ package schism.ui
 		{
 			for (var i:int = 0; i < _errorListeners.length; i++)
 			{
-				_errorListeners[i](e);
+				_errorListeners[i](e, 2);
 			}
 		}
 		

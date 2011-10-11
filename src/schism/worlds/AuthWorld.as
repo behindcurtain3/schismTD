@@ -6,6 +6,7 @@ package schism.worlds
 	import playerio.Client;
 	import playerio.Connection;
 	import playerio.DatabaseObject;
+	import playerio.PlayerIOError;
 	import schism.Assets;
 	
 	/**
@@ -24,8 +25,8 @@ package schism.worlds
 			client = c;
 			_isGuest = isGuest;
 			
-			//if (client != null)
-			//	client.multiplayer.developmentServer = "72.220.227.32:8184";
+			if (client != null)
+				client.multiplayer.developmentServer = "72.220.227.32:8184";
 				
 			addGraphic(new Image(Assets.GFX_BACKGROUND), 100);
 		}
@@ -47,8 +48,9 @@ package schism.worlds
 			playerObject = obj;
 		}
 		
-		public function objectLoadError():void
+		public function objectLoadError(e:PlayerIOError):void
 		{
+			trace(e.message);
 			playerObject = null;
 		}
 		

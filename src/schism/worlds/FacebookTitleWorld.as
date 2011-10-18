@@ -72,6 +72,7 @@ package schism.worlds
 				PlayerIO.quickConnect.facebookOAuthConnect(
 					FP.stage, Assets.GAME_ID, sharedObject.data.fbtoken, "",
 					function(c:Client, facebookUserId:String):void {
+						AuthWorld.accessToken = sharedObject.data.fbtoken;
 						FP.world = new HomeWorld(c);
 					},
 					function(e:PlayerIOError):void {
@@ -91,6 +92,7 @@ package schism.worlds
 			PlayerIO.quickConnect.facebookOAuthConnectPopup(
 					FP.stage, Assets.GAME_ID, "_blank", ["publish_stream","offline_access"], "",
 					function(c:Client, access_token:String, facebookUserId:String):void {
+						AuthWorld.accessToken = access_token;
 						sharedObject.data.fbtoken = access_token;
 						sharedObject.flush();
 						FP.world = new HomeWorld(c, "Welcome to SchismTD");

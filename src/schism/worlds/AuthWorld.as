@@ -15,10 +15,16 @@ package schism.worlds
 	 */
 	public class AuthWorld extends World 
 	{
+		// Static vars useable across worlds
+		protected static var playerObject:DatabaseObject;
+		public static var playerName:String = "Guest";
+		public static var accessToken:String;
+		public static var isKongUser:Boolean = false;
+		
 		protected var client:Client;
 		protected var connection:Connection;
 		protected var _isGuest:Boolean;
-		protected static var playerObject:DatabaseObject;
+		
 		
 		public function AuthWorld(c:Client, isGuest:Boolean = false) 
 		{

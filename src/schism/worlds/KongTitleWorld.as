@@ -69,6 +69,8 @@ package schism.worlds
 				QuickKong.api.services.getUserId(), 
 				QuickKong.api.services.getGameAuthToken(), 
 				function(client:Client):void {
+					AuthWorld.isKongUser = true;
+					AuthWorld.accessToken = QuickKong.api.services.getGameAuthToken();
 					FP.world = new HomeWorld(client);
 				}, function(e:PlayerIOError):void{
 					showMessage(e.message);

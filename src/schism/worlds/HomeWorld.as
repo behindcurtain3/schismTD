@@ -1,5 +1,6 @@
 package schism.worlds 
 {
+	import Facebook.FB;
 	import flash.net.navigateToURL;
 	import flash.net.SharedObject;
 	import flash.net.URLRequest;
@@ -58,14 +59,46 @@ package schism.worlds
 			
 			startSfx = new Sfx(Assets.SFX_BUTTON_START);
 			
-			if (QuickKong.api != null)
+			var t:Text = new Text("Logged in as: " + AuthWorld.playerName, 0, 0, { font: "Domo", color: 0xFFFFFF, outlineColor: 0x000000, outlineStrength: 2 } );
+			if (AuthWorld.playerName != "Guest")
 			{
-				var loginName:String = QuickKong.userName;
-				var t:Text = new Text("Logged in as: " + loginName, 0, 0, { font: "Domo", color: 0xFFFFFF, outlineColor: 0x000000, outlineStrength: 2 });
 				t.x = FP.screen.width - t.textWidth;
 				t.y = FP.screen.height - t.textHeight;
 				addGraphic(t);
 			}
+			else
+			{
+				if (isKongUser)
+				{
+					AuthWorld.playerName = QuickKong.userName;
+					t.text = "Logged in as: " + AuthWorld.playerName;
+					t.x = FP.screen.width - t.textWidth;
+					t.y = FP.screen.height - t.textHeight;
+					addGraphic(t);
+				}
+				else
+				{
+					// facebook user
+					try
+					{
+						FB.init( { access_token: AuthWorld.accessToken, debug: true } );
+
+						FB.api('/me', function(response:*) : void {
+							AuthWorld.playerName = response.name;
+							
+							t.text = "Logged in as: " + AuthWorld.playerName;
+							t.x = FP.screen.width - t.textWidth;
+							t.y = FP.screen.height - t.textHeight;
+							addGraphic(t);
+						});
+					}
+					catch (e:Error)
+					{
+						trace(e.message);
+					}
+				}
+			}
+			
 			
 			if(playerObject == null)
 				loadPlayerObject();
@@ -76,6 +109,8 @@ package schism.worlds
 			addGraphic(facebook);
 				
 			addGraphic(new Text(Assets.VERSION, facebook.width + 5, FP.screen.height - 15, { outlineColor: 0x000000, outlineStrength: 2, font: "Domo" } ));
+			
+			
 		}
 			
 		override public function end():void

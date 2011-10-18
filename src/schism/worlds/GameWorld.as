@@ -256,12 +256,11 @@ package schism.worlds
 		
 		public function joinRoom(roomId:String):void
 		{
-			var username:String = QuickKong.userName == "" ? "Guest" : QuickKong.userName;
 			var userid:String = QuickKong.userId == "" ? "" : QuickKong.userId;
-			var user_auth_token:String = QuickKong.userToken == "" ? "" : QuickKong.userToken;
+
 			client.multiplayer.joinRoom(
 				roomId,								//Room id. If set to null a random roomid is used
-				{guest:_isGuest, name: username, id: userid, auth_token: user_auth_token },	//User join data
+				{guest:_isGuest, name: AuthWorld.playerName, id: userid, auth_token: AuthWorld.accessToken },	//User join data
 				handleNewGame,						//Function executed on successful joining of the room
 				handleError							//Function executed if we got a join error
 			);
@@ -603,15 +602,15 @@ package schism.worlds
 			});
 			
 			connection.addMessageHandler(Messages.GAME_SET_SPAWN, function(m:Message):void {
-				trace(m.toString());
 				incomingArrow = new Image(Assets.GFX_INCOMING);
 				incomingArrow.x = m.getNumber(0);
 				incomingArrow.y = m.getNumber(1);
 				incomingArrow.centerOrigin();
 				if(incomingArrow.y < FP.screen.height / 2)
 					incomingArrow.angle = 180;
+				incomingArrow.alpha = 0;
 
-				addGraphic(incomingArrow);
+				addGraphic(incomingArrow, 2);
 			});
 			
 			connection.addMessageHandler(Messages.GAME_INFO, function(m:Message):void {				

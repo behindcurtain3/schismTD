@@ -84,7 +84,10 @@ package schism.worlds
 						FB.init( { access_token: AuthWorld.accessToken, debug: true } );
 
 						FB.api('/me', function(response:*) : void {
-							AuthWorld.playerName = response.name;
+							if (response.username == undefined || response.username == "")
+								AuthWorld.playerName = response.name;
+							else
+								AuthWorld.playerName = response.username;
 							
 							t.text = "Logged in as: " + AuthWorld.playerName;
 							t.x = FP.screen.width - t.textWidth;
@@ -108,9 +111,7 @@ package schism.worlds
 			facebook.y = FP.screen.height - facebook.height;
 			addGraphic(facebook);
 				
-			addGraphic(new Text(Assets.VERSION, facebook.width + 5, FP.screen.height - 15, { outlineColor: 0x000000, outlineStrength: 2, font: "Domo" } ));
-			
-			
+			//addGraphic(new Text(Assets.VERSION, facebook.width + 5, FP.screen.height - 15, { outlineColor: 0x000000, outlineStrength: 2, font: "Domo" } ));
 		}
 			
 		override public function end():void

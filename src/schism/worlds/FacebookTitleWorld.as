@@ -50,18 +50,17 @@ package schism.worlds
 				var spacer:int = 25;
 				
 				// Background				
-				var b:PunkButton = new PunkButton(uiX, FP.screen.height / 2 - 25, width, 50, "Play as Guest", onPlayTest)
+				var b:PunkButton = new PunkButton(uiX, FP.screen.height / 2 - 25 + 60, width, 50, "Play as Guest", onPlayTest)
 				add(b);
 				
-				b = new PunkButton(uiX, FP.screen.height / 2 - 25 + 60, width, 50, "Login", onLoginClick)
+				b = new PunkButton(uiX, FP.screen.height / 2 - 25, width, 50, "Login/Register", onLoginClick)
 				add(b);
 				
-				b = new PunkButton(uiX, FP.screen.height / 2 - 25 + 120, width, 50, "Register", onRegister)
-				add(b);
+				//b = new PunkButton(uiX, FP.screen.height / 2 - 25 + 120, width, 50, "Register", onRegister)
+				//add(b);
 				
-				add(new MessageDisplay("", 0, 36, FP.screen.width / 2, FP.screen.height / 2 + 60, width + 35, 205));
-				
-				addGraphic(new Text(Assets.VERSION, 0, FP.screen.height - 15, 50, 15));
+				add(new MessageDisplay("", 0, 36, FP.screen.width / 2, FP.screen.height / 2 + 30, width + 35, 155));
+				//addGraphic(new Text(Assets.VERSION, 0, FP.screen.height - 15, 50, 15));
 				
 			}
 			// Use the token we have
@@ -79,6 +78,8 @@ package schism.worlds
 						showMessage(e.message);
 					});
 			}
+			
+			addGraphic(new Text(Assets.VERSION, 0, FP.screen.height - 15, { outlineColor: 0x000000, outlineStrength: 2, font: "Domo" } ));
 		}
 		
 		override public function end():void

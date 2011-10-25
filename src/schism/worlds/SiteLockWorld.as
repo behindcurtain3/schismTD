@@ -17,7 +17,7 @@ package schism.worlds
 		
 		public function SiteLockWorld() 
 		{
-			addGraphic(new Image(Assets.GFX_BACKGROUND), 100);
+			addGraphic(new Image(Assets.GFX_MENUBG), 100);
 			add(new MessageDisplay("SchismTD is not available for play on the current site.\nPlease visit schismtd.com", 0, 24, FP.screen.width / 2, FP.screen.height / 2));
 		}
 		

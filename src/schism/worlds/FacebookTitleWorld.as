@@ -30,7 +30,7 @@ package schism.worlds
 		
 		public function FacebookTitleWorld (error:String = "")
 		{
-			addGraphic(new Image(Assets.GFX_BACKGROUND), 100);
+			addGraphic(new Image(Assets.GFX_MENUBG), 100);
 			addGraphic(new Image(Assets.GFX_TITLE), 99, FP.screen.width / 2 - 275, 50);
 			
 			if (error != "")

@@ -25,17 +25,17 @@ package schism.waves
 		{
 			super();
 			
-			width = 168;
+			width = 72;
 			height = 160;
 			
 			layer = 5;
 			
-			var offset:int = 40;
-			zeroPosition = new Point(offset, 25);
-			onePosition = new Point(offset, 55);
-			twoPosition = new Point(offset, 85);
+			var offset:int = 35;
+			zeroPosition = new Point(offset, 16);
+			onePosition = new Point(offset, 46);
+			twoPosition = new Point(offset, 76);
 			
-			activePosition = new Point(620, 77);
+			activePosition = new Point(618, 77);
 			
 			this.visible = false;
 		}

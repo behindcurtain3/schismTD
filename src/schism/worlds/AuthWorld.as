@@ -25,16 +25,18 @@ package schism.worlds
 		protected var connection:Connection;
 		protected var _isGuest:Boolean;
 		
+		protected var bg:Image;
 		
 		public function AuthWorld(c:Client, isGuest:Boolean = false) 
 		{
 			client = c;
 			_isGuest = isGuest;
 			
-			//if (client != null)
-			//	client.multiplayer.developmentServer = "72.220.227.32:8184";
+			if (client != null)
+				client.multiplayer.developmentServer = "72.220.227.32:8184";
 				
-			addGraphic(new Image(Assets.GFX_BACKGROUND), 100);
+			bg = new Image(Assets.GFX_MENUBG);
+			addGraphic(bg, 100);
 		}
 		
 		override public function update():void 

@@ -18,7 +18,7 @@ package schism.waves
 		{
 			super();
 			
-			x = FP.screen.width - 20;
+			x = FP.screen.width - 15;
 			y = FP.screen.height - 70;
 			
 			var offset:int = x;
@@ -26,7 +26,7 @@ package schism.waves
 			onePosition = new Point(offset, FP.screen.height - 55);
 			twoPosition = new Point(offset, FP.screen.height - 25);
 			
-			activePosition = new Point(200, FP.screen.height - 75);
+			activePosition = new Point(208, FP.screen.height - 71);
 			
 			rightOriented = true;
 		}

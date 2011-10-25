@@ -41,14 +41,14 @@ package schism.worlds
 			var uiY:int = 225;
 			var spacer:int = 25;
 			
-			var b:PunkButton = new PunkButton(uiX, FP.screen.height / 2 - 25, width, 50, "Play", onPlay)
+			var b:PunkButton = new PunkButton(uiX, FP.screen.height / 2 - 25, width, 50, "Play Ranked Match", onPlay)
 			add(b);
 			
 			b = new PunkButton(uiX, FP.screen.height / 2 - 25 + 60, width, 50, "Wave Builder", onWaveBuilderClick)
 			add(b);
 			//add(new Tooltip("Build your own custom waves!", b.x + b.width + 5, b.y));
 			
-			add(new MessageDisplay("", 0, 36, FP.screen.width / 2, FP.screen.height / 2 + 55, width + 35, 185));
+			add(new MessageDisplay("", 0, 36, FP.screen.width / 2, FP.screen.height / 2 + 55, width + 35, 195));
 			
 			if (error != "")
 			{
@@ -72,8 +72,8 @@ package schism.worlds
 				{
 					AuthWorld.playerName = QuickKong.userName;
 					t.text = "Logged in as: " + AuthWorld.playerName;
-					t.x = FP.screen.width - t.textWidth;
-					t.y = FP.screen.height - t.textHeight;
+					t.x = FP.screen.width / 2 - t.textWidth / 2;
+					t.y = FP.screen.height / 2 + 130;
 					addGraphic(t);
 				}
 				else
@@ -90,8 +90,8 @@ package schism.worlds
 								AuthWorld.playerName = response.username;
 							
 							t.text = "Logged in as: " + AuthWorld.playerName;
-							t.x = FP.screen.width - t.textWidth;
-							t.y = FP.screen.height - t.textHeight;
+							t.x = FP.screen.width / 2 - t.textWidth / 2;
+							t.y = FP.screen.height / 2 + 130;
 							addGraphic(t);
 						});
 					}
@@ -126,7 +126,7 @@ package schism.worlds
 			{
 				var rating:String = playerObject["rating"] == undefined ? "1500" : playerObject["rating"];
 				
-				ratingDisplay = new Text("Rating: " + rating, FP.screen.width / 2, FP.screen.height / 2 + 105, { font: "Domo", size: 24, outlineStrength: 2 } );
+				ratingDisplay = new Text("Rating: " + rating, FP.screen.width / 2, FP.screen.height / 2 + 100, { font: "Domo", size: 24, outlineStrength: 2 } );
 				ratingDisplay.x -= ratingDisplay.textWidth / 2;
 				addGraphic(ratingDisplay);
 			}

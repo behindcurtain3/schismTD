@@ -23,7 +23,7 @@ package schism.worlds
 		{
 			super(c, guest);
 			connection = con;
-			addGraphic(new Image(Assets.GFX_BACKGROUND), 5);
+			addGraphic(new Image(Assets.GFX_MENUBG), 5);
 			
 			var b:PunkButton = new PunkButton(FP.screen.width / 2 - 250, FP.screen.height / 2 + 100, 200, 75, "Play Again", onPlayAgain);
 			add(b); 

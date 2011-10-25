@@ -103,6 +103,7 @@ package schism.worlds
 		protected var boardWhite:Image;
 		protected var boardBlack:Image;
 		protected var boardWaveHighlight:WaveHighlight;
+		protected var newBg:Image;
 		
 		// Sfx
 		protected var sfx_invalid:Sfx = new Sfx(Assets.SFX_INVALID);
@@ -158,13 +159,12 @@ package schism.worlds
 			add(blackWaveQueue);
 			
 			// Board
-			addGraphic(new Image(Assets.GFX_BACKGROUND), 200);
 			board = new Image(Assets.GFX_BOARD);
 			board.alpha = 0;
 			board.angle = 90;
 			board.smooth = true;
 			board.centerOrigin();
-			addGraphic(board, 100, FP.screen.width / 2, FP.screen.height / 2);
+			addGraphic(board, 99, FP.screen.width / 2, FP.screen.height / 2);
 			
 			boardOverlay = new Image(Assets.GFX_BOARD_OVERLAY);
 			boardOverlay.centerOrigin();
@@ -180,7 +180,7 @@ package schism.worlds
 			boardBlack = new Image(Assets.GFX_BOARD_BLACK);
 			boardBlack.alpha = 0;
 			boardBlack.x = boardBlack.width;
-			addGraphic(boardBlack, 6, FP.screen.width - 304, FP.screen.height - 160);
+			addGraphic(boardBlack, 6, FP.screen.width - boardBlack.width, FP.screen.height - boardBlack.height);
 			
 			whiteHeart = new Spritemap(Assets.GFX_UI_LIFE, 32, 32, endWhiteHeartAnimation);
 			whiteHeart.add("normal", [0]);
@@ -188,7 +188,7 @@ package schism.worlds
 			whiteHeart.play("normal");
 			whiteHeart.alpha = 0;
 			whiteHeart.x = -boardWhite.width;
-			addGraphic(whiteHeart, 2, 151, 21);
+			addGraphic(whiteHeart, 2, 83, 21);
 			
 			blackHeart = new Spritemap(Assets.GFX_UI_LIFE, 32, 32, endBlackHeartAnimation);
 			blackHeart.add("normal", [0]);
@@ -196,7 +196,7 @@ package schism.worlds
 			blackHeart.play("normal");
 			blackHeart.alpha = 0;
 			blackHeart.x = boardBlack.width;
-			addGraphic(blackHeart, 2, FP.screen.width - 186, FP.screen.height - 53);
+			addGraphic(blackHeart, 2, FP.screen.width - 114, FP.screen.height - 53);
 			
 			whiteChi = new Spritemap(Assets.GFX_UI_CHI, 32, 32, endWhiteChiAnimation);
 			whiteChi.add("normal", [0]);
@@ -204,7 +204,7 @@ package schism.worlds
 			whiteChi.play("normal");
 			whiteChi.alpha = 0;
 			whiteChi.x = -boardWhite.width;
-			addGraphic(whiteChi, 2, 158, 8);
+			addGraphic(whiteChi, 2, 90, 8);
 			
 			blackChi = new Spritemap(Assets.GFX_UI_CHI, 32, 32, endBlackChiAnimation);
 			blackChi.add("normal", [0]);
@@ -212,7 +212,7 @@ package schism.worlds
 			blackChi.play("normal");
 			blackChi.alpha = 0;
 			blackChi.x = boardBlack.width;
-			addGraphic(blackChi, 2,  FP.screen.width - 180, FP.screen.height - 22);
+			addGraphic(blackChi, 2,  FP.screen.width - 106, FP.screen.height - 22);
 						
 			// Connect to game
 			connectionStatusDisplay = new MessageDisplay("Connecting to game...", 0, 24);
@@ -549,7 +549,7 @@ package schism.worlds
 				remove(connectionStatusDisplay);
 			
 			// Setup UI			
-			whiteHealthUI = new Text("20", 180, 27);
+			whiteHealthUI = new Text("20", 110, 27);
 			whiteHealthUI.visible = false;
 			whiteHealthUI.font = "Domo";
 			whiteHealthUI.size = 16;
@@ -558,7 +558,7 @@ package schism.worlds
 			whiteHealthUI.outlineStrength = 2;
 			whiteHealthUI.updateTextBuffer();
 			
-			whiteManaUI = new Text("100", 180, 5);
+			whiteManaUI = new Text("100", 110, 5);
 			whiteManaUI.visible = false;
 			whiteManaUI.font = "Domo";
 			whiteManaUI.size = 16;
@@ -569,7 +569,7 @@ package schism.worlds
 			addGraphic(whiteHealthUI);
 			addGraphic(whiteManaUI);
 			
-			blackHealthUI = new Text("20", FP.screen.width - 280, FP.screen.height - 44);
+			blackHealthUI = new Text("20", FP.screen.width - 208, FP.screen.height - 45);
 			blackHealthUI.visible = false;
 			blackHealthUI.font = "Domo";
 			blackHealthUI.size = 16;
@@ -579,7 +579,7 @@ package schism.worlds
 			blackHealthUI.outlineStrength = 2;
 			blackHealthUI.updateTextBuffer();
 			
-			blackManaUI = new Text("100", FP.screen.width - 280, FP.screen.height - 22);
+			blackManaUI = new Text("100", FP.screen.width - 208, FP.screen.height - 22);
 			blackManaUI.visible = false;
 			blackManaUI.font = "Domo";
 			blackManaUI.size = 16;
@@ -620,53 +620,53 @@ package schism.worlds
 					blackId = m.getInt(1);
 					whiteId = m.getInt(2);
 					
-					boardWaveHighlight = new WaveHighlight(color, blackWaveQueue.zeroPosition.x, blackWaveQueue.zeroPosition.y);
+					boardWaveHighlight = new WaveHighlight(color, FP.screen.width, blackWaveQueue.zeroPosition.y);
 					add(boardWaveHighlight);
 					
-					buildButton = new Button(toggleBuildMode, null, FP.screen.width - 40, FP.screen.height - boardBlack.height - 25);
+					buildButton = new Button(toggleBuildMode, null, FP.screen.width - 40, FP.screen.height - boardBlack.height + 65);
 					buildButton.setSpritemap(Assets.GFX_BUTTON_BUILD, 40, 40);
 					buildButton._map.alpha = 0;
 					buildButton._map.x = boardBlack.width;
 					add(buildButton);
 					
-					spellButton = new Button(toggleSpellMode, null, FP.screen.width - 90, FP.screen.height - boardBlack.height - 25);
+					spellButton = new Button(toggleSpellMode, null, FP.screen.width - 40, FP.screen.height - boardBlack.height + 130);
 					spellButton.setSpritemap(Assets.GFX_BUTTON_SPELL, 40, 40);
 					spellButton._map.alpha = 0;
 					spellButton._map.x = boardBlack.width;
 					add(spellButton);
 					
-					black1 = new Button(setWave, 0, FP.screen.width - 15, FP.screen.height - 85);
-					black1.setSpritemap(Assets.GFX_UI_B1, 24, 32);
+					black1 = new Button(setWave, 0, FP.screen.width - 47.5, FP.screen.height - 85);
+					black1.setSpritemap(Assets.GFX_UI_B1, 95, 32);
 					black1._map.centerOrigin();
 					black1.centerOrigin();
 					black1._map.x = boardBlack.width;
-					black2 = new Button(setWave, 1, FP.screen.width - 15, FP.screen.height - 55);
-					black2.setSpritemap(Assets.GFX_UI_B2, 24, 32);
+					black2 = new Button(setWave, 1, FP.screen.width - 47.5, FP.screen.height - 55);
+					black2.setSpritemap(Assets.GFX_UI_B2, 95, 32);
 					black2._map.centerOrigin();
 					black2.centerOrigin();
 					black2._map.x = boardBlack.width;
-					black3 = new Button(setWave, 2, FP.screen.width - 15, FP.screen.height - 25);
-					black3.setSpritemap(Assets.GFX_UI_B3, 24, 32);
+					black3 = new Button(setWave, 2, FP.screen.width - 47.5, FP.screen.height - 25);
+					black3.setSpritemap(Assets.GFX_UI_B3, 95, 32);
 					black3._map.centerOrigin();
 					black3.centerOrigin();
 					black3._map.x = boardBlack.width;
 					
 					addList(black1, black2, black3);
 					
-					white1 = new Button(null, null, 15, 25);
-					white1.setSpritemap(Assets.GFX_UI_W1, 24, 32);
+					white1 = new Button(null, null, 47.5, 16);
+					white1.setSpritemap(Assets.GFX_UI_W1, 95, 32);
 					white1._map.centerOrigin();
 					white1.centerOrigin();
 					white1.enabled = false;
 					white1._map.x = -boardWhite.width;
-					white2 = new Button(null, null, 15, 55);
-					white2.setSpritemap(Assets.GFX_UI_W2, 24, 32);
+					white2 = new Button(null, null, 47.5, 46);
+					white2.setSpritemap(Assets.GFX_UI_W2, 95, 32);
 					white2._map.centerOrigin();
 					white2.centerOrigin();
 					white2.enabled = false;
 					white2._map.x = -boardWhite.width;
-					white3 = new Button(null, null, 15, 85);
-					white3.setSpritemap(Assets.GFX_UI_W3, 24, 32);
+					white3 = new Button(null, null, 47.5, 76);
+					white3.setSpritemap(Assets.GFX_UI_W3, 95, 32);
 					white3._map.centerOrigin();
 					white3.centerOrigin();
 					white3.enabled = false;
@@ -680,35 +680,35 @@ package schism.worlds
 					whiteId = m.getInt(1);
 					blackId = m.getInt(2);
 					
-					boardWaveHighlight = new WaveHighlight(color, whiteWaveQueue.zeroPosition.x, whiteWaveQueue.zeroPosition.y);
+					boardWaveHighlight = new WaveHighlight(color, 0, whiteWaveQueue.zeroPosition.y);
 					add(boardWaveHighlight);
 					
-					buildButton = new Button(toggleBuildMode, null, 0, boardWhite.height - 15);
+					buildButton = new Button(toggleBuildMode, null, 0, boardWhite.height - 105);
 					buildButton.setSpritemap(Assets.GFX_BUTTON_BUILD, 40, 40);
 					buildButton._map.alpha = 0;
 					buildButton._map.x = -boardWhite.width;
 					add(buildButton);
 					
-					spellButton = new Button(toggleSpellMode, null, 50, boardWhite.height - 15);
+					spellButton = new Button(toggleSpellMode, null, 0, boardWhite.height - 170);
 					spellButton.setSpritemap(Assets.GFX_BUTTON_SPELL, 40, 40);
 					spellButton._map.alpha = 0;
 					spellButton._map.x = -boardWhite.width;
 					add(spellButton);
 					
-					black1 = new Button(null, null, FP.screen.width - 15, FP.screen.height - 85);
-					black1.setSpritemap(Assets.GFX_UI_B1, 24, 32);
+					black1 = new Button(null, null, FP.screen.width - 47.5, FP.screen.height - 85);
+					black1.setSpritemap(Assets.GFX_UI_B1, 95, 32);
 					black1._map.centerOrigin();
 					black1.centerOrigin();
 					black1.enabled = false;
 					black1._map.x = boardBlack.width;
-					black2 = new Button(null, null, FP.screen.width - 15, FP.screen.height - 55);
-					black2.setSpritemap(Assets.GFX_UI_B2, 24, 32);
+					black2 = new Button(null, null, FP.screen.width - 47.5, FP.screen.height - 55);
+					black2.setSpritemap(Assets.GFX_UI_B2, 95, 32);
 					black2._map.centerOrigin();
 					black2.centerOrigin();
 					black2.enabled = false;
 					black2._map.x = boardBlack.width;
-					black3 = new Button(null, null, FP.screen.width - 15, FP.screen.height - 25);
-					black3.setSpritemap(Assets.GFX_UI_B3, 24, 32);
+					black3 = new Button(null, null, FP.screen.width - 47.5, FP.screen.height - 25);
+					black3.setSpritemap(Assets.GFX_UI_B3, 95, 32);
 					black3._map.centerOrigin();
 					black3.centerOrigin();
 					black3.enabled = false;
@@ -716,18 +716,18 @@ package schism.worlds
 					
 					addList(black1, black2, black3);
 					
-					white1 = new Button(setWave, 0, 15, 25);
-					white1.setSpritemap(Assets.GFX_UI_W1, 24, 32);
+					white1 = new Button(setWave, 0, 47.5, 16);
+					white1.setSpritemap(Assets.GFX_UI_W1, 95, 32);
 					white1._map.centerOrigin();
 					white1.centerOrigin();
 					white1._map.x = -boardWhite.width;
-					white2 = new Button(setWave, 1, 15, 55);
-					white2.setSpritemap(Assets.GFX_UI_W2, 24, 32);
+					white2 = new Button(setWave, 1, 47.5, 46);
+					white2.setSpritemap(Assets.GFX_UI_W2, 95, 32);
 					white2._map.centerOrigin();
 					white2.centerOrigin();
 					white2._map.x = -boardWhite.width;
-					white3 = new Button(setWave, 2, 15, 85);
-					white3.setSpritemap(Assets.GFX_UI_W3, 24, 32);
+					white3 = new Button(setWave, 2, 47.5, 76);
+					white3.setSpritemap(Assets.GFX_UI_W3, 95, 32);
 					white3._map.centerOrigin();
 					white3.centerOrigin();
 					white3._map.x = -boardWhite.width;
@@ -1240,7 +1240,18 @@ package schism.worlds
 			t = new VarTween();
 			t.tween(vsIntro, "alpha", 0, 0.3);
 			addTween(t);
+
+			t = new VarTween();
+			t.tween(bg, "alpha", 0, 0.3);
+			addTween(t);
 			
+			newBg = new Image(Assets.GFX_BACKGROUND);
+			newBg.alpha = 0;
+			addGraphic(newBg, 100);
+			
+			t = new VarTween();
+			t.tween(newBg, "alpha", 1, 0.3);
+			addTween(t);			
 			
 			var vt:VarTween = new VarTween(activateCells);
 			vt.tween(board, "alpha", 1, 2.5, Ease.expoOut);

@@ -94,7 +94,7 @@ package schism
 		
 		// Sounds
 		[Embed(source = '../../assets/sfx/Wave8Start.mp3')] public static const SFX_GAME_START:Class;
-		[Embed(source = '../../assets/sfx/Music1.mp3')] public static const SFX_MUSIC1:Class;
+		[Embed(source = '../../assets/sfx/musicdemo3.mp3')] public static const SFX_MUSIC1:Class;
 		[Embed(source = '../../assets/sfx/error.mp3')] public static const SFX_INVALID:Class;
 		[Embed(source = '../../assets/sfx/BuildTower.mp3')] public static const SFX_BUILD_TOWER:Class;
 		[Embed(source = '../../assets/sfx/GameStartHighlightSound.mp3')] public static const SFX_START_HIGHLIGHT:Class;
@@ -119,7 +119,7 @@ package schism
 		
 		// Misc
 		[Embed(source = '../../assets/Board/glow.png')] public static const GFX_GLOW:Class;
-		[Embed(source = '../../assets/misc/facebook45px.png')] public static const GFX_MISC_FB:Class;
+		[Embed(source = '../../assets/misc/facebook32px.png')] public static const GFX_MISC_FB:Class;
 		
 		// Fonts
 		[Embed(source = '../../assets/DOMOAN__.ttf', embedAsCFF="false", fontFamily = 'Domo')] public static const FONT_DOMO:Class

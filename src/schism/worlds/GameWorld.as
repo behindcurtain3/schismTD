@@ -34,6 +34,7 @@ package schism.worlds
 	import schism.Messages;
 	import schism.projectiles.Projectile;
 	import schism.projectiles.PulseProjectile;
+	import schism.projectiles.SpellProjectile;
 	import schism.ui.BuildMenu;
 	import schism.ui.Button;
 	import schism.ui.ChiBlast;
@@ -598,6 +599,9 @@ package schism.worlds
 			connection.addMessageHandler(Messages.GAME_JOINED, function(m:Message):void {
 				if (connectionStatusDisplay != null)
 					remove(connectionStatusDisplay);
+					
+				connectionStatusDisplay = new MessageDisplay("Waiting for other player...", 0, 24);
+				add(connectionStatusDisplay);
 			});
 			
 			connection.addMessageHandler(Messages.GAME_SET_SPAWN, function(m:Message):void {
@@ -736,6 +740,9 @@ package schism.worlds
 			});
 			
 			connection.addMessageHandler(Messages.GAME_USER_INFO, function(m:Message):void {
+				if (connectionStatusDisplay != null)
+					remove(connectionStatusDisplay);
+				
 				blackName = m.getString(0);
 				whiteName = m.getString(1);
 				whiteIntro = new Text(m.getString(1), 0, 100, { font: "Domo", size: 72, outlineColor: 0x000000, outlineStrength: 4 } );
@@ -960,7 +967,7 @@ package schism.worlds
 						
 						for each(var p:Projectile in getProjectiles())
 						{
-							if (p.target == cr)
+							if (p.target == cr && !p is SpellProjectile)
 							{
 								remove(p);
 							}
@@ -1018,6 +1025,21 @@ package schism.worlds
 				{
 					case "Pulse":
 						add(new PulseProjectile(id, x, y, v));
+						break;
+					case "Spell":
+						for each(var cr:Creep in getCreeps())
+						{
+							if (cr.ID == crID)
+							{
+								creep = cr;
+								break;
+							}	
+						}
+						
+						if (creep != null)
+						{
+							add(new SpellProjectile(id, x, y, v, creep, type));
+						}
 						break;
 					default:
 						for each(var cr:Creep in getCreeps())
@@ -1410,7 +1432,7 @@ package schism.worlds
 			add(glow);
 			
 			fadeInText();
-			buildInstructions = new MessageDisplay("Press W to build", 5, 24);
+			buildInstructions = new MessageDisplay("Press W to build", 5, 24, 0, FP.screen.height / 2);
 			add(buildInstructions);			
 			
 			blackWaveQueue.showWaves();

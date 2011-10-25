@@ -59,6 +59,7 @@ package schism
 		[Embed(source = '../../assets/towers/rangeboost.png')] public static const GFX_TOWER_RANGEBOOST:Class;
 		[Embed(source = '../../assets/towers/speedboost.png')] public static const GFX_TOWER_RATEBOOST:Class;
 		[Embed(source = '../../assets/towers/towerrange.png')] public static const GFX_TOWER_RANGE:Class;
+		[Embed(source = '../../assets/towers/stunned.png')] public static const GFX_TOWER_STUNNED:Class;
 		
 		
 		// Creeps

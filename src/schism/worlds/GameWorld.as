@@ -342,6 +342,10 @@ package schism.worlds
 								{
 									objectSelected = cell;
 									buildMenu.displayAt(cell);
+									
+									if(buildMode == BuildMode.TOWER)									
+										toggleBuildMode();
+									
 								}
 							}
 						}
@@ -365,12 +369,9 @@ package schism.worlds
 							buildButton.toggle();
 						if (Input.pressed("Build"))
 						{
-							buildMode = BuildMode.TOWER;
 							objectSelected = null;
 							buildMenu.visible = false;
 							buildInstructions.visible = false;
-							buildButton.toggle();
-							(FP.stage.getChildByName("CustomMouse") as CustomMouse).setCursor(Assets.MOUSE_BUILD);
 						}
 						
 						// Update if glow is visible
@@ -428,13 +429,6 @@ package schism.worlds
 							spellButton.toggle();
 						if (!buildButton.isDown())
 							buildButton.toggle();
-						
-						if (Input.pressed("Build") || objectSelected != null)
-						{
-							buildMode = BuildMode.NONE;
-							buildButton.toggle();
-							(FP.stage.getChildByName("CustomMouse") as CustomMouse).setCursor(Assets.MOUSE_NORMAL);
-						}
 						
 						// Glow is not visible in this mode
 						glow.visible = false;
@@ -527,6 +521,11 @@ package schism.worlds
 				{
 					toggleSpellMode();
 				}
+				else if (Input.pressed("Build"))
+				{
+					toggleBuildMode();
+				}
+				
 			}
 			
 			super.update();
@@ -1513,15 +1512,10 @@ package schism.worlds
 		
 		public function toggleBuildMode():void
 		{
-			switch(buildMode)
-			{
-				case BuildMode.NONE:
-					buildMode = BuildMode.TOWER;
-					break;
-				case BuildMode.TOWER:
-					buildMode = BuildMode.NONE;
-					break;
-			}
+			if (buildMode == BuildMode.TOWER)
+				buildMode = BuildMode.NONE;
+			else
+				buildMode = BuildMode.TOWER;
 			
 			buildButton.toggle();
 			

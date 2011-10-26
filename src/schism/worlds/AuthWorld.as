@@ -13,7 +13,7 @@ package schism.worlds
 	 * ...
 	 * @author Justin Brown
 	 */
-	public class AuthWorld extends World 
+	public class AuthWorld extends SchismWorld
 	{
 		// Static vars useable across worlds
 		protected static var playerObject:DatabaseObject;

@@ -61,6 +61,7 @@ package schism.worlds
 		
 		private var whiteName:String;
 		private var blackName:String;
+		private var rated:Boolean;
 		
 		// Settings
 		private var gameId:String;
@@ -141,12 +142,13 @@ package schism.worlds
 		
 		private var connectionStatusDisplay:MessageDisplay;
 	 
-		public function GameWorld (c:Client, guest:Boolean, gameId:String, createServer:Boolean = false)
+		public function GameWorld (c:Client, guest:Boolean, gameId:String, createServer:Boolean = false, rate:Boolean = true)
 		{
 			super(c, guest);
 
 			this.gameId = gameId;
 			createServerRoom = createServer;
+			rated = rate;
 			
 			FP.volume = 0.1;
 			
@@ -243,8 +245,8 @@ package schism.worlds
 					gameId,								//Room id. If set to null a random roomid is used
 					"schismTD",							//The game type started on the server
 					false,								//Should the room be visible in the lobby?
-					{},									//Room data. This data is returned to lobby list. Variabels can be modifed on the server
-					joinRoom,						//Function executed on successful joining of the room
+					{rated: rated},						//Room data. This data is returned to lobby list. Variabels can be modifed on the server
+					joinRoom,							//Function executed on successful joining of the room
 					onRoomCreateError
 				);
 			}
@@ -1470,7 +1472,12 @@ package schism.worlds
 		private function onRoomCreateError(e:PlayerIOError):void
 		{
 			if (connectionAttempts < 3)
+			{
+				if (e.type == PlayerIOError.RoomAlreadyExists)
+					createServerRoom = false;
+					
 				connect();
+			}
 			else
 			{
 				FP.world = new TitleWorld("Unable to start a game on the server.");

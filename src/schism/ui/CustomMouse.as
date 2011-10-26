@@ -13,7 +13,7 @@ package schism.ui
 	 */
 	public class CustomMouse extends Sprite
 	{		
-		private var _gfx:Bitmap = new Assets.MOUSE_NORMAL();
+		private var _gfx:Bitmap = new Assets.MOUSE_NORMAL;
 		private var _currentAsset:Class = Assets.MOUSE_NORMAL;
 		
 		public function CustomMouse() 
@@ -41,9 +41,14 @@ package schism.ui
 		{
 			if (object != _currentAsset)
 			{
+				var x:Number = _gfx.x;
+				var y:Number = _gfx.y;
+				
 				removeChild(_gfx);
 				
 				_gfx = new object();
+				_gfx.x = x;
+				_gfx.y = y;
 				addChild(_gfx);
 				_currentAsset = object;
 			}

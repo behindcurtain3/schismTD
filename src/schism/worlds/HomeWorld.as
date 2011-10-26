@@ -25,7 +25,6 @@ package schism.worlds
 	 */
 	public class HomeWorld extends AuthWorld 
 	{
-		private var messageDisplay:MessageDisplay;
 		private var startSfx:Sfx;
 		private var ratingDisplay:Text;
 		private var facebook:Image;
@@ -38,21 +37,24 @@ package schism.worlds
 			
 			var width:int = 250;
 			var uiX:int = FP.screen.width / 2 - width / 2;
-			var uiY:int = 225;
+			var uiY:int = FP.screen.height / 2 - 50;
 			var spacer:int = 25;
 			
-			var b:PunkButton = new PunkButton(uiX, FP.screen.height / 2 - 25, width, 50, "Play Ranked Match", onPlay)
+			var b:PunkButton = new PunkButton(uiX, uiY, width, 50, "Play Ranked Match", onPlay)
 			add(b);
 			
-			b = new PunkButton(uiX, FP.screen.height / 2 - 25 + 60, width, 50, "Wave Builder", onWaveBuilderClick)
+			var b:PunkButton = new PunkButton(uiX, uiY + 60, width, 50, "Challenge a Friend", onChallenge)
+			add(b);
+			
+			b = new PunkButton(uiX, uiY + 120, width, 50, "Wave Builder", onWaveBuilderClick)
 			add(b);
 			//add(new Tooltip("Build your own custom waves!", b.x + b.width + 5, b.y));
 			
-			add(new MessageDisplay("", 0, 36, FP.screen.width / 2, FP.screen.height / 2 + 55, width + 35, 195));
+			add(new MessageDisplay("", 0, 36, FP.screen.width / 2, uiY + 105, width + 35, 255));
 			
 			if (error != "")
 			{
-				messageDisplay = new MessageDisplay(error, 5, 18, FP.screen.width / 2);
+				showMessage(error);
 				messageDisplay.sound();
 				add(messageDisplay);
 			}
@@ -62,8 +64,8 @@ package schism.worlds
 			var t:Text = new Text("Logged in as: " + AuthWorld.playerName, 0, 0, { font: "Domo", color: 0xFFFFFF, outlineColor: 0x000000, outlineStrength: 2 } );
 			if (AuthWorld.playerName != "Guest")
 			{
-				t.x = FP.screen.width - t.textWidth;
-				t.y = FP.screen.height - t.textHeight;
+				t.x = FP.screen.width / 2 - t.textWidth / 2;
+				t.y = uiY + 210;
 				addGraphic(t);
 			}
 			else
@@ -73,7 +75,7 @@ package schism.worlds
 					AuthWorld.playerName = QuickKong.userName;
 					t.text = "Logged in as: " + AuthWorld.playerName;
 					t.x = FP.screen.width / 2 - t.textWidth / 2;
-					t.y = FP.screen.height / 2 + 130;
+					t.y = uiY + 210;
 					addGraphic(t);
 				}
 				else
@@ -81,7 +83,7 @@ package schism.worlds
 					// facebook user
 					try
 					{
-						FB.init( { access_token: AuthWorld.accessToken, debug: true } );
+						FB.init( { access_token: AuthWorld.accessToken, debug: false } );
 
 						FB.api('/me', function(response:*) : void {
 							if (response.username == undefined || response.username == "")
@@ -91,7 +93,7 @@ package schism.worlds
 							
 							t.text = "Logged in as: " + AuthWorld.playerName;
 							t.x = FP.screen.width / 2 - t.textWidth / 2;
-							t.y = FP.screen.height / 2 + 130;
+							t.y = uiY + 210;
 							addGraphic(t);
 						});
 					}
@@ -126,7 +128,7 @@ package schism.worlds
 			{
 				var rating:String = playerObject["rating"] == undefined ? "1500" : playerObject["rating"];
 				
-				ratingDisplay = new Text("Rating: " + rating, FP.screen.width / 2, FP.screen.height / 2 + 100, { font: "Domo", size: 24, outlineStrength: 2 } );
+				ratingDisplay = new Text("Rating: " + rating, FP.screen.width / 2, FP.screen.height / 2 - 50 + 180, { font: "Domo", size: 24, outlineStrength: 2 } );
 				ratingDisplay.x -= ratingDisplay.textWidth / 2;
 				addGraphic(ratingDisplay);
 			}
@@ -157,6 +159,11 @@ package schism.worlds
 		{
 			startSfx.play();
 			FP.world = new MatchFinderWorld(client);
+		}
+		
+		public function onChallenge():void
+		{
+			FP.world = new ChallengeWorld(client);
 		}
 		
 		public function onWaveBuilderClick():void

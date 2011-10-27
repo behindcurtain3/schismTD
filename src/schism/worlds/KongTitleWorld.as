@@ -60,7 +60,7 @@ package schism.worlds
 		
 		private function doKongQuickConnect():void
 		{
-			showMessage("Logging in...");
+			showMessage("Logging in...", 0);
 			
 			//Connect to Player.IO
 			PlayerIO.quickConnect.kongregateConnect(
@@ -80,7 +80,7 @@ package schism.worlds
 		
 		public function onPlayTest():void
 		{			
-			showMessage("Logging in...");
+			showMessage("Logging in...", 0);
 			//Login for a user with QuickConnect for Simple Users
 			PlayerIO.quickConnect.simpleConnect(
 				FP.stage, 

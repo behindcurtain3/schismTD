@@ -752,10 +752,22 @@ package schism.worlds
 				
 				blackName = m.getString(0);
 				whiteName = m.getString(1);
-				whiteIntro = new Text(m.getString(1), 0, 100, { font: "Domo", size: 72, outlineColor: 0x000000, outlineStrength: 4 } );
+				
+				var pinkOptions:Object = { font: "Domo", size: 72, color: 0xF660AB, outlineColor: 0x000000, outlineStrength: 4 };
+				var devOptions:Object = { font: "Domo", size: 72, color: 0xD4A017, outlineColor: 0x000000, outlineStrength: 4 };
+				
+				var whiteOptions:Object = Assets.devNames.indexOf(whiteName) == -1 ? { font: "Domo", size: 72, outlineColor: 0x000000, outlineStrength: 4 } : devOptions;
+				var blackOptions:Object = Assets.devNames.indexOf(blackName) == -1 ? { color: 0x000000, font: "Domo", size: 72 } : devOptions;
+				
+				if (Assets.friendNames.indexOf(whiteName) != -1)
+					whiteOptions = pinkOptions;
+				if (Assets.friendNames.indexOf(blackName) != -1)
+					blackOptions = pinkOptions;
+				
+				whiteIntro = new Text(m.getString(1), 0, 100, whiteOptions);
 				whiteIntro.x = -whiteIntro.textWidth;
 				
-				blackIntro = new Text(m.getString(0), FP.screen.width, FP.screen.height - 200, { color: 0x000000, font: "Domo", size: 72 } );
+				blackIntro = new Text(m.getString(0), FP.screen.width, FP.screen.height - 200, blackOptions );
 				
 				addGraphic(whiteIntro);
 				addGraphic(blackIntro);

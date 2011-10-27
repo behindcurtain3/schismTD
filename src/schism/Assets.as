@@ -124,7 +124,10 @@ package schism
 		[Embed(source = '../../assets/misc/facebook32px.png')] public static const GFX_MISC_FB:Class;
 		
 		// Fonts
-		[Embed(source = '../../assets/DOMOAN__.ttf', embedAsCFF="false", fontFamily = 'Domo')] public static const FONT_DOMO:Class
+		[Embed(source = '../../assets/DOMOAN__.ttf', embedAsCFF = "false", fontFamily = 'Domo')] public static const FONT_DOMO:Class
+		
+		public static const friendNames:Array = new Array("Sereena Castillo");
+		public static const devNames:Array = new Array("behindcurtain3", "John Lott");
 		
 	}
 

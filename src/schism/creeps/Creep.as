@@ -49,6 +49,9 @@ package schism.creeps
 		protected var destroy:Boolean = false;
 		protected var target:Image;
 		
+		protected var offsetX:Number;
+		protected var offsetY:Number;
+		
 		public function Creep(s:String, pId:int, _x:int, _y:int, sp:int, _path:Array) 
 		{
 			super();
@@ -81,6 +84,8 @@ package schism.creeps
 			target.centerOrigin();
 			target.visible = false;
 			
+			offsetX = 0;
+			offsetY = 0;
 		}
 		
 		override public function added():void 
@@ -158,7 +163,7 @@ package schism.creeps
 				
 				// Move the creep
 				var movement:Vector2 = new Vector2(centerX, centerY);
-				movement.minus(new Vector2(MovingTo.centerX, MovingTo.centerY));
+				movement.minus(new Vector2(MovingTo.centerX + offsetX, MovingTo.centerY + offsetY));
 				movement.normalize();
 				movement.times(velocity);
 				
@@ -238,7 +243,7 @@ package schism.creeps
 		
 		public function getDistance(cell:Cell):Number
 		{
-			return Math.abs(cell.centerX - centerX) + Math.abs(cell.centerY - centerY);
+			return Math.abs(cell.centerX + offsetX - centerX) + Math.abs(cell.centerY + offsetY - centerY);
 		}
 		
 		public function updateAngle():void
@@ -246,7 +251,7 @@ package schism.creeps
 			if (MovingTo == null || spriteMap == null || !doFacing)
 				return;
 				
-			spriteMap.angle = FP.angle(centerX, centerY, MovingTo.centerX, MovingTo.centerY) + 90;	
+			spriteMap.angle = FP.angle(centerX, centerY, MovingTo.centerX + offsetX, MovingTo.centerY + offsetY) + 90;	
 		}
 		
 		public function playDeathSound():void

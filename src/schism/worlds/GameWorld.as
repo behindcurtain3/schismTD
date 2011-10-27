@@ -1113,6 +1113,15 @@ package schism.worlds
 				}				
 			});
 			
+			connection.addMessageHandler(Messages.GAME_TOWER_RANGE, function(m:Message):void {
+				var cell:Cell = getCell(m.getInt(0));
+				
+				if (cell != null)
+				{
+					cell.towerRange = m.getNumber(1);
+				}
+			});
+			
 			connection.addMessageHandler(Messages.GAME_ACTIVATE, activateGame);
 			connection.addMessageHandler(Messages.GAME_ALL_CREEPS_PATH, updatePaths);
 			connection.addMessageHandler(Messages.GAME_CREEP_PATH, updateSinglePath);

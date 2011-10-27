@@ -44,6 +44,9 @@ package schism
 		public static const GAME_TOWER_UPGRADE:String = "gtu";
 		public static const GAME_TOWER_SELL:String = "gts";
 		public static const GAME_TOWER_EFFECT:String = "gte";
+		public static const GAME_TOWER_RANGE:String = "gtrange";
+        public static const GAME_TOWER_RATE:String = "gtrate";
+        public static const GAME_TOWER_DAMAGE:String = "gtdamage";
 
 		public static const GAME_FIRE_AT:String = "gfa";
 		public static const GAME_FIRE_REMOVE:String = "gfr";

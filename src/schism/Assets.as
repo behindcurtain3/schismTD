@@ -39,6 +39,7 @@ package schism
 		[Embed(source = '../../assets/board/Player HUDS/white-2.png')] public static const GFX_UI_W2:Class;
 		[Embed(source = '../../assets/board/Player HUDS/white-3.png')] public static const GFX_UI_W3:Class;
 		[Embed(source = '../../assets/board/incoming.png')] public static const GFX_INCOMING:Class;
+		[Embed(source = '../../assets/board/build-menu-bg.png')] public static const GFX_BUILD_MENU:Class;
 		
 		//Icons
 		[Embed(source = '../../assets/board/creep icons/miniarmor.png')] public static const GFX_ICONS_ARMOR:Class;
@@ -60,6 +61,7 @@ package schism
 		[Embed(source = '../../assets/towers/speedboost.png')] public static const GFX_TOWER_RATEBOOST:Class;
 		[Embed(source = '../../assets/towers/towerrange.png')] public static const GFX_TOWER_RANGE:Class;
 		[Embed(source = '../../assets/towers/stunned.png')] public static const GFX_TOWER_STUNNED:Class;
+		[Embed(source = '../../assets/towers/sell icon.png')] public static const GFX_TOWER_SELL:Class;
 		
 		
 		// Creeps

@@ -22,6 +22,8 @@ package schism
 		public var towerImage:Image;
 		public var towerAsset:Class;
 		public var towerRange:Number;
+		public var towerDamage:int = 0;
+		public var towerFireRate:int = 0;
 		
 		private var doSetupIndicator:Boolean = false;
 		private var setupIndicatorTimer:Number;
@@ -137,6 +139,44 @@ package schism
 			
 			stunPosition = 0;
 			stunDuration = duration / 1000;
+		}
+		
+		public function getTowerName():String
+		{
+			if (!hasTower)
+				return "";
+					
+			switch(towerAsset)
+			{
+				case Assets.GFX_TOWER_BASIC:
+					return "Basic";
+					break;
+				case Assets.GFX_TOWER_DAMAGEBOOST:
+					return "Damage Boost";
+					break;
+				case Assets.GFX_TOWER_PULSE:
+					return "Pulse";
+					break;
+				case Assets.GFX_TOWER_RANGEBOOST:
+					return "Range Boost";
+					break;
+				case Assets.GFX_TOWER_RAPIDFIRE:
+					return "Rapid Fire";
+					break;
+				case Assets.GFX_TOWER_RATEBOOST:
+					return "Fire Rate Boost";
+					break;
+				case Assets.GFX_TOWER_SLOW:
+					return "Slow";
+					break;
+				case Assets.GFX_TOWER_SNIPER:
+					return "Sniper";
+					break;
+				case Assets.GFX_TOWER_SPELL:
+					return "Spell";
+					break;
+			}
+			return "";
 		}
 		
 	}

@@ -1122,6 +1122,32 @@ package schism.worlds
 				}
 			});
 			
+			connection.addMessageHandler(Messages.GAME_TOWER_RATE, function(m:Message):void {
+				var cell:Cell = getCell(m.getInt(0));
+				
+				if (cell != null)
+				{
+					cell.towerFireRate = m.getInt(1);
+					if (buildMenu.index == cell.getIndex())
+					{
+						buildMenu.towerRate.text = "Rate: " + m.getInt(1) / 1000;
+					}
+				}
+			});
+			
+			connection.addMessageHandler(Messages.GAME_TOWER_DAMAGE, function(m:Message):void {
+				var cell:Cell = getCell(m.getInt(0));
+				
+				if (cell != null)
+				{
+					cell.towerDamage = m.getInt(1);
+					if (buildMenu.index == cell.getIndex())
+					{
+						buildMenu.towerDmg.text = "Dmg: " + m.getInt(1);
+					}
+				}
+			});
+			
 			connection.addMessageHandler(Messages.GAME_ACTIVATE, activateGame);
 			connection.addMessageHandler(Messages.GAME_ALL_CREEPS_PATH, updatePaths);
 			connection.addMessageHandler(Messages.GAME_CREEP_PATH, updateSinglePath);

@@ -306,24 +306,29 @@ package schism.ui
 		
 		public function isMouseOver():Boolean
 		{
+			if (!this.visible) return false;
+			
+			return (Input.mouseX >= this.x + xOffset && Input.mouseX <= this.x + xOffset + bgWidth && Input.mouseY >= this.y + yOffset && Input.mouseY <= this.y + yOffset + bgHeight);
+			/*
 			if (leftUpgradeGfx == null && rightUpgradeGfx == null)
 				return false;
 				
 			var distance:Number = Math.abs(this.x - Input.mouseX) + Math.abs(this.y - Input.mouseY);
 			
 			return distance <= this.radius && this.visible;
+			*/
 		}
 		
 		public function isMouseOverLeft():Boolean
 		{
 			if (leftUpgradeGfx != null)
 			{
-				var left:Number = this.x + (leftUpgradeGfx.x - leftUpgradeGfx.width / 2);
+				var left:Number = leftUpgradeGfx.x - leftUpgradeGfx.width / 2;
 				var right:Number = left + leftUpgradeGfx.width;
-				var top:Number = this.y  + leftUpgradeGfx.y - leftUpgradeGfx.height / 2;
+				var top:Number = leftUpgradeGfx.y - leftUpgradeGfx.height / 2;
 				var bottom:Number = top + leftUpgradeGfx.height;
 				
-				return (Input.mouseX >= left && Input.mouseX <= right && Input.mouseY >= top && Input.mouseY <= bottom);
+				return (Input.mouseX >= this.x + left && Input.mouseX <= this.x + right && Input.mouseY >= this.y + top && Input.mouseY <= this.y + bottom);
 			}
 			else
 			{
@@ -335,17 +340,27 @@ package schism.ui
 		{
 			if (rightUpgradeGfx != null)
 			{
-				var left:Number = this.x + (rightUpgradeGfx.x - rightUpgradeGfx.width / 2);
+				var left:Number = rightUpgradeGfx.x - rightUpgradeGfx.width / 2;
 				var right:Number = left + rightUpgradeGfx.width;
-				var top:Number = this.y  + rightUpgradeGfx.y - rightUpgradeGfx.height / 2;
+				var top:Number = rightUpgradeGfx.y - rightUpgradeGfx.height / 2;
 				var bottom:Number = top + rightUpgradeGfx.height;
 				
-				return (Input.mouseX >= left && Input.mouseX <= right && Input.mouseY >= top && Input.mouseY <= bottom);
+				return (Input.mouseX >= this.y + left && Input.mouseX <= this.y + right && Input.mouseY >= this.y + top && Input.mouseY <= this.y + bottom);
 			}
 			else
 			{
 				return false;
 			}
+		}
+		
+		public function isMouseOverSell():Boolean
+		{
+			var left:Number = sellGfx.x - sellGfx.width / 2;
+			var right:Number = left + sellGfx.width;
+			var top:Number = sellGfx.y - sellGfx.height / 2;
+			var bottom:Number = top + sellGfx.height;
+				
+			return (Input.mouseX >= this.x + left && Input.mouseX <= this.x + right && Input.mouseY >= this.y + top && Input.mouseY <= this.y + bottom);
 		}
 		
 	}

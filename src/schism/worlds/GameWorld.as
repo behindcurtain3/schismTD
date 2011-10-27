@@ -323,6 +323,11 @@ package schism.worlds
 						{
 							connection.send(Messages.GAME_TOWER_UPGRADE, objectSelected.centerX, objectSelected.centerY, 2);
 						}
+						if (buildMenu.isMouseOverSell())
+						{
+							connection.send(Messages.GAME_TOWER_SELL, objectSelected.centerX, objectSelected.centerY);
+							trace("Selling...");
+						}						
 						
 					}
 					else

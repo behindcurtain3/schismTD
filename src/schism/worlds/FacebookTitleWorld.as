@@ -66,7 +66,7 @@ package schism.worlds
 			// Use the token we have
 			else
 			{
-				showMessage("Logging in ...");
+				showMessage("Logging in ...", 0);
 				
 				PlayerIO.quickConnect.facebookOAuthConnect(
 					FP.stage, Assets.GAME_ID, sharedObject.data.fbtoken, "",

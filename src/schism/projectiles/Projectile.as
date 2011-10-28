@@ -21,7 +21,7 @@ package schism.projectiles
 	 */
 	public class Projectile extends Entity 
 	{
-		private var speed:Number;
+		protected var speed:Number;
 		public var target:Creep;
 		public var id:String;
 		private var spm:Spritemap;

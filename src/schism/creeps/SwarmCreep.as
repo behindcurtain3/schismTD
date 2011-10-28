@@ -1,5 +1,6 @@
 package schism.creeps 
 {
+	import net.flashpunk.FP;
 	import net.flashpunk.graphics.Graphiclist;
 	import net.flashpunk.graphics.Spritemap;
 	import net.flashpunk.Sfx;
@@ -10,6 +11,7 @@ package schism.creeps
 	 */
 	public class SwarmCreep extends Creep 
 	{
+		public static var Count:int = 0;
 		
 		public function SwarmCreep(s:String, pId:int, _x:int, _y:int, sp:int, _path:Array) 
 		{
@@ -37,6 +39,27 @@ package schism.creeps
 			deathSounds.push(new Sfx(Assets.SFX_CREEP_DEATH_SMALL4));
 			deathSounds.push(new Sfx(Assets.SFX_CREEP_DEATH_SMALL6));
 			deathSounds.push(new Sfx(Assets.SFX_CREEP_DEATH_SMALL7));
+			
+			if (Count % 3 == 1)
+			{
+				offsetX = -5;
+				
+				if (x < FP.screen.height / 2)
+					offsetY = - 5;
+				else
+					offsetY = 5;
+			} 
+			else if (Count % 3 == 2)
+			{
+				offsetX = 5;
+				
+				if (x < FP.screen.height / 2)
+					offsetY = - 5;
+				else
+					offsetY = 5;
+			}
+			
+			Count++;
 		}
 		
 	}

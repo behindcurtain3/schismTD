@@ -32,7 +32,6 @@ package schism.worlds
 		// UI
 		private var pointsRemainingMessage:Text;
 		private var creepScrollPanel:ScrollPanel;
-		private var messageDisplay:MessageDisplay;
 		
 		// Values
 		private var pointsRemaining:int = 24;
@@ -232,7 +231,7 @@ package schism.worlds
 				}
 			}
 			
-			if (Input.pressed(Key.NUMPAD_ADD))
+			if (Input.pressed(Key.NUMPAD_ADD) || Input.pressed(Key.PAGE_DOWN))
 			{
 				if (_activeWave < _waves.length - 1)
 				{
@@ -247,7 +246,7 @@ package schism.worlds
 				}
 			}
 			
-			if (Input.pressed(Key.NUMPAD_SUBTRACT))
+			if (Input.pressed(Key.NUMPAD_SUBTRACT) || Input.pressed(Key.PAGE_UP))
 			{
 				if (_activeWave > 0)
 				{
@@ -441,15 +440,15 @@ package schism.worlds
 			
 			return true;
 		}
-		
-		private function showMessage(msg:String, time:Number = 5):void
+		/*
+		private function showMessage(msg:String, time:Number = 5):void 
 		{
 			if (messageDisplay != null)
 				remove(messageDisplay);
 				
 			messageDisplay = new MessageDisplay(msg, time, 20, 0, FP.screen.height / 2);
 			add(messageDisplay);
-		}
+		}*/
 		
 	}
 

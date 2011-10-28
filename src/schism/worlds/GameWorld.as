@@ -34,6 +34,7 @@ package schism.worlds
 	import schism.Messages;
 	import schism.projectiles.Projectile;
 	import schism.projectiles.PulseProjectile;
+	import schism.projectiles.SpellProjectile;
 	import schism.ui.BuildMenu;
 	import schism.ui.Button;
 	import schism.ui.ChiBlast;
@@ -60,6 +61,7 @@ package schism.worlds
 		
 		private var whiteName:String;
 		private var blackName:String;
+		private var rated:Boolean;
 		
 		// Settings
 		private var gameId:String;
@@ -140,19 +142,18 @@ package schism.worlds
 		
 		private var connectionStatusDisplay:MessageDisplay;
 	 
-		public function GameWorld (c:Client, guest:Boolean, gameId:String, createServer:Boolean = false)
+		public function GameWorld (c:Client, guest:Boolean, gameId:String, createServer:Boolean = false, rate:Boolean = true)
 		{
 			super(c, guest);
 
 			this.gameId = gameId;
 			createServerRoom = createServer;
+			rated = rate;
 			
 			FP.volume = 0.1;
 			
 			// UI elements
 			add(fauxTower);
-			buildMenu = new BuildMenu();
-			add(buildMenu);
 			whiteWaveQueue = new WhiteWaveQueue();
 			add(whiteWaveQueue);
 			blackWaveQueue = new BlackWaveQueue();
@@ -242,8 +243,8 @@ package schism.worlds
 					gameId,								//Room id. If set to null a random roomid is used
 					"schismTD",							//The game type started on the server
 					false,								//Should the room be visible in the lobby?
-					{},									//Room data. This data is returned to lobby list. Variabels can be modifed on the server
-					joinRoom,						//Function executed on successful joining of the room
+					{rated: rated},						//Room data. This data is returned to lobby list. Variabels can be modifed on the server
+					joinRoom,							//Function executed on successful joining of the room
 					onRoomCreateError
 				);
 			}
@@ -320,6 +321,11 @@ package schism.worlds
 						{
 							connection.send(Messages.GAME_TOWER_UPGRADE, objectSelected.centerX, objectSelected.centerY, 2);
 						}
+						if (buildMenu.isMouseOverSell())
+						{
+							connection.send(Messages.GAME_TOWER_SELL, objectSelected.centerX, objectSelected.centerY);
+							trace("Selling...");
+						}						
 						
 					}
 					else
@@ -598,6 +604,9 @@ package schism.worlds
 			connection.addMessageHandler(Messages.GAME_JOINED, function(m:Message):void {
 				if (connectionStatusDisplay != null)
 					remove(connectionStatusDisplay);
+					
+				connectionStatusDisplay = new MessageDisplay("Waiting for other player...", 0, 24);
+				add(connectionStatusDisplay);
 			});
 			
 			connection.addMessageHandler(Messages.GAME_SET_SPAWN, function(m:Message):void {
@@ -614,10 +623,13 @@ package schism.worlds
 			
 			connection.addMessageHandler(Messages.GAME_INFO, function(m:Message):void {				
 				if (m.getString(0) == "black")
-				{
+				{					
 					color = m.getString(0);
 					blackId = m.getInt(1);
 					whiteId = m.getInt(2);
+					
+					buildMenu = new BuildMenu(color);
+					add(buildMenu);
 					
 					boardWaveHighlight = new WaveHighlight(color, FP.screen.width, blackWaveQueue.zeroPosition.y);
 					add(boardWaveHighlight);
@@ -679,6 +691,9 @@ package schism.worlds
 					whiteId = m.getInt(1);
 					blackId = m.getInt(2);
 					
+					buildMenu = new BuildMenu(color);
+					add(buildMenu);
+					
 					boardWaveHighlight = new WaveHighlight(color, 0, whiteWaveQueue.zeroPosition.y);
 					add(boardWaveHighlight);
 					
@@ -736,12 +751,27 @@ package schism.worlds
 			});
 			
 			connection.addMessageHandler(Messages.GAME_USER_INFO, function(m:Message):void {
+				if (connectionStatusDisplay != null)
+					remove(connectionStatusDisplay);
+				
 				blackName = m.getString(0);
 				whiteName = m.getString(1);
-				whiteIntro = new Text(m.getString(1), 0, 100, { font: "Domo", size: 72, outlineColor: 0x000000, outlineStrength: 4 } );
+				
+				var pinkOptions:Object = { font: "Domo", size: 72, color: 0xF660AB, outlineColor: 0x000000, outlineStrength: 4 };
+				var devOptions:Object = { font: "Domo", size: 72, color: 0xD4A017, outlineColor: 0x000000, outlineStrength: 4 };
+				
+				var whiteOptions:Object = Assets.devNames.indexOf(whiteName) == -1 ? { font: "Domo", size: 72, outlineColor: 0x000000, outlineStrength: 4 } : devOptions;
+				var blackOptions:Object = Assets.devNames.indexOf(blackName) == -1 ? { color: 0x000000, font: "Domo", size: 72 } : devOptions;
+				
+				if (Assets.friendNames.indexOf(whiteName) != -1)
+					whiteOptions = pinkOptions;
+				if (Assets.friendNames.indexOf(blackName) != -1)
+					blackOptions = pinkOptions;
+				
+				whiteIntro = new Text(m.getString(1), 0, 100, whiteOptions);
 				whiteIntro.x = -whiteIntro.textWidth;
 				
-				blackIntro = new Text(m.getString(0), FP.screen.width, FP.screen.height - 200, { color: 0x000000, font: "Domo", size: 72 } );
+				blackIntro = new Text(m.getString(0), FP.screen.width, FP.screen.height - 200, blackOptions );
 				
 				addGraphic(whiteIntro);
 				addGraphic(blackIntro);
@@ -960,7 +990,7 @@ package schism.worlds
 						
 						for each(var p:Projectile in getProjectiles())
 						{
-							if (p.target == cr)
+							if (p.target == cr && !p is SpellProjectile)
 							{
 								remove(p);
 							}
@@ -1019,6 +1049,21 @@ package schism.worlds
 					case "Pulse":
 						add(new PulseProjectile(id, x, y, v));
 						break;
+					case "Spell":
+						for each(var cr:Creep in getCreeps())
+						{
+							if (cr.ID == crID)
+							{
+								creep = cr;
+								break;
+							}	
+						}
+						
+						if (creep != null)
+						{
+							add(new SpellProjectile(id, x, y, v, creep, type));
+						}
+						break;
 					default:
 						for each(var cr:Creep in getCreeps())
 						{
@@ -1071,6 +1116,55 @@ package schism.worlds
 					{
 						cr.removeTarget();
 						break;
+					}
+				}
+			});
+			
+			connection.addMessageHandler(Messages.GAME_TOWER_EFFECT, function(m:Message):void {
+				var cell:Cell = getCell(m.getInt(0));
+				
+				if (cell != null)
+				{
+					switch(m.getString(1))
+					{
+						case "stun":
+							cell.stun(m.getNumber(2));
+							break;
+					}
+				}				
+			});
+			
+			connection.addMessageHandler(Messages.GAME_TOWER_RANGE, function(m:Message):void {
+				var cell:Cell = getCell(m.getInt(0));
+				
+				if (cell != null)
+				{
+					cell.towerRange = m.getNumber(1);
+				}
+			});
+			
+			connection.addMessageHandler(Messages.GAME_TOWER_RATE, function(m:Message):void {
+				var cell:Cell = getCell(m.getInt(0));
+				
+				if (cell != null)
+				{
+					cell.towerFireRate = m.getInt(1);
+					if (buildMenu.index == cell.getIndex())
+					{
+						buildMenu.towerRate.text = "Rate: " + m.getInt(1) / 1000;
+					}
+				}
+			});
+			
+			connection.addMessageHandler(Messages.GAME_TOWER_DAMAGE, function(m:Message):void {
+				var cell:Cell = getCell(m.getInt(0));
+				
+				if (cell != null)
+				{
+					cell.towerDamage = m.getInt(1);
+					if (buildMenu.index == cell.getIndex())
+					{
+						buildMenu.towerDmg.text = "Dmg: " + m.getInt(1);
 					}
 				}
 			});
@@ -1396,7 +1490,7 @@ package schism.worlds
 			add(glow);
 			
 			fadeInText();
-			buildInstructions = new MessageDisplay("Press W to build", 5, 24);
+			buildInstructions = new MessageDisplay("Press W to build", 5, 24, 0, FP.screen.height / 2);
 			add(buildInstructions);			
 			
 			blackWaveQueue.showWaves();
@@ -1434,7 +1528,12 @@ package schism.worlds
 		private function onRoomCreateError(e:PlayerIOError):void
 		{
 			if (connectionAttempts < 3)
+			{
+				if (e.type == PlayerIOError.RoomAlreadyExists)
+					createServerRoom = false;
+					
 				connect();
+			}
 			else
 			{
 				FP.world = new TitleWorld("Unable to start a game on the server.");

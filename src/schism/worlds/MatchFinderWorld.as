@@ -20,8 +20,7 @@ package schism.worlds
 	public class MatchFinderWorld extends AuthWorld
 	{		
 		private var previousDidYouKnow:int = -1;
-		
-		private var messageDisplay:MessageDisplay;
+		private var connStatus:MessageDisplay;
 		
 		public function MatchFinderWorld(c:Client, guest:Boolean = false) 
 		{
@@ -30,8 +29,9 @@ package schism.worlds
 			// Title
 			addGraphic(new Image(Assets.GFX_MENUBG), 100);
 			addGraphic(new Image(Assets.GFX_TITLE), 99, FP.screen.width / 2 - 275, 50);
-			messageDisplay = new MessageDisplay("Connecting to lobby...", 0, 36, 0, FP.screen.height / 2);
-			add(messageDisplay);
+			
+			connStatus = new MessageDisplay("Connecting to lobby...", 0, 36, 0, FP.screen.height / 2);
+			add(connStatus);
 			
 			//Create pr join the room test
 			client.multiplayer.createJoinRoom(
@@ -89,11 +89,12 @@ package schism.worlds
 		
 		private function handleJoin(c:Connection):void
 		{
-			if (messageDisplay != null)
-				remove(messageDisplay);
+			
+			if (connStatus != null)
+				remove(connStatus);
 				
-			messageDisplay = new MessageDisplay("Waiting for a challenger...", 0, 36, 0, FP.screen.height / 2);
-			add(messageDisplay);
+			connStatus = new MessageDisplay("Waiting for a challenger...", 0, 36, 0, FP.screen.height / 2);
+			add(connStatus);
 		
 			connection = c;
 			connection.addDisconnectHandler(handleDisconnect);		

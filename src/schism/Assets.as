@@ -6,7 +6,7 @@ package schism
 	 */
 	public class Assets 
 	{		
-		public static const VERSION:String = "v0.4.4";
+		public static const VERSION:String = "v0.5";
 		public static const GAME_ID:String = "schismtd-3r3otmhvkki9ixublwca";
 		public static const FB_APPID:String = "256712624370689";
 		
@@ -39,6 +39,7 @@ package schism
 		[Embed(source = '../../assets/board/Player HUDS/white-2.png')] public static const GFX_UI_W2:Class;
 		[Embed(source = '../../assets/board/Player HUDS/white-3.png')] public static const GFX_UI_W3:Class;
 		[Embed(source = '../../assets/board/incoming.png')] public static const GFX_INCOMING:Class;
+		[Embed(source = '../../assets/board/build-menu-bg.png')] public static const GFX_BUILD_MENU:Class;
 		
 		//Icons
 		[Embed(source = '../../assets/board/creep icons/miniarmor.png')] public static const GFX_ICONS_ARMOR:Class;
@@ -59,6 +60,8 @@ package schism
 		[Embed(source = '../../assets/towers/rangeboost.png')] public static const GFX_TOWER_RANGEBOOST:Class;
 		[Embed(source = '../../assets/towers/speedboost.png')] public static const GFX_TOWER_RATEBOOST:Class;
 		[Embed(source = '../../assets/towers/towerrange.png')] public static const GFX_TOWER_RANGE:Class;
+		[Embed(source = '../../assets/towers/stunned.png')] public static const GFX_TOWER_STUNNED:Class;
+		[Embed(source = '../../assets/towers/sell icon.png')] public static const GFX_TOWER_SELL:Class;
 		
 		
 		// Creeps
@@ -93,7 +96,7 @@ package schism
 		
 		// Sounds
 		[Embed(source = '../../assets/sfx/Wave8Start.mp3')] public static const SFX_GAME_START:Class;
-		[Embed(source = '../../assets/sfx/Music1.mp3')] public static const SFX_MUSIC1:Class;
+		[Embed(source = '../../assets/sfx/musicdemo3.mp3')] public static const SFX_MUSIC1:Class;
 		[Embed(source = '../../assets/sfx/error.mp3')] public static const SFX_INVALID:Class;
 		[Embed(source = '../../assets/sfx/BuildTower.mp3')] public static const SFX_BUILD_TOWER:Class;
 		[Embed(source = '../../assets/sfx/GameStartHighlightSound.mp3')] public static const SFX_START_HIGHLIGHT:Class;
@@ -118,10 +121,13 @@ package schism
 		
 		// Misc
 		[Embed(source = '../../assets/Board/glow.png')] public static const GFX_GLOW:Class;
-		[Embed(source = '../../assets/misc/facebook45px.png')] public static const GFX_MISC_FB:Class;
+		[Embed(source = '../../assets/misc/facebook32px.png')] public static const GFX_MISC_FB:Class;
 		
 		// Fonts
-		[Embed(source = '../../assets/DOMOAN__.ttf', embedAsCFF="false", fontFamily = 'Domo')] public static const FONT_DOMO:Class
+		[Embed(source = '../../assets/DOMOAN__.ttf', embedAsCFF = "false", fontFamily = 'Domo')] public static const FONT_DOMO:Class
+		
+		public static const friendNames:Array = new Array("Sereena Castillo");
+		public static const devNames:Array = new Array("behindcurtain3", "John Lott");
 		
 	}
 

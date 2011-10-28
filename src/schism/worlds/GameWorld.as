@@ -154,8 +154,6 @@ package schism.worlds
 			
 			// UI elements
 			add(fauxTower);
-			buildMenu = new BuildMenu();
-			add(buildMenu);
 			whiteWaveQueue = new WhiteWaveQueue();
 			add(whiteWaveQueue);
 			blackWaveQueue = new BlackWaveQueue();
@@ -625,10 +623,13 @@ package schism.worlds
 			
 			connection.addMessageHandler(Messages.GAME_INFO, function(m:Message):void {				
 				if (m.getString(0) == "black")
-				{
+				{					
 					color = m.getString(0);
 					blackId = m.getInt(1);
 					whiteId = m.getInt(2);
+					
+					buildMenu = new BuildMenu(color);
+					add(buildMenu);
 					
 					boardWaveHighlight = new WaveHighlight(color, FP.screen.width, blackWaveQueue.zeroPosition.y);
 					add(boardWaveHighlight);
@@ -689,6 +690,9 @@ package schism.worlds
 					color = m.getString(0);
 					whiteId = m.getInt(1);
 					blackId = m.getInt(2);
+					
+					buildMenu = new BuildMenu(color);
+					add(buildMenu);
 					
 					boardWaveHighlight = new WaveHighlight(color, 0, whiteWaveQueue.zeroPosition.y);
 					add(boardWaveHighlight);

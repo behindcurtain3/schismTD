@@ -76,6 +76,8 @@ package schism.worlds
 					},
 					function(e:PlayerIOError):void {
 						showMessage(e.message);
+						sharedObject.data.fbtoken = null;
+						FP.world = new FacebookTitleWorld(e.message);
 					});
 			}
 			

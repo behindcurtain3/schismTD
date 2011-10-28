@@ -59,12 +59,14 @@ package schism.ui
 		private var txtOptions:Object = { font:"Domo", outlineColor: 0x000000, outlineStrength: 2, size: 14 }
 		
 		public var index:int = -1;
+		public var color:String;
 		
-		public function BuildMenu() 
+		public function BuildMenu(c:String)
 		{
 			radius = 75;
 			width = radius * 2;
 			height = radius * 2;
+			color = c;
 
 			backgroundGfx = new Image(Assets.GFX_BUILD_MENU);
 			
@@ -96,7 +98,7 @@ package schism.ui
 			sellToken = new Image(Assets.GFX_GEM);
 			sellToken.centerOrigin();
 			
-			layer = 4;
+			layer = 1;
 			visible = false;
 			centerOrigin();
 		}
@@ -123,7 +125,7 @@ package schism.ui
 			rangeGfx.scaleY = (cell.towerRange * 2) / rangeGfx.height;
 			
 			xOffset = defaultXOffset;
-			if (xOffset + this.x < 100)
+			if (color == "white")
 			{
 				xOffset = 15;
 			}
@@ -345,7 +347,7 @@ package schism.ui
 				var top:Number = rightUpgradeGfx.y - rightUpgradeGfx.height / 2;
 				var bottom:Number = top + rightUpgradeGfx.height;
 				
-				return (Input.mouseX >= this.y + left && Input.mouseX <= this.y + right && Input.mouseY >= this.y + top && Input.mouseY <= this.y + bottom);
+				return (Input.mouseX >= this.x + left && Input.mouseX <= this.x + right && Input.mouseY >= this.y + top && Input.mouseY <= this.y + bottom);
 			}
 			else
 			{

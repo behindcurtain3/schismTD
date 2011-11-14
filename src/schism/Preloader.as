@@ -23,6 +23,8 @@ package schism
 	 */
 	public class Preloader extends MovieClip 
 	{
+		[Embed(source = '../../assets/board/SplashScreen.png')] public static const SPLASH:Class;
+		
 		// Change these values
 		private static const mustClick: Boolean = false;
 		private static const mainClassName: String = "schism.Main";
@@ -36,7 +38,8 @@ package schism
 		// Ignore everything else
 		private var progressBar: Shape;
 		private var text: TextField;
-
+		private var sprite:Sprite
+		
 		private var px:int;
 		private var py:int;
 		private var w:int;
@@ -53,8 +56,13 @@ package schism
 			h = 20;
 
 			px = (sw - w) * 0.5;
-			py = (sh - h) * 0.5;
+			py = (sh - h) * 0.75;
 
+			sprite = new Sprite();
+			sprite.addChild(new SPLASH());
+			addChild(sprite);
+
+			
 			graphics.beginFill(BG_COLOR);
 			graphics.drawRect(0, 0, sw, sh);
 			graphics.endFill();
@@ -77,7 +85,7 @@ package schism
 			text.autoSize = "left";
 			text.text = "0%";
 			text.x = (sw - text.width) * 0.5;
-			text.y = sh * 0.5 + h;
+			text.y = sh * 0.75 + h;
 
 			addChild(text);
 
@@ -92,10 +100,10 @@ package schism
 		{
 			if (hasLoaded())
 			{
-				graphics.clear();
-				graphics.beginFill(BG_COLOR);
-				graphics.drawRect(0, 0, sw, sh);
-				graphics.endFill();
+				//graphics.clear();
+				//graphics.beginFill(BG_COLOR);
+				//graphics.drawRect(0, 0, sw, sh);
+				//graphics.endFill();
 
 				if (! mustClick) {
 					startup();

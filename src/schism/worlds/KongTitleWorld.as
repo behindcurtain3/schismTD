@@ -22,7 +22,7 @@ package schism.worlds
 			if (error != "")
 				showMessage(error);
 			
-			addGraphic(new Image(Assets.GFX_RESULTS), 100);
+			addGraphic(new Image(Assets.GFX_MENUBG), 100);
 			addGraphic(new Image(Assets.GFX_TITLE), 99, FP.screen.width / 2 - 190, 50);
 		}
 		

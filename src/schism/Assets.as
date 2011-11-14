@@ -42,7 +42,6 @@ package schism
 		[Embed(source = '../../assets/board/Player HUDS/white-3.png')] public static const GFX_UI_W3:Class;
 		[Embed(source = '../../assets/board/incoming.png')] public static const GFX_INCOMING:Class;
 		[Embed(source = '../../assets/board/build-menu-bg.png')] public static const GFX_BUILD_MENU:Class;
-		[Embed(source = '../../assets/board/SplashScreen.png')] public static const GFX_SPLASH:Class;
 		[Embed(source = '../../assets/board/Results.png')] public static const GFX_RESULTS:Class;
 		
 		//Icons

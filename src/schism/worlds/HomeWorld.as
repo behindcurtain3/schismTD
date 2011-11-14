@@ -113,7 +113,8 @@ package schism.worlds
 			facebook.y = FP.screen.height - facebook.height;
 			addGraphic(facebook);
 				
-			//addGraphic(new Text(Assets.VERSION, facebook.width + 5, FP.screen.height - 15, { outlineColor: 0x000000, outlineStrength: 2, font: "Domo" } ));
+			var tmp:Text = new Text(Assets.VERSION);
+			addGraphic(new Text(Assets.VERSION, FP.screen.width - tmp.textWidth, FP.screen.height - 15, { outlineColor: 0x000000, outlineStrength: 2, font: "Domo" } ));
 		}
 			
 		override public function end():void

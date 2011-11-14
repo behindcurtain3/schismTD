@@ -87,6 +87,8 @@ package schism.worlds
 		protected var blackChi:Spritemap;
 		protected var buildButton:Button;
 		protected var spellButton:Button;
+		protected var spellButtonCost:Text;
+		protected var spellButtonToken:Image;
 		protected var black1:Button;
 		protected var black2:Button;
 		protected var black3:Button;
@@ -639,18 +641,30 @@ package schism.worlds
 					boardWaveHighlight = new WaveHighlight(color, FP.screen.width, blackWaveQueue.zeroPosition.y);
 					add(boardWaveHighlight);
 					
-					buildButton = new Button(toggleBuildMode, null, FP.screen.width - 40, FP.screen.height - boardBlack.height + 65);
+					buildButton = new Button(toggleBuildMode, null, FP.screen.width - 50, FP.screen.height - boardBlack.height + 65);
 					buildButton.setSpritemap(Assets.GFX_BUTTON_BUILD, 40, 40);
 					buildButton._map.alpha = 0;
 					buildButton._map.x = boardBlack.width;
 					add(buildButton);
 					
-					spellButton = new Button(toggleSpellMode, null, FP.screen.width - 40, FP.screen.height - boardBlack.height + 130);
+					spellButton = new Button(toggleSpellMode, null, FP.screen.width - 50, FP.screen.height - boardBlack.height + 115);
 					spellButton.setSpritemap(Assets.GFX_BUTTON_SPELL, 40, 40);
 					spellButton._map.alpha = 0;
 					spellButton._map.x = boardBlack.width;
 					add(spellButton);
 					
+					spellButtonCost = new Text("50", 0, 0, { color: 0xFFFFFF, font: "Domo", size: "16", outlineColor: 0x0000FF, outlineStrength: 2 } );
+					spellButtonCost.x = spellButton.x + spellButton.width / 2 - spellButtonCost.textWidth / 2 + 5;
+					spellButtonCost.y = spellButton.y + spellButton.height;
+					spellButtonCost.visible = false;
+					addGraphic(spellButtonCost);
+					
+					spellButtonToken = new Image(Assets.GFX_GEM);
+					spellButtonToken.x = spellButtonCost.x - spellButtonToken.width + 2;
+					spellButtonToken.y = spellButtonCost.y;
+					spellButtonToken.visible = false;
+					addGraphic(spellButtonToken);
+			
 					black1 = new Button(setWave, 0, FP.screen.width - 42.5, FP.screen.height - 85);
 					black1.setSpritemap(Assets.GFX_UI_B1, 85, 32);
 					black1._map.centerOrigin();
@@ -707,17 +721,30 @@ package schism.worlds
 					boardWaveHighlight = new WaveHighlight(color, 0, whiteWaveQueue.zeroPosition.y);
 					add(boardWaveHighlight);
 					
-					buildButton = new Button(toggleBuildMode, null, 0, boardWhite.height - 105);
+					buildButton = new Button(toggleBuildMode, null, 10, boardWhite.height - 105);
 					buildButton.setSpritemap(Assets.GFX_BUTTON_BUILD, 40, 40);
 					buildButton._map.alpha = 0;
 					buildButton._map.x = -boardWhite.width;
 					add(buildButton);
 					
-					spellButton = new Button(toggleSpellMode, null, 0, boardWhite.height - 170);
+					spellButton = new Button(toggleSpellMode, null, 10, boardWhite.height - 180);
 					spellButton.setSpritemap(Assets.GFX_BUTTON_SPELL, 40, 40);
 					spellButton._map.alpha = 0;
 					spellButton._map.x = -boardWhite.width;
 					add(spellButton);
+					
+					spellButtonCost = new Text("50", 0, 0, { color: 0xFFFFFF, font: "Domo", size: "16", outlineColor: 0x000000, outlineStrength: 2 } );
+					spellButtonCost.color = 0x0000FF;
+					spellButtonCost.x = spellButton.x + spellButton.width / 2 - spellButtonCost.textWidth / 2 + 5;
+					spellButtonCost.y = spellButton.y + spellButton.height;
+					spellButtonCost.visible = false;
+					addGraphic(spellButtonCost);
+					
+					spellButtonToken = new Image(Assets.GFX_GEM);
+					spellButtonToken.x = spellButtonCost.x - spellButtonToken.width + 2;
+					spellButtonToken.y = spellButtonCost.y;
+					spellButtonToken.visible = false;
+					addGraphic(spellButtonToken);
 					
 					black1 = new Button(null, null, FP.screen.width - 42.5, FP.screen.height - 85);
 					black1.setSpritemap(Assets.GFX_UI_B1, 85, 32);
@@ -1179,6 +1206,10 @@ package schism.worlds
 				}
 			});
 			
+			connection.addMessageHandler(Messages.PLAYER_CHIBLAST_COST, function(m:Message, value:Number):void {
+				spellButtonCost.text = value.toString();
+			});
+			
 			connection.addMessageHandler(Messages.GAME_ACTIVATE, activateGame);
 			connection.addMessageHandler(Messages.GAME_ALL_CREEPS_PATH, updatePaths);
 			connection.addMessageHandler(Messages.GAME_CREEP_PATH, updateSinglePath);
@@ -1525,6 +1556,9 @@ package schism.worlds
 			whiteManaUI.visible = true;
 			blackHealthUI.visible = true;
 			blackManaUI.visible = true;
+			
+			spellButtonCost.visible = true;
+			spellButtonToken.visible = true;
 		}
 		
 		private function fadeOutText():void

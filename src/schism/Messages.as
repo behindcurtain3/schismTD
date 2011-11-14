@@ -11,6 +11,7 @@ package schism
 		public static const PLAYER_LEFT:String = "pl";
 		public static const PLAYER_MANA:String = "pm";
         public static const PLAYER_LIFE:String = "pli";
+		public static const PLAYER_CHIBLAST_COST:String = "pcc";
 		
 		// match
 		public static const MATCH_ID:String = "mi";

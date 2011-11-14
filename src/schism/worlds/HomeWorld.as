@@ -33,7 +33,7 @@ package schism.worlds
 		{
 			super(c);
 			
-			addGraphic(new Image(Assets.GFX_TITLE), 99, FP.screen.width / 2 - 275, 50);
+			addGraphic(new Image(Assets.GFX_TITLE), 99, FP.screen.width / 2 - 190, 50);
 			
 			var width:int = 250;
 			var uiX:int = FP.screen.width / 2 - width / 2;

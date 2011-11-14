@@ -631,6 +631,11 @@ package schism.worlds
 					buildMenu = new BuildMenu(color);
 					add(buildMenu);
 					
+					boardWhite = new Image(Assets.GFX_OTHER_WHITE);
+					boardWhite.alpha = 0;
+					boardWhite.x = -boardWhite.width;
+					addGraphic(boardWhite, 6);
+					
 					boardWaveHighlight = new WaveHighlight(color, FP.screen.width, blackWaveQueue.zeroPosition.y);
 					add(boardWaveHighlight);
 					
@@ -693,6 +698,11 @@ package schism.worlds
 					
 					buildMenu = new BuildMenu(color);
 					add(buildMenu);
+					
+					boardBlack = new Image(Assets.GFX_OTHER_BLACK);
+					boardBlack.alpha = 0;
+					boardBlack.x = boardBlack.width;
+					addGraphic(boardBlack, 6, FP.screen.width - boardBlack.width, FP.screen.height - boardBlack.height);
 					
 					boardWaveHighlight = new WaveHighlight(color, 0, whiteWaveQueue.zeroPosition.y);
 					add(boardWaveHighlight);

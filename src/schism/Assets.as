@@ -25,6 +25,8 @@ package schism
 		[Embed(source = '../../assets/board/Board-front.png')] public static const GFX_BOARD_OVERLAY:Class;
 		[Embed(source = '../../assets/board/Player HUDS/playerwindow-white.png')] public static const GFX_BOARD_WHITE:Class;
 		[Embed(source = '../../assets/board/Player HUDS/playerwindow-black.png')] public static const GFX_BOARD_BLACK:Class;
+		[Embed(source = '../../assets/board/Player HUDS/otherwindow-black.png')] public static const GFX_OTHER_BLACK:Class;
+		[Embed(source = '../../assets/board/Player HUDS/otherwindow-white.png')] public static const GFX_OTHER_WHITE:Class;
 		[Embed(source = '../../assets/board/Player HUDS/wavehighlight-black.png')] public static const GFX_WAVE_BLACK:Class;
 		[Embed(source = '../../assets/board/Player HUDS/wavehighlight-white.png')] public static const GFX_WAVE_WHITE:Class;
 		[Embed(source = '../../assets/towers/chigem.png')] public static const GFX_GEM:Class;
@@ -40,6 +42,8 @@ package schism
 		[Embed(source = '../../assets/board/Player HUDS/white-3.png')] public static const GFX_UI_W3:Class;
 		[Embed(source = '../../assets/board/incoming.png')] public static const GFX_INCOMING:Class;
 		[Embed(source = '../../assets/board/build-menu-bg.png')] public static const GFX_BUILD_MENU:Class;
+		[Embed(source = '../../assets/board/SplashScreen.png')] public static const GFX_SPLASH:Class;
+		[Embed(source = '../../assets/board/Results.png')] public static const GFX_RESULTS:Class;
 		
 		//Icons
 		[Embed(source = '../../assets/board/creep icons/miniarmor.png')] public static const GFX_ICONS_ARMOR:Class;

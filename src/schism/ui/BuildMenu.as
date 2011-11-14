@@ -365,6 +365,12 @@ package schism.ui
 			return (Input.mouseX >= this.x + left && Input.mouseX <= this.x + right && Input.mouseY >= this.y + top && Input.mouseY <= this.y + bottom);
 		}
 		
+		public function setRange(r:Number):void
+		{
+			rangeGfx.scaleX = (r * 2) / rangeGfx.width;
+			rangeGfx.scaleY = (r * 2) / rangeGfx.height;
+		}
+		
 	}
 
 }

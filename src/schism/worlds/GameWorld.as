@@ -1177,6 +1177,11 @@ package schism.worlds
 				if (cell != null)
 				{
 					cell.towerRange = m.getNumber(1);
+					
+					if (buildMenu.index == cell.getIndex())
+					{
+						buildMenu.setRange(m.getNumber(1));
+					}
 				}
 			});
 			

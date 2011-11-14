@@ -33,9 +33,8 @@ package schism.creeps
 						
 			updateAngle();
 			
-			deathSounds.push(new Sfx(Assets.SFX_CREEP_DEATH_LARGE1));
-			deathSounds.push(new Sfx(Assets.SFX_CREEP_DEATH_LARGE2));
-			deathSounds.push(new Sfx(Assets.SFX_CREEP_DEATH_LARGE3));
+			deathSounds.push(new Sfx(Assets.SFX_DEATH_ARMOR1));
+			deathSounds.push(new Sfx(Assets.SFX_DEATH_ARMOR2));
 		}
 				
 	}

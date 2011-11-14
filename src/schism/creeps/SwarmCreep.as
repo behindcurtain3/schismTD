@@ -34,11 +34,11 @@ package schism.creeps
 			
 			updateAngle();
 			
-			deathSounds.push(new Sfx(Assets.SFX_CREEP_DEATH_SMALL1));
-			deathSounds.push(new Sfx(Assets.SFX_CREEP_DEATH_SMALL3));
-			deathSounds.push(new Sfx(Assets.SFX_CREEP_DEATH_SMALL4));
-			deathSounds.push(new Sfx(Assets.SFX_CREEP_DEATH_SMALL6));
-			deathSounds.push(new Sfx(Assets.SFX_CREEP_DEATH_SMALL7));
+			deathSounds.push(new Sfx(Assets.SFX_DEATH_SWARM1));
+			deathSounds.push(new Sfx(Assets.SFX_DEATH_SWARM2));
+			deathSounds.push(new Sfx(Assets.SFX_DEATH_SWARM3));
+			deathSounds.push(new Sfx(Assets.SFX_DEATH_SWARM4));
+			deathSounds.push(new Sfx(Assets.SFX_DEATH_SWARM5));
 			
 			if (Count % 3 == 1)
 			{

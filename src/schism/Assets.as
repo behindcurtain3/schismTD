@@ -105,8 +105,9 @@ package schism
 		[Embed(source = '../../assets/sfx/GameStartHighlightSound.mp3')] public static const SFX_START_HIGHLIGHT:Class;
 		[Embed(source = '../../assets/sfx/PlayerHurt.mp3')] public static const SFX_PLAYER_HURT:Class;
 		[Embed(source = '../../assets/sfx/PopupSound.mp3')] public static const SFX_POPUP:Class;
-		[Embed(source = '../../assets/sfx/chiblast.mp3')] public static const SFX_CHIBLAST:Class;
+		[Embed(source = '../../assets/sfx/chiblast2.mp3')] public static const SFX_CHIBLAST:Class;
 		[Embed(source = '../../assets/sfx/StartButton.mp3')] public static const SFX_BUTTON_START:Class;
+		/*
 		[Embed(source = '../../assets/sfx/LargeCreep1Death.mp3')] public static const SFX_CREEP_DEATH_LARGE1:Class;
 		[Embed(source = '../../assets/sfx/LargeCreep2Death.mp3')] public static const SFX_CREEP_DEATH_LARGE2:Class;
 		[Embed(source = '../../assets/sfx/LargeCreep3Death.mp3')] public static const SFX_CREEP_DEATH_LARGE3:Class;
@@ -120,7 +121,27 @@ package schism
 		[Embed(source = '../../assets/sfx/SmallCreep3Death.mp3')] public static const SFX_CREEP_DEATH_SMALL4:Class;
 		[Embed(source = '../../assets/sfx/SmallCreep4Death.mp3')] public static const SFX_CREEP_DEATH_SMALL6:Class;
 		[Embed(source = '../../assets/sfx/SmallCreep5Death.mp3')] public static const SFX_CREEP_DEATH_SMALL7:Class;
+		*/
+		[Embed(source = '../../assets/sfx/Swarm_Death1.mp3')] public static const SFX_DEATH_SWARM1:Class;
+		[Embed(source = '../../assets/sfx/Swarm_Death2.mp3')] public static const SFX_DEATH_SWARM2:Class;
+		[Embed(source = '../../assets/sfx/Swarm_Death3.mp3')] public static const SFX_DEATH_SWARM3:Class;
+		[Embed(source = '../../assets/sfx/Swarm_Death4.mp3')] public static const SFX_DEATH_SWARM4:Class;
+		[Embed(source = '../../assets/sfx/Swarm_Death5.mp3')] public static const SFX_DEATH_SWARM5:Class;
 		
+		[Embed(source = '../../assets/sfx/Armored_Death1.mp3')] public static const SFX_DEATH_ARMOR1:Class;
+		[Embed(source = '../../assets/sfx/Armored_Death2.mp3')] public static const SFX_DEATH_ARMOR2:Class;
+		
+		[Embed(source = '../../assets/sfx/Magic_Speed_Death1.mp3')] public static const SFX_DEATH_MAGICSPEED1:Class;
+		[Embed(source = '../../assets/sfx/Magic_Speed_Death2.mp3')] public static const SFX_DEATH_MAGICSPEED2:Class;
+		[Embed(source = '../../assets/sfx/Magic_Speed_Death3.mp3')] public static const SFX_DEATH_MAGICSPEED3:Class;
+		[Embed(source = '../../assets/sfx/Magic_Speed_Death4.mp3')] public static const SFX_DEATH_MAGICSPEED4:Class;
+		[Embed(source = '../../assets/sfx/Magic_Speed_Death5.mp3')] public static const SFX_DEATH_MAGICSPEED5:Class;
+		
+		[Embed(source = '../../assets/sfx/Regen_Chigen_Death1.mp3')] public static const SFX_DEATH_REGENCHIGEN1:Class;
+		[Embed(source = '../../assets/sfx/Regen_Chigen_Death2.mp3')] public static const SFX_DEATH_REGENCHIGEN2:Class;
+		[Embed(source = '../../assets/sfx/Regen_Chigen_Death3.mp3')] public static const SFX_DEATH_REGENCHIGEN3:Class;
+		[Embed(source = '../../assets/sfx/Regen_Chigen_Death4.mp3')] public static const SFX_DEATH_REGENCHIGEN4:Class;
+		[Embed(source = '../../assets/sfx/Regen_Chigen_Death5.mp3')] public static const SFX_DEATH_REGENCHIGEN5:Class;
 		
 		// Misc
 		[Embed(source = '../../assets/Board/glow.png')] public static const GFX_GLOW:Class;

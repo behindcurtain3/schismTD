@@ -32,11 +32,11 @@ package schism.creeps
 			
 			updateAngle();
 
-			deathSounds.push(new Sfx(Assets.SFX_CREEP_DEATH_SMALL1));
-			deathSounds.push(new Sfx(Assets.SFX_CREEP_DEATH_SMALL3));
-			deathSounds.push(new Sfx(Assets.SFX_CREEP_DEATH_SMALL4));
-			deathSounds.push(new Sfx(Assets.SFX_CREEP_DEATH_SMALL6));
-			deathSounds.push(new Sfx(Assets.SFX_CREEP_DEATH_SMALL7));
+			deathSounds.push(new Sfx(Assets.SFX_DEATH_MAGICSPEED1));
+			deathSounds.push(new Sfx(Assets.SFX_DEATH_MAGICSPEED2));
+			deathSounds.push(new Sfx(Assets.SFX_DEATH_MAGICSPEED3));
+			deathSounds.push(new Sfx(Assets.SFX_DEATH_MAGICSPEED4));
+			deathSounds.push(new Sfx(Assets.SFX_DEATH_MAGICSPEED5));
 		}
 		
 	}

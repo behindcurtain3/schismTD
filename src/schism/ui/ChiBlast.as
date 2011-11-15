@@ -27,17 +27,20 @@ package schism.ui
 			
 			if (color == "white")
 			{
-				_map = new Spritemap(Assets.GFX_SPELL_WHITE, 90, 200, destroy);
+				_map = new Spritemap(Assets.GFX_SPELL_WHITE, 220, 420, destroy);
 				
 			}
 			else
 			{
-				_map = new Spritemap(Assets.GFX_SPELL_BLACK, 90, 200, destroy);
+				_map = new Spritemap(Assets.GFX_SPELL_BLACK, 220, 420, destroy);
 			}
 			
 			_map.centerOrigin();
-			_map.y = -_map.height / 2 + 35;
-			_map.add("shoot", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], 20, false);
+			
+			// We need to adjust the y-axis off center
+			_map.y = -_map.height / 2 + 103;
+			
+			_map.add("shoot", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], 20, false);
 			_map.play("shoot");
 			centerOrigin();
 			

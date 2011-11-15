@@ -1,5 +1,6 @@
 package schism.worlds
 {
+	import flash.net.SharedObject;
 	import flash.ui.Mouse;
 	import net.flashpunk.graphics.Spritemap;
 	import schism.Assets;
@@ -109,6 +110,8 @@ package schism.worlds
 		protected var boardWaveHighlight:WaveHighlight;
 		protected var newBg:Image;
 		
+		protected var mute:Spritemap;
+		
 		// Sfx
 		protected var sfx_invalid:Sfx = new Sfx(Assets.SFX_INVALID);
 		protected var sfx_tower_build:Sfx = new Sfx(Assets.SFX_BUILD_TOWER);
@@ -143,6 +146,8 @@ package schism.worlds
 		private var whitePath:Array;
 		
 		private var connectionStatusDisplay:MessageDisplay;
+		
+		private var sharedObject:SharedObject;
 	 
 		public function GameWorld (c:Client, guest:Boolean, gameId:String, createServer:Boolean = false, rate:Boolean = true)
 		{
@@ -216,6 +221,28 @@ package schism.worlds
 			blackChi.alpha = 0;
 			blackChi.x = boardBlack.width;
 			addGraphic(blackChi, 2,  FP.screen.width - 106, FP.screen.height - 22);
+			
+			// Add mute button
+			mute = new Spritemap(Assets.GFX_MUTE, 22, 23);
+			mute.x = 0;
+			mute.y = FP.screen.height - mute.height;
+			mute.add("on", [0]);
+			mute.add("off", [1]);
+			addGraphic(mute, 1);
+			
+			sharedObject = SharedObject.getLocal("schismTDdata");
+			if (sharedObject.data.sound != null)
+			{
+				if (sharedObject.data.sound == "on")
+					mute.play("on");
+				else
+					mute.play("off");					
+			}
+			else
+			{
+				mute.play("on");
+			}
+			mute.alpha = 0;
 						
 			// Connect to game
 			connectionStatusDisplay = new MessageDisplay("Connecting to game...", 0, 24);
@@ -301,13 +328,18 @@ package schism.worlds
 			}
 				
 			if (gameActive)
-			{
+			{	
 				// Default is not visible
 				fauxTower.visible = false;
 				
 				if (Input.mousePressed)
 				{
 					dragStart = new Point(Input.mouseX, Input.mouseY);
+					
+					if (Input.mouseX > mute.x && Input.mouseX < mute.x + mute.width && Input.mouseY > mute.y && Input.mouseY < mute.y + mute.height)
+					{
+						toggleMute();
+					}
 				}
 				
 				if (Input.mouseReleased)
@@ -1495,6 +1527,10 @@ package schism.worlds
 			vt = new VarTween();
 			vt.tween(white3._map, "x", 0, 2.5, Ease.expoOut);
 			addTween(vt, true);
+			
+			vt = new VarTween();
+			vt.tween(mute, "alpha", 1, 2.5, Ease.expoOut);
+			addTween(vt, true);
 		};
 		
 		private function spellCreep(m:Message):void
@@ -1754,6 +1790,24 @@ package schism.worlds
 				t.tween(incomingArrow, "alpha", 1, 0.5);
 			}
 			addTween(t);
+		}
+	
+		public function toggleMute():void
+		{
+			if (muted)
+			{
+				mute.play("on");
+				muted = false;
+				FP.volume = 1;
+				sharedObject.data.sound = "on";
+			}
+			else
+			{
+				mute.play("off");
+				muted = true;
+				FP.volume = 0;
+				sharedObject.data.sound = "off";
+			}
 		}
 	}
 }

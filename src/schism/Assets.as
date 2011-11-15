@@ -6,7 +6,7 @@ package schism
 	 */
 	public class Assets 
 	{		
-		public static const VERSION:String = "v0.5.1";
+		public static const VERSION:String = "v0.5.2";
 		public static const GAME_ID:String = "schismtd-3r3otmhvkki9ixublwca";
 		public static const FB_APPID:String = "256712624370689";
 		
@@ -145,6 +145,7 @@ package schism
 		
 		// Misc
 		[Embed(source = '../../assets/Board/glow.png')] public static const GFX_GLOW:Class;
+		[Embed(source = '../../assets/Board/mute.png')] public static const GFX_MUTE:Class;
 		[Embed(source = '../../assets/misc/facebook32px.png')] public static const GFX_MISC_FB:Class;
 		
 		// Fonts

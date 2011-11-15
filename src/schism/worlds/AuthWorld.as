@@ -1,5 +1,6 @@
 package schism.worlds 
 {
+	import flash.net.SharedObject;
 	import net.flashpunk.FP;
 	import net.flashpunk.graphics.Image;
 	import net.flashpunk.World;
@@ -26,6 +27,7 @@ package schism.worlds
 		protected var _isGuest:Boolean;
 		
 		protected var bg:Image;
+		protected var muted:Boolean = false;
 		
 		public function AuthWorld(c:Client, isGuest:Boolean = false) 
 		{
@@ -37,6 +39,25 @@ package schism.worlds
 				
 			bg = new Image(Assets.GFX_MENUBG);
 			addGraphic(bg, 100);
+			
+			// Load sound settings
+			var sharedObject:SharedObject = SharedObject.getLocal("schismTDdata");
+			if (sharedObject.data.sound != null)
+			{
+				if (sharedObject.data.sound == "on")
+					muted = false;
+				else
+					muted = true;
+			}
+			else
+			{
+				muted = false;
+			}
+			
+			if (muted)
+				FP.volume = 0;
+			else
+				FP.volume = 1;
 		}
 		
 		override public function update():void 

@@ -9,6 +9,7 @@ package schism.worlds
 	import net.flashpunk.Entity;
 	import net.flashpunk.FP;
 	import net.flashpunk.graphics.Image;
+	import net.flashpunk.graphics.Spritemap;
 	import net.flashpunk.graphics.Text;
 	import net.flashpunk.Sfx;
 	import net.flashpunk.utils.Input;
@@ -28,6 +29,8 @@ package schism.worlds
 		private var startSfx:Sfx;
 		private var ratingDisplay:Text;
 		private var facebook:Image;
+		private var mute:Spritemap;
+		private var sharedObject:SharedObject;
 		
 		public function HomeWorld(c:Client, error:String = "") 
 		{
@@ -109,12 +112,33 @@ package schism.worlds
 				loadPlayerObject();
 			
 			facebook = new Image(Assets.GFX_MISC_FB);
-			facebook.x = 0;
+			facebook.x = FP.screen.width - facebook.width;
 			facebook.y = FP.screen.height - facebook.height;
 			addGraphic(facebook);
 				
 			var tmp:Text = new Text(Assets.VERSION);
-			addGraphic(new Text(Assets.VERSION, FP.screen.width - tmp.textWidth, FP.screen.height - 15, { outlineColor: 0x000000, outlineStrength: 2, font: "Domo" } ));
+			addGraphic(new Text(Assets.VERSION, FP.screen.width - tmp.textWidth - facebook.width - 3, FP.screen.height - 15, { outlineColor: 0x000000, outlineStrength: 2, font: "Domo" } ));
+			
+			// Add mute button
+			mute = new Spritemap(Assets.GFX_MUTE, 22, 23);
+			mute.x = 0;
+			mute.y = FP.screen.height - mute.height;
+			mute.add("on", [0]);
+			mute.add("off", [1]);
+			addGraphic(mute, 1);
+			
+			sharedObject = SharedObject.getLocal("schismTDdata");
+			if (sharedObject.data.sound != null)
+			{
+				if (sharedObject.data.sound == "on")
+					mute.play("on");
+				else
+					mute.play("off");					
+			}
+			else
+			{
+				mute.play("on");
+			}
 		}
 			
 		override public function end():void
@@ -153,6 +177,14 @@ package schism.worlds
 				(FP.stage.getChildByName("CustomMouse") as CustomMouse).visible = true;
 			}
 			
+			if (Input.mouseX > mute.x && Input.mouseX < mute.x + mute.width && Input.mouseY > mute.y && Input.mouseY < mute.y + mute.height)
+			{
+				if (Input.mousePressed)
+				{
+					toggleMute();
+				}
+			}
+			
 			super.update();
 		}
 		
@@ -170,6 +202,24 @@ package schism.worlds
 		public function onWaveBuilderClick():void
 		{
 			FP.world = new WaveBuilder(client);
+		}
+		
+		public function toggleMute():void
+		{
+			if (muted)
+			{
+				mute.play("on");
+				muted = false;
+				FP.volume = 1;
+				sharedObject.data.sound = "on";
+			}
+			else
+			{
+				mute.play("off");
+				muted = true;
+				FP.volume = 0;
+				sharedObject.data.sound = "off";
+			}
 		}
 		
 	}

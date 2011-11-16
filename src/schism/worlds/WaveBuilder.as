@@ -93,7 +93,7 @@ package schism.worlds
 			var b:PunkButton = new PunkButton(45, FP.screen.height - 68, 150, 50, "Save", onSave)
 			add(b);
 			
-			b = new PunkButton(FP.screen.width - 150 - 45, FP.screen.height - 68, 150, 50, "Return to Home", onExit)
+			b = new PunkButton(FP.screen.width - 150 - 45, FP.screen.height - 68, 150, 50, "Exit", onExit)
 			add(b);
 		}
 		

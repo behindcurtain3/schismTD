@@ -43,17 +43,19 @@ package schism.worlds
 			var uiY:int = FP.screen.height / 2 - 50;
 			var spacer:int = 25;
 			
-			var b:PunkButton = new PunkButton(uiX, uiY, width, 50, "Play Ranked Match", onPlay)
+			var b:PunkButton = new PunkButton(uiX, uiY - 60, width, 50, "Play", onPlay)
 			add(b);
 			
-			var b:PunkButton = new PunkButton(uiX, uiY + 60, width, 50, "Challenge a Friend", onChallenge)
+			var b:PunkButton = new PunkButton(uiX, uiY, width, 50, "Challenge a Friend", onChallenge)
 			add(b);
 			
-			b = new PunkButton(uiX, uiY + 120, width, 50, "Wave Builder", onWaveBuilderClick)
+			b = new PunkButton(uiX, uiY + 60, width, 50, "Wave Builder", onWaveBuilderClick)
 			add(b);
-			//add(new Tooltip("Build your own custom waves!", b.x + b.width + 5, b.y));
+
+			b = new PunkButton(uiX, uiY + 120, width, 50, "How to Play", onTutorial)
+			add(b);
 			
-			add(new MessageDisplay("", 0, 36, FP.screen.width / 2, uiY + 105, width + 35, 255));
+			add(new MessageDisplay("", 0, 36, FP.screen.width / 2, uiY + 80, width + 35, 305));
 			
 			if (error != "")
 			{
@@ -202,6 +204,11 @@ package schism.worlds
 		public function onWaveBuilderClick():void
 		{
 			FP.world = new WaveBuilder(client);
+		}
+		
+		public function onTutorial():void
+		{
+			FP.world = new HowToPlayWorld(client);
 		}
 		
 		public function toggleMute():void

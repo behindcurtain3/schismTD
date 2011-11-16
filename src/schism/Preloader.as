@@ -22,9 +22,7 @@ package schism
 	 * @author Noel Berry
 	 */
 	public class Preloader extends MovieClip 
-	{
-		[Embed(source = '../../assets/board/SplashScreen.png')] public static const SPLASH:Class;
-		
+	{		
 		// Change these values
 		private static const mustClick: Boolean = false;
 		private static const mainClassName: String = "schism.Main";
@@ -32,13 +30,12 @@ package schism
 		private static const BG_COLOR:uint = 0x000000;
 		private static const FG_COLOR:uint = 0xFFFFFF;
 
-		//[Embed(source = '../../assets/DOMOAN__.ttf', embedAsCFF="false", fontFamily = 'Domo')]
-		//private static const FONT:Class;
+		[Embed(source = '../../assets/DOMOAN__.ttf', embedAsCFF="false", fontFamily = 'Domo')]
+		private static const FONT:Class;
 
 		// Ignore everything else
 		private var progressBar: Shape;
 		private var text: TextField;
-		private var sprite:Sprite
 		
 		private var px:int;
 		private var py:int;
@@ -56,12 +53,7 @@ package schism
 			h = 20;
 
 			px = (sw - w) * 0.5;
-			py = (sh - h) * 0.75;
-
-			sprite = new Sprite();
-			sprite.addChild(new SPLASH());
-			addChild(sprite);
-
+			py = (sh - h) * 0.5;
 			
 			graphics.beginFill(BG_COLOR);
 			graphics.drawRect(0, 0, sw, sh);
@@ -100,10 +92,10 @@ package schism
 		{
 			if (hasLoaded())
 			{
-				//graphics.clear();
-				//graphics.beginFill(BG_COLOR);
-				//graphics.drawRect(0, 0, sw, sh);
-				//graphics.endFill();
+				graphics.clear();
+				graphics.beginFill(BG_COLOR);
+				graphics.drawRect(0, 0, sw, sh);
+				graphics.endFill();
 
 				if (! mustClick) {
 					startup();

@@ -266,6 +266,15 @@ package schism.worlds
 		
 		public function connect():void
 		{
+			var userid:String = QuickKong.userId == "" ? "" : QuickKong.userId;
+
+			client.multiplayer.createJoinRoom(
+				gameId, "schismTD", false, {rated: rated }, 								//Room id. If set to null a random roomid is used
+				{guest:_isGuest, name: AuthWorld.playerName, id: userid, auth_token: AuthWorld.accessToken },	//User join data
+				handleNewGame,						//Function executed on successful joining of the room
+				handleError							//Function executed if we got a join error
+			);
+			/*
 			if (createServerRoom)
 			{
 				client.multiplayer.createRoom(
@@ -282,6 +291,7 @@ package schism.worlds
 				joinRoom(gameId);
 			}
 			connectionAttempts++;
+			*/
 		}
 		
 		public function joinRoom(roomId:String):void
@@ -1628,7 +1638,7 @@ package schism.worlds
 		private function handleError(error:PlayerIOError):void
 		{
 			if (connectionAttempts < 3)
-				joinRoom(gameId);
+				connect();
 			else
 			{		
 				disconnect(error.errorID + ": " + error.message);

@@ -28,7 +28,7 @@ package schism.worlds
 			str += "	S:			Sell selected tower\n";
 			str += "	D:			Upgrade 2 on selected tower\n\n";
 			str += "	Space:		Toggle Chi Blast mode\n\n";
-			str += "	1-3:			Select the next wave of creeps\n\n";
+			str += "	1-3:			Select your next wave of creeps\n\n";
 			
 			txt = new MessageDisplay(str, 0, 18, 0, FP.screen.height / 2);
 			txt.message.align = "left";
@@ -36,11 +36,16 @@ package schism.worlds
 			
 			var b:PunkButton = new PunkButton(FP.screen.width / 2 - 100, FP.screen.height / 2 + 150 , 200, 50, "Back", onBack, Key.ESCAPE);
 			add(b);
+			
+			checkClient = false;
 		}
 		
 		public function onBack():void
 		{
-			FP.world = new HomeWorld(client);
+			if (client == null)
+				FP.world = new TitleWorld();
+			else
+				FP.world = new HomeWorld(client);
 		}
 		
 	}

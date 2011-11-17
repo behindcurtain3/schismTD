@@ -19,12 +19,13 @@ package schism.worlds
 		// Static vars useable across worlds
 		protected static var playerObject:DatabaseObject;
 		public static var playerName:String = "Guest";
-		public static var accessToken:String;
+		public static var accessToken:String = "";
 		public static var isKongUser:Boolean = false;
 		
 		protected var client:Client;
 		protected var connection:Connection;
 		protected var _isGuest:Boolean;
+		protected var checkClient:Boolean = true;
 		
 		protected var bg:Image;
 		protected var muted:Boolean = false;
@@ -62,7 +63,7 @@ package schism.worlds
 		
 		override public function update():void 
 		{
-			if (client == null)
+			if (client == null && checkClient)
 				FP.world = new TitleWorld("Invalid authentication.");
 			super.update();
 		}

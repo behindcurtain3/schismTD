@@ -13,6 +13,7 @@ package schism.worlds
 	import net.flashpunk.graphics.Text;
 	import net.flashpunk.Sfx;
 	import net.flashpunk.utils.Input;
+	import net.flashpunk.utils.Key;
 	import playerio.Client;
 	import punk.ui.PunkButton;
 	import schism.Assets;
@@ -151,6 +152,12 @@ package schism.worlds
 		
 		override public function update():void 
 		{
+			if (Input.pressed(Key.ESCAPE))
+			{
+				sharedObject.data.fbtoken = null;
+				FP.world = new TitleWorld("Logged out");
+			}
+			
 			if (playerObject != null && ratingDisplay == null)
 			{
 				var rating:String = playerObject["rating"] == undefined ? "1500" : playerObject["rating"];

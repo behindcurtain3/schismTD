@@ -1,8 +1,13 @@
 package schism.worlds 
 {
 	import flash.net.SharedObject;
+	import flash.net.navigateToURL;
+	import flash.net.URLRequest;
+	import flash.ui.Mouse;
+	import flash.ui.MouseCursor;
 	import net.flashpunk.graphics.Image;
 	import net.flashpunk.graphics.Text;
+	import net.flashpunk.utils.Input;
 	import net.flashpunk.World;
 	import playerio.Client;
 	import playerio.Connection;
@@ -10,6 +15,7 @@ package schism.worlds
 	import playerio.PlayerIOError;
 	import playerio.PlayerIORegistrationError;
 	import schism.Assets;
+	import schism.ui.CustomMouse;
 	import schism.ui.MessageDisplay;
 	import net.flashpunk.FP;
 	import punk.ui.PunkButton;
@@ -27,6 +33,8 @@ package schism.worlds
 		
 		// Client
 		protected var _client:Client;
+		
+		private var facebook:Image;
 		
 		public function FacebookTitleWorld (error:String = "")
 		{
@@ -56,10 +64,10 @@ package schism.worlds
 				b = new PunkButton(uiX, FP.screen.height / 2 - 25, width, 50, "Login/Register", onLoginClick)
 				add(b);
 				
-				//b = new PunkButton(uiX, FP.screen.height / 2 - 25 + 120, width, 50, "Register", onRegister)
-				//add(b);
+				b = new PunkButton(uiX, FP.screen.height / 2 - 25 + 120, width, 50, "How to Play", onHowToPlay)
+				add(b);
 				
-				add(new MessageDisplay("", 0, 36, FP.screen.width / 2, FP.screen.height / 2 + 30, width + 35, 155));
+				add(new MessageDisplay("", 0, 36, FP.screen.width / 2, FP.screen.height / 2 + 60, width + 35, 205));
 				//addGraphic(new Text(Assets.VERSION, 0, FP.screen.height - 15, 50, 15));
 				
 			}
@@ -81,13 +89,43 @@ package schism.worlds
 					});
 			}
 			
-			addGraphic(new Text(Assets.VERSION, 0, FP.screen.height - 15, { outlineColor: 0x000000, outlineStrength: 2, font: "Domo" } ));
+			facebook = new Image(Assets.GFX_MISC_FB);
+			facebook.x = FP.screen.width - facebook.width;
+			facebook.y = FP.screen.height - facebook.height;
+			addGraphic(facebook);
+			
+			var tmp:Text = new Text(Assets.VERSION);
+			addGraphic(new Text(Assets.VERSION, FP.screen.width - tmp.textWidth - facebook.width - 3, FP.screen.height - 15, { outlineColor: 0x000000, outlineStrength: 2, font: "Domo" } ));
 		}
 		
 		override public function end():void
 		{
 			removeAll();
 			super.end();
+		}
+		
+		override public function update():void 
+		{
+			if (Input.mouseX > facebook.x && Input.mouseX < facebook.x + facebook.width && Input.mouseY > facebook.y && Input.mouseY < facebook.y + facebook.height)
+			{
+				Mouse.show();
+				Mouse.cursor = MouseCursor.BUTTON;
+				(FP.stage.getChildByName("CustomMouse") as CustomMouse).visible = false;
+
+				if (Input.mousePressed)
+				{
+					var goto:URLRequest = new URLRequest("https://www.facebook.com/pages/SchismTD/231809410207524");
+					navigateToURL(goto, "_blank");
+				}
+			}
+			else
+			{
+				Mouse.hide();
+				Mouse.cursor = MouseCursor.ARROW;
+				(FP.stage.getChildByName("CustomMouse") as CustomMouse).visible = true;
+			}
+			
+			super.update();
 		}
 		
 		public function onLoginClick():void
@@ -139,9 +177,9 @@ package schism.worlds
 			messageDisplay.sound();
 		}
 		
-		public function onRegister():void
+		public function onHowToPlay():void
 		{			
-			FP.world = new RegisterWorld();
+			FP.world = new HowToPlayWorld(null);
 		}
 		
 	}

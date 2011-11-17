@@ -21,6 +21,9 @@ package schism.worlds
 	{		
 		private var previousDidYouKnow:int = -1;
 		private var connStatus:MessageDisplay;
+		private var totalTimeWaiting:Number = 0;
+		private var waitHelper:Boolean = false;
+		private var fanpageLink:Boolean = false;
 		
 		public function MatchFinderWorld(c:Client, guest:Boolean = false) 
 		{
@@ -33,7 +36,7 @@ package schism.worlds
 			connStatus = new MessageDisplay("Connecting to lobby...", 0, 36, 0, FP.screen.height / 2);
 			add(connStatus);
 			
-			//Create pr join the room test
+			//Create or join the room test
 			client.multiplayer.createJoinRoom(
 				"match-maker",						//Room id. If set to null a random roomid is used
 				"$service-room$",					//The game type started on the server
@@ -58,6 +61,28 @@ package schism.worlds
 					FP.world = new TitleWorld();
 				else
 					FP.world = new HomeWorld(client);
+			}
+			
+			if (connection != null)
+				totalTimeWaiting += FP.elapsed;
+				
+			if (totalTimeWaiting > 10 && !waitHelper)
+			{
+				if (connStatus != null)
+					remove(connStatus);
+					
+				connStatus = new MessageDisplay("Waiting for a challenger...\n\nIt looks you've been waiting a little bit.\nInvite a friend to join you to play!", 0, 24, 0, FP.screen.height / 2);
+				add(connStatus);
+				waitHelper = true;
+			}
+			if (totalTimeWaiting > 25 && !fanpageLink)
+			{
+				if (connStatus != null)
+					remove(connStatus);
+					
+				connStatus = new MessageDisplay("Waiting for a challenger...\n\nYou can also check out our website\nschismtd.com\n\nIt contains a strategy guide and forums\n", 0, 24, 0, FP.screen.height / 2);
+				add(connStatus);
+				fanpageLink = true;
 			}
 			
 			super.update();

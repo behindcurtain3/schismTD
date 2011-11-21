@@ -14,15 +14,22 @@ package schism.worlds
 	 */
 	public class HowToPlayWorld extends AuthWorld 
 	{
-		var txt:MessageDisplay;
+		private var txt:MessageDisplay;
 		
 		public function HowToPlayWorld(c:Client) 
 		{
 			super(c);
-			addGraphic(new Image(Assets.GFX_TITLE), 99, FP.screen.width / 2 - 190, 50);
 
 			var str:String;
+			
 			str = "\n";
+			str += "Objective\n\n";
+			str += "Defend your side of the board by building towers to kill\nyour opponents creeps.\n";
+			str += "Kill your opponent by getting your creeps into their base!\n\n";
+			add(new MessageDisplay(str, 0, 18, 0, FP.screen.height / 2 - 75));
+			
+			str = "\n";
+			str += "				     Controls\n\n";
 			str += "	W:			Toggles build mode\n";
 			str += "	A:			Upgrade 1 on selected tower\n";
 			str += "	S:			Sell selected tower\n";
@@ -30,11 +37,11 @@ package schism.worlds
 			str += "	Space:		Toggle Chi Blast mode\n\n";
 			str += "	1-3:			Select your next wave of creeps\n\n";
 			
-			txt = new MessageDisplay(str, 0, 18, 0, FP.screen.height / 2);
+			txt = new MessageDisplay(str, 0, 18, 0, FP.screen.height / 2 + 125);
 			txt.message.align = "left";
 			add(txt);
 			
-			var b:PunkButton = new PunkButton(FP.screen.width / 2 - 100, FP.screen.height / 2 + 150 , 200, 50, "Back", onBack, Key.ESCAPE);
+			var b:PunkButton = new PunkButton(FP.screen.width / 2 - 100, FP.screen.height / 2 + 250, 180, 40, "Back", onBack, Key.ESCAPE);
 			add(b);
 			
 			checkClient = false;

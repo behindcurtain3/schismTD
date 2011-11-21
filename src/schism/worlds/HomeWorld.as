@@ -37,8 +37,6 @@ package schism.worlds
 		{
 			super(c);
 			
-			addGraphic(new Image(Assets.GFX_TITLE), 99, FP.screen.width / 2 - 190, 50);
-			
 			var width:int = 250;
 			var uiX:int = FP.screen.width / 2 - width / 2;
 			var uiY:int = FP.screen.height / 2 - 50;
@@ -120,7 +118,7 @@ package schism.worlds
 			addGraphic(facebook);
 				
 			var tmp:Text = new Text(Assets.VERSION);
-			addGraphic(new Text(Assets.VERSION, FP.screen.width - tmp.textWidth - facebook.width - 3, FP.screen.height - 15, { outlineColor: 0x000000, outlineStrength: 2, font: "Domo" } ));
+			addGraphic(new Text(Assets.VERSION, FP.screen.width - tmp.textWidth - facebook.width - 3, FP.screen.height - 15, { outlineColor: 0x000000, outlineStrength: 4, font: "Domo" } ));
 			
 			// Add mute button
 			mute = new Spritemap(Assets.GFX_MUTE, 22, 23);
@@ -155,6 +153,8 @@ package schism.worlds
 			if (Input.pressed(Key.ESCAPE))
 			{
 				sharedObject.data.fbtoken = null;
+				AuthWorld.playerName = "Guest";
+				AuthWorld.accessToken = "";
 				FP.world = new TitleWorld("Logged out");
 			}
 			

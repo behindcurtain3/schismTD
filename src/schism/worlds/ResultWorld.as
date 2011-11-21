@@ -21,7 +21,8 @@ package schism.worlds
 		
 		public function ResultWorld(c:Client, guest:Boolean, con:Connection, blackName:String, whiteName:String, resultStr:String, blackLifeNum:int, whiteLifeNum:int, blackDamageNum:uint, whiteDamageNum:uint, blackRating:Number, whiteRating:Number)
 		{
-			super(c, guest);
+			super(c, guest, false);
+			
 			connection = con;
 			addGraphic(new Image(Assets.GFX_MENUBG), 5);
 			
@@ -31,8 +32,15 @@ package schism.worlds
 			add(b);
 			
 			add(new MessageDisplay(resultStr, 0, 48, 0, 100, 600, 100));
-			add(new MessageDisplay("" + blackName + "\n\nLife: " + blackLifeNum + "\nDamage: " + blackDamageNum + "\nRating: " + blackRating, 0, 18, 550, 250, 225));
-			add(new MessageDisplay("" + whiteName + "\n\nLife: " + whiteLifeNum + "\nDamage: " + whiteDamageNum + "\nRating: " + whiteRating, 0, 18, 250, 250, 225));
+			if(blackName == "Guest")
+				add(new MessageDisplay("" + blackName + "\n\nLife: " + blackLifeNum + "\nDamage: " + blackDamageNum + "\n\n", 0, 18, 550, 250, 225));
+			else
+				add(new MessageDisplay("" + blackName + "\n\nLife: " + blackLifeNum + "\nDamage: " + blackDamageNum + "\nRating: " + blackRating, 0, 18, 550, 250, 225));
+				
+			if (whiteName == "Guest")
+				add(new MessageDisplay("" + whiteName + "\n\nLife: " + whiteLifeNum + "\nDamage: " + whiteDamageNum + "\n\n", 0, 18, 250, 250, 225));
+			else
+				add(new MessageDisplay("" + whiteName + "\n\nLife: " + whiteLifeNum + "\nDamage: " + whiteDamageNum + "\nRating: " + whiteRating, 0, 18, 250, 250, 225));
 		}
 		
 		override public function end():void 

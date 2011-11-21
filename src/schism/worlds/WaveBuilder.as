@@ -50,7 +50,7 @@ package schism.worlds
 		
 		public function WaveBuilder(c:Client) 
 		{
-			super(c);
+			super(c, false, false);
 
 			pointsRemainingMessage = new Text("Points Remaining: 24");
 			pointsRemainingMessage.size = 24;

@@ -19,6 +19,7 @@ package schism
 		[Embed(source = '../../assets/board/Title.png')] public static const GFX_TITLE:Class;
 		[Embed(source = '../../assets/board/background.png')] public static const GFX_BACKGROUND:Class;
 		[Embed(source = '../../assets/board/MenuBack.png')] public static const GFX_MENUBG:Class;
+		[Embed(source = '../../assets/board/MenuBottom.png')] public static const GFX_MENU_BOTTOM:Class;
 		
 		// Board
 		[Embed(source = '../../assets/board/Board-back.png')] public static const GFX_BOARD:Class;
@@ -42,7 +43,7 @@ package schism
 		[Embed(source = '../../assets/board/Player HUDS/white-3.png')] public static const GFX_UI_W3:Class;
 		[Embed(source = '../../assets/board/incoming.png')] public static const GFX_INCOMING:Class;
 		[Embed(source = '../../assets/board/build-menu-bg.png')] public static const GFX_BUILD_MENU:Class;
-		[Embed(source = '../../assets/board/Results.png')] public static const GFX_RESULTS:Class;
+		//[Embed(source = '../../assets/board/Results.png')] public static const GFX_RESULTS:Class;
 		
 		//Icons
 		[Embed(source = '../../assets/board/creep icons/miniarmor.png')] public static const GFX_ICONS_ARMOR:Class;
@@ -100,10 +101,10 @@ package schism
 		// Sounds
 		[Embed(source = '../../assets/sfx/Wave8Start.mp3')] public static const SFX_GAME_START:Class;
 		[Embed(source = '../../assets/sfx/musicdemo3.mp3')] public static const SFX_MUSIC1:Class;
-		[Embed(source = '../../assets/sfx/error.mp3')] public static const SFX_INVALID:Class;
+		[Embed(source = '../../assets/sfx/error2test.mp3')] public static const SFX_INVALID:Class;
 		[Embed(source = '../../assets/sfx/BuildTower.mp3')] public static const SFX_BUILD_TOWER:Class;
 		[Embed(source = '../../assets/sfx/GameStartHighlightSound.mp3')] public static const SFX_START_HIGHLIGHT:Class;
-		[Embed(source = '../../assets/sfx/PlayerHurt.mp3')] public static const SFX_PLAYER_HURT:Class;
+		[Embed(source = '../../assets/sfx/enemyhurttest.mp3')] public static const SFX_PLAYER_HURT:Class;
 		[Embed(source = '../../assets/sfx/PopupSound.mp3')] public static const SFX_POPUP:Class;
 		[Embed(source = '../../assets/sfx/chiblast2.mp3')] public static const SFX_CHIBLAST:Class;
 		[Embed(source = '../../assets/sfx/StartButton.mp3')] public static const SFX_BUTTON_START:Class;

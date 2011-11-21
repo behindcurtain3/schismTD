@@ -30,13 +30,15 @@ package schism.worlds
 		protected var bg:Image;
 		protected var muted:Boolean = false;
 		
-		public function AuthWorld(c:Client, isGuest:Boolean = false) 
+		public function AuthWorld(c:Client, isGuest:Boolean = false, addTitle:Boolean = true) 
 		{
+			super(addTitle);
+			
 			client = c;
 			_isGuest = isGuest;
 			
-			//if (client != null)
-			//	client.multiplayer.developmentServer = "72.220.227.32:8184";
+			if (client != null)
+				client.multiplayer.developmentServer = "72.220.227.32:8184";
 				
 			bg = new Image(Assets.GFX_MENUBG);
 			addGraphic(bg, 100);

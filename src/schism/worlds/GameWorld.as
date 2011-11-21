@@ -151,13 +151,11 @@ package schism.worlds
 	 
 		public function GameWorld (c:Client, guest:Boolean, gameId:String, createServer:Boolean = false, rate:Boolean = true)
 		{
-			super(c, guest);
+			super(c, guest, false);
 
 			this.gameId = gameId;
 			createServerRoom = createServer;
 			rated = rate;
-			
-			FP.volume = 0.1;
 			
 			// UI elements
 			add(fauxTower);
@@ -689,7 +687,7 @@ package schism.worlds
 					buildButton._map.x = boardBlack.width;
 					add(buildButton);
 					
-					spellButton = new Button(toggleSpellMode, null, FP.screen.width - 50, FP.screen.height - boardBlack.height + 115);
+					spellButton = new Button(toggleSpellMode, null, FP.screen.width - 50, FP.screen.height - boardBlack.height + 117);
 					spellButton.setSpritemap(Assets.GFX_BUTTON_SPELL, 40, 40);
 					spellButton._map.alpha = 0;
 					spellButton._map.x = boardBlack.width;
@@ -769,7 +767,7 @@ package schism.worlds
 					buildButton._map.x = -boardWhite.width;
 					add(buildButton);
 					
-					spellButton = new Button(toggleSpellMode, null, 10, boardWhite.height - 180);
+					spellButton = new Button(toggleSpellMode, null, 10, boardWhite.height - 178);
 					spellButton.setSpritemap(Assets.GFX_BUTTON_SPELL, 40, 40);
 					spellButton._map.alpha = 0;
 					spellButton._map.x = -boardWhite.width;

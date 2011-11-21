@@ -37,43 +37,42 @@ package schism.worlds
 		private var facebook:Image;
 		
 		public function FacebookTitleWorld (error:String = "")
-		{
-			addGraphic(new Image(Assets.GFX_MENUBG), 100);
-			addGraphic(new Image(Assets.GFX_TITLE), 99, FP.screen.width / 2 - 190, 50);
+		{	
+			sharedObject = SharedObject.getLocal("schismTDdata");
+			super(sharedObject.data.fbtoken == null);
 			
 			if (error != "")
 			{
 				showMessage(error);
 				messageDisplay.sound();
-			}
-			
-			sharedObject = SharedObject.getLocal("schismTDdata");
+			}		
 			
 			// If no fbtoken, login the user
 			if (sharedObject.data.fbtoken == null)
-			{		
+			{						
 				var width:int = 250;
 				var uiX:int = FP.screen.width / 2 - width / 2;
-				var uiY:int = 225;
 				var spacer:int = 25;
 				
 				// Background				
-				var b:PunkButton = new PunkButton(uiX, FP.screen.height / 2 - 25 + 60, width, 50, "Play as Guest", onPlayTest)
+				var b:PunkButton = new PunkButton(uiX, FP.screen.height / 2 - 25, width, 50, "Play as Guest", onPlayTest)
 				add(b);
 				
-				b = new PunkButton(uiX, FP.screen.height / 2 - 25, width, 50, "Login/Register", onLoginClick)
+				b = new PunkButton(uiX, FP.screen.height / 2 - 25 - 60, width, 50, "Login/Register", onLoginClick)
 				add(b);
 				
-				b = new PunkButton(uiX, FP.screen.height / 2 - 25 + 120, width, 50, "How to Play", onHowToPlay)
+				b = new PunkButton(uiX, FP.screen.height / 2 - 25 + 60, width, 50, "How to Play", onHowToPlay)
 				add(b);
 				
-				add(new MessageDisplay("", 0, 36, FP.screen.width / 2, FP.screen.height / 2 + 60, width + 35, 205));
+				add(new MessageDisplay("", 0, 36, FP.screen.width / 2, FP.screen.height / 2, width + 35, 205));
 				//addGraphic(new Text(Assets.VERSION, 0, FP.screen.height - 15, 50, 15));
+				
+				showMessage("\nSchismTD is a multiplayer tower defense game.\n\nBuild custom waves of creeps and play in a competive\nenvironment to prove you are the best tower defeneder!\n\n", 0);
 				
 			}
 			// Use the token we have
 			else
-			{
+			{				
 				showMessage("Logging in ...", 0);
 				
 				PlayerIO.quickConnect.facebookOAuthConnect(
@@ -87,7 +86,7 @@ package schism.worlds
 						sharedObject.data.fbtoken = null;
 						FP.world = new FacebookTitleWorld(e.message);
 					});
-			}
+			}			
 			
 			facebook = new Image(Assets.GFX_MISC_FB);
 			facebook.x = FP.screen.width - facebook.width;

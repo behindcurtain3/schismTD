@@ -1,5 +1,6 @@
 package schism.worlds 
 {
+	import flash.net.SharedObject;
 	import net.flashpunk.FP;
 	import net.flashpunk.graphics.Image;
 	import net.flashpunk.graphics.Text;
@@ -11,6 +12,10 @@ package schism.worlds
 	import punk.ui.PunkText;
 	import schism.Assets;
 	import schism.ui.MessageDisplay;
+	import playerio.PlayerIO;
+	import playerio.PlayerIOError;
+	import playerio.PlayerIORegistrationError;
+
 	
 	/**
 	 * ...
@@ -18,17 +23,22 @@ package schism.worlds
 	 */
 	public class ResultWorld extends AuthWorld 
 	{
+		protected var sharedObject:SharedObject;
 		
 		public function ResultWorld(c:Client, guest:Boolean, con:Connection, blackName:String, whiteName:String, resultStr:String, blackLifeNum:int, whiteLifeNum:int, blackDamageNum:uint, whiteDamageNum:uint, blackRating:Number, whiteRating:Number)
 		{
 			super(c, guest, false);
-			
+			sharedObject = SharedObject.getLocal("schismTDdata");
 			connection = con;
-			addGraphic(new Image(Assets.GFX_MENUBG), 5);
+			//addGraphic(new Image(Assets.GFX_MENUBG), 5);
 			
 			var b:PunkButton = new PunkButton(FP.screen.width / 2 - 250, FP.screen.height / 2 + 100, 200, 75, "Play Again", onPlayAgain);
 			add(b); 
-			b = new PunkButton(FP.screen.width / 2 + 50, FP.screen.height / 2 + 100, 200, 75, "Return Home", onExit);
+			
+			if (guest)
+				b = new PunkButton(FP.screen.width / 2 + 50, FP.screen.height / 2 + 100, 200, 75,  "Register now, it's free!", onLoginClick)
+			else
+				b = new PunkButton(FP.screen.width / 2 + 50, FP.screen.height / 2 + 100, 200, 75, "Return Home", onExit);
 			add(b);
 			
 			add(new MessageDisplay(resultStr, 0, 48, 0, 100, 600, 100));
@@ -70,6 +80,21 @@ package schism.worlds
 				FP.world = new TitleWorld();
 			else
 				FP.world = new HomeWorld(client);
+		}
+		
+		public function onLoginClick():void
+		{
+			PlayerIO.quickConnect.facebookOAuthConnectPopup(
+					FP.stage, Assets.GAME_ID, "_blank", ["publish_stream","offline_access"], "",
+					function(c:Client, access_token:String, facebookUserId:String):void {
+						AuthWorld.accessToken = access_token;
+						sharedObject.data.fbtoken = access_token;
+						sharedObject.flush();
+						FP.world = new HomeWorld(c, "Welcome to SchismTD");
+					},
+					function(e:PlayerIOError):void {
+						showMessage(e.message);
+					});
 		}
 		
 	}

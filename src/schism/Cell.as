@@ -76,6 +76,7 @@ package schism
 				if (setupIndicatorTimer >= setupIndicatorLength)
 				{
 					isSetup = true;
+					setupImage.visible = false;
 					if (graphic == setupImage)
 						graphic = null;
 				}
@@ -130,6 +131,12 @@ package schism
 		public function flash():void
 		{
 			doSetupIndicator = true;
+		}
+		
+		public function stopFlash():void
+		{
+			setupIndicatorTimer = setupIndicatorLength;
+			setupImage.visible = false;
 		}
 		
 		public function stun(duration:Number):void

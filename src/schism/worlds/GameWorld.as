@@ -43,6 +43,7 @@ package schism.worlds
 	import schism.ui.FauxTower;
 	import schism.ui.Glow;
 	import schism.ui.MessageDisplay;
+	import schism.ui.Tooltip;
 	import schism.waves.BlackWaveQueue;
 	import schism.waves.WaveHighlight;
 	import schism.waves.WhiteWaveQueue;
@@ -148,7 +149,14 @@ package schism.worlds
 		private var connectionStatusDisplay:MessageDisplay;
 		
 		private var sharedObject:SharedObject;
-	 
+		
+		// Help mode
+		protected var helpModeOn:Boolean = true;
+		protected var buildTip:Tooltip;
+		protected var buildPlacementTip:Tooltip;
+		protected var upgradeTip:Tooltip;
+		protected var upgradedATower:Boolean = false;
+		
 		public function GameWorld (c:Client, guest:Boolean, gameId:String, createServer:Boolean = false, rate:Boolean = true)
 		{
 			super(c, guest, false);
@@ -241,6 +249,15 @@ package schism.worlds
 				mute.play("on");
 			}
 			mute.alpha = 0;
+			
+			if (guest || sharedObject.data.help == null)
+			{
+				helpModeOn = true;
+				sharedObject.data.help = "done";
+			}
+			else
+				helpModeOn = false;
+			
 						
 			// Connect to game
 			connectionStatusDisplay = new MessageDisplay("Connecting to game...", 0, 24);
@@ -393,6 +410,12 @@ package schism.worlds
 									
 									if(buildMode == BuildMode.TOWER)									
 										toggleBuildMode();
+										
+									if (upgradeTip != null)
+									{
+										remove(upgradeTip);
+										upgradeTip = null;							
+									}
 									
 								}
 							}
@@ -419,7 +442,6 @@ package schism.worlds
 						{
 							objectSelected = null;
 							buildMenu.visible = false;
-							buildInstructions.visible = false;
 						}
 						
 						// Update if glow is visible
@@ -950,9 +972,36 @@ package schism.worlds
 			
 			connection.addMessageHandler(Messages.GAME_TOWER_PLACE, function(m:Message, i:int, type:String, range:Number):void {				
 				for each(var tc:Cell in getCells())
-				{
+				{	
 					if (tc.getIndex() == i)
 					{
+						if (tc.isOurs() && helpModeOn)
+						{
+							if (buildPlacementTip != null)
+							{
+								remove(buildPlacementTip);
+								buildPlacementTip = null;
+								
+								if (color == "black")
+									upgradeTip = new Tooltip("Select the tower to view upgrade menu", tc.centerX - 410, tc.y, false);
+								else
+									upgradeTip = new Tooltip("Select the tower to view upgrade menu", tc.centerX + 25, tc.y);
+								add(upgradeTip);
+								
+								for each(var c:Cell in getCells())
+								{
+									c.stopFlash();
+								}
+							}
+							
+							if (tc.hasTower && !upgradedATower)
+							{
+								showMessage("Keep building and upgrading towers to defeat your opponents creeps!");
+								upgradedATower = true;
+							}
+							
+						}
+						
 						switch(type)
 						{
 							case "basic":
@@ -1580,8 +1629,23 @@ package schism.worlds
 			add(glow);
 			
 			fadeInText();
-			buildInstructions = new MessageDisplay("Press W to build", 5, 24, 0, FP.screen.height / 2);
-			add(buildInstructions);			
+			
+			if (helpModeOn)
+			{
+				if (color == "black")
+				{
+					buildTip = new Tooltip("Press W or click here to build towers", buildButton.x - 375, buildButton.y + 2, false);
+				}
+				else
+				{
+					buildTip = new Tooltip("Press W or click here to build towers", buildButton.x + 40, buildButton.y + 2);
+				}
+				
+				add(buildTip);
+			}
+			
+			//buildInstructions = new MessageDisplay("Press W to build", 5, 24, 0, FP.screen.height / 2);
+			//add(buildInstructions);			
 			
 			blackWaveQueue.showWaves();
 			whiteWaveQueue.showWaves();
@@ -1589,13 +1653,7 @@ package schism.worlds
 			var vt:VarTween = new VarTween();
 			vt.tween(boardWaveHighlight.image, "alpha", 1, 1, Ease.expoOut);
 			addTween(vt, true);			
-			/*
-			for each(var c:Cell in getCells())
-			{
-				c.flash();
-			}
-			*/
-			
+						
 			toggleIncomingArrow();
 		}
 		
@@ -1715,6 +1773,27 @@ package schism.worlds
 				(FP.stage.getChildByName("CustomMouse") as CustomMouse).setCursor(Assets.MOUSE_BUILD);
 			else
 				(FP.stage.getChildByName("CustomMouse") as CustomMouse).setCursor(Assets.MOUSE_NORMAL);
+				
+			if (helpModeOn)
+			{
+				if (buildTip != null)
+				{
+					remove(buildTip);
+					
+					for each(var c:Cell in getCells())
+					{
+						c.flash();
+					}
+
+					if (color == "black")
+						buildPlacementTip = new Tooltip("Build a tower on the flashing squares", FP.screen.width / 2 - 50, FP.screen.height / 2 + 150, false, false);
+					else
+						buildPlacementTip = new Tooltip("Build a tower on the flashing squares", FP.screen.width / 2 - 250, FP.screen.height / 2 - 150, false, false);
+					
+					add(buildPlacementTip);
+					buildTip = null;
+				}
+			}
 		}
 		
 		public function toggleSpellMode():void

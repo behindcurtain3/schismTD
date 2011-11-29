@@ -7,6 +7,7 @@ package schism.worlds
 	import flash.ui.MouseCursor;
 	import net.flashpunk.graphics.Image;
 	import net.flashpunk.graphics.Text;
+	import net.flashpunk.Sfx;
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.World;
 	import playerio.Client;
@@ -40,6 +41,9 @@ package schism.worlds
 		{	
 			sharedObject = SharedObject.getLocal("schismTDdata");
 			super(sharedObject.data.fbtoken == null);
+			
+			// Play menu music
+			music.play();			
 			
 			if (error != "")
 			{

@@ -35,6 +35,9 @@ package schism.creeps
 			
 			deathSounds.push(new Sfx(Assets.SFX_DEATH_ARMOR1));
 			deathSounds.push(new Sfx(Assets.SFX_DEATH_ARMOR2));
+			deathSounds.push(new Sfx(Assets.SFX_DEATH_ARMOR3));
+			deathSounds.push(new Sfx(Assets.SFX_DEATH_ARMOR4));
+			deathSounds.push(new Sfx(Assets.SFX_DEATH_ARMOR5));
 		}
 				
 	}

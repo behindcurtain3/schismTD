@@ -3,6 +3,7 @@ package schism.worlds
 	import net.flashpunk.FP;
 	import net.flashpunk.graphics.Image;
 	import net.flashpunk.graphics.Text;
+	import net.flashpunk.Sfx;
 	import net.flashpunk.tweens.misc.VarTween;
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.utils.Key;
@@ -28,6 +29,8 @@ package schism.worlds
 		public function MatchFinderWorld(c:Client, guest:Boolean = false) 
 		{
 			super(c, guest);
+			
+			new Sfx(Assets.SFX_GAME_SEARCH_START).play();
 			
 			connStatus = new MessageDisplay("Connecting to lobby...", 0, 36, 0, FP.screen.height / 2);
 			add(connStatus);
@@ -122,11 +125,13 @@ package schism.worlds
 			
 			connection.addMessageHandler(Messages.MATCH_CREATE, function(m:Message, gameId:String):void {
 				connection.disconnect();
+				new Sfx(Assets.SFX_GAME_SEARCH_END).play();
 				FP.world = new GameWorld(client, _isGuest, gameId, true);
 			});
 			
 			connection.addMessageHandler(Messages.MATCH_ID, function(m:Message, gameId:String):void {
 				connection.disconnect();
+				new Sfx(Assets.SFX_GAME_SEARCH_END).play();
 				FP.world = new GameWorld(client, _isGuest, gameId);
 			});
 		}

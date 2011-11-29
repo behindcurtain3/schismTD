@@ -27,7 +27,6 @@ package schism.worlds
 	 */
 	public class HomeWorld extends AuthWorld 
 	{
-		private var startSfx:Sfx;
 		private var ratingDisplay:Text;
 		private var facebook:Image;
 		private var mute:Spritemap;
@@ -36,6 +35,9 @@ package schism.worlds
 		public function HomeWorld(c:Client, error:String = "") 
 		{
 			super(c);
+			
+			// Play menu music
+			music.play();
 			
 			var width:int = 250;
 			var uiX:int = FP.screen.width / 2 - width / 2;
@@ -62,8 +64,6 @@ package schism.worlds
 				messageDisplay.sound();
 				add(messageDisplay);
 			}
-			
-			startSfx = new Sfx(Assets.SFX_BUTTON_START);
 			
 			var t:Text = new Text("Logged in as: " + AuthWorld.playerName, 0, 0, { font: "Domo", color: 0xFFFFFF, outlineColor: 0x000000, outlineStrength: 2 } );
 			if (AuthWorld.playerName != "Guest")
@@ -199,7 +199,6 @@ package schism.worlds
 		
 		public function onPlay():void
 		{
-			startSfx.play();
 			FP.world = new MatchFinderWorld(client);
 		}
 		

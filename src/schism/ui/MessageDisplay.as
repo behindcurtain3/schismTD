@@ -176,8 +176,8 @@ package schism.ui
 		
 		public function sound():void
 		{
-			var s:Sfx = new Sfx(Assets.SFX_POPUP);
-			s.play();
+			//var s:Sfx = new Sfx(Assets.SFX_POPUP);
+			//s.play();
 		}
 		
 	}

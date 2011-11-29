@@ -2,6 +2,7 @@ package schism.worlds
 {
 	import net.flashpunk.FP;
 	import net.flashpunk.graphics.Image;
+	import net.flashpunk.Sfx;
 	import net.flashpunk.tweens.misc.VarTween;
 	import net.flashpunk.utils.Ease;
 	import net.flashpunk.World;
@@ -20,9 +21,13 @@ package schism.worlds
 		protected var titleImg:Image;
 		protected var bottomImg:Image;
 		
+		protected var music:Sfx;
+		
 		public function SchismWorld(addHeader:Boolean = true) 
 		{
 			addGraphic(new Image(Assets.GFX_MENUBG), 100);
+			
+			music = new Sfx(Assets.SFX_MUSIC_MENU);
 			
 			if (addHeader)
 			{			
@@ -54,6 +59,7 @@ package schism.worlds
 		
 		override public function end():void 
 		{
+			music.stop();
 			removeAll();
 			super.end();
 		}

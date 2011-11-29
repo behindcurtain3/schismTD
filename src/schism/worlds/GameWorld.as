@@ -114,10 +114,10 @@ package schism.worlds
 		protected var mute:Spritemap;
 		
 		// Sfx
-		protected var sfx_invalid:Sfx = new Sfx(Assets.SFX_INVALID);
+		protected var sfx_invalid:Sfx = new Sfx(Assets.SFX_ERROR);
 		protected var sfx_tower_build:Sfx = new Sfx(Assets.SFX_BUILD_TOWER);
-		protected var sfx_player_hurt:Sfx = new Sfx(Assets.SFX_PLAYER_HURT);
-		protected var sfx_music:Sfx = new Sfx(Assets.SFX_MUSIC1);
+		protected var sfx_player_hurt:Sfx = new Sfx(Assets.SFX_PLAYER_HURT1);
+		protected var sfx_music:Sfx = new Sfx(Assets.SFX_MUSIC_GAME);
 		protected var sfx_start:Sfx = new Sfx(Assets.SFX_GAME_START, sfx_music.loop);
 		
 		//Players
@@ -920,13 +920,36 @@ package schism.worlds
 				}
 				else if (m.getInt(0) == blackId)
 				{
-					result = "Black wins!";
+					
+					
+					if (color == "black")
+					{
+						result = "You win!";
+						new Sfx(Assets.SFX_GAME_WIN).play();
+					}
+					else
+					{
+						result = "You lose!";
+						new Sfx(Assets.SFX_GAME_LOSE).play();
+					}
+					
 					if(color == "black" && !_isGuest && submitStats)
 						QuickKong.stats.submit("MatchesWon", 1);
 				}
 				else if (m.getInt(0) == whiteId)
 				{
 					result = "White wins!";
+					
+					if (color == "white")
+					{
+						result = "You win!";
+						new Sfx(Assets.SFX_GAME_WIN).play();
+					}
+					else
+					{
+						result = "You lose!";
+						new Sfx(Assets.SFX_GAME_LOSE).play();
+					}
 					
 					if(color == "white" && !_isGuest && submitStats)
 						QuickKong.stats.submit("MatchesWon", 1);
@@ -1145,7 +1168,13 @@ package schism.worlds
 				if (id == blackId)
 				{
 					if (value < blackHealth)
-						sfx_player_hurt.play();
+					{
+						// Play sound effect
+						if (color == "black")
+							playSelfHurt();
+						else
+							playOpponentHurt();
+					}
 						
 					blackHealth = value;
 					blackHeart.play("hit");
@@ -1153,7 +1182,13 @@ package schism.worlds
 				else
 				{
 					if (value < whiteHealth)
-						sfx_player_hurt.play();
+					{
+						// Play sound effect
+						if (color == "white")
+							playSelfHurt();
+						else
+							playOpponentHurt();
+					}
 						
 					whiteHealth = value;
 					whiteHeart.play("hit");
@@ -1896,5 +1931,59 @@ package schism.worlds
 				sharedObject.data.sound = "off";
 			}
 		}
+	
+		public function playSelfHurt():void
+		{
+			var num:Number = randomNumber(1, 5);
+			
+			switch(num)
+			{
+				case 1:
+					new Sfx(Assets.SFX_PLAYER_HURT1).play();
+					break;
+				case 2:
+					new Sfx(Assets.SFX_PLAYER_HURT2).play();
+					break;
+				case 3:
+					new Sfx(Assets.SFX_PLAYER_HURT3).play();
+					break;
+				case 4:
+					new Sfx(Assets.SFX_PLAYER_HURT4).play();
+					break;
+				case 5:
+					new Sfx(Assets.SFX_PLAYER_HURT5).play();
+					break;
+			}
+		}
+		
+		public function playOpponentHurt():void
+		{
+			var num:Number = randomNumber(1, 5);
+			
+			switch(num)
+			{
+				case 1:
+					new Sfx(Assets.SFX_OPPONENT_HURT1).play();
+					break;
+				case 2:
+					new Sfx(Assets.SFX_OPPONENT_HURT2).play();
+					break;
+				case 3:
+					new Sfx(Assets.SFX_OPPONENT_HURT3).play();
+					break;
+				case 4:
+					new Sfx(Assets.SFX_OPPONENT_HURT4).play();
+					break;
+				case 5:
+					new Sfx(Assets.SFX_OPPONENT_HURT5).play();
+					break;
+			}
+		}
+		
+		private function randomNumber(low:Number=0, high:Number=1):Number
+		{
+			return Math.floor(Math.random() * (1+high-low)) + low;
+		}
+		
 	}
 }

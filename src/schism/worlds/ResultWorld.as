@@ -35,10 +35,7 @@ package schism.worlds
 			var b:PunkButton = new PunkButton(FP.screen.width / 2 - 250, FP.screen.height / 2 + 100, 200, 75, "Play Again", onPlayAgain);
 			add(b); 
 			
-			if (guest)
-				b = new PunkButton(FP.screen.width / 2 + 50, FP.screen.height / 2 + 100, 200, 75,  "Register now, it's free!", onLoginClick)
-			else
-				b = new PunkButton(FP.screen.width / 2 + 50, FP.screen.height / 2 + 100, 200, 75, "Return Home", onExit);
+			b = new PunkButton(FP.screen.width / 2 + 50, FP.screen.height / 2 + 100, 200, 75, "Menu", onExit);
 			add(b);
 			
 			add(new MessageDisplay(resultStr, 0, 48, 0, 100, 600, 100));

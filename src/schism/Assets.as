@@ -6,7 +6,7 @@ package schism
 	 */
 	public class Assets 
 	{		
-		public static const VERSION:String = "v0.6.1";
+		public static const VERSION:String = "v0.6.2";
 		public static const GAME_ID:String = "schismtd-3r3otmhvkki9ixublwca";
 		public static const FB_APPID:String = "256712624370689";
 		
@@ -195,7 +195,7 @@ package schism
 		[Embed(source = '../../assets/DOMOAN__.ttf', embedAsCFF = "false", fontFamily = 'Domo')] public static const FONT_DOMO:Class
 		
 		public static const friendNames:Array = new Array("Sereena Castillo");
-		public static const devNames:Array = new Array("behindcurtain3", "John Lott");
+		public static const devNames:Array = new Array("behindcurtain3", "Wu_Li_Mammoth", "chronocide2000");
 		
 	}
 

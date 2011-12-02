@@ -71,7 +71,7 @@ package schism.worlds
 				add(new MessageDisplay("", 0, 36, FP.screen.width / 2, FP.screen.height / 2, width + 35, 205));
 				//addGraphic(new Text(Assets.VERSION, 0, FP.screen.height - 15, 50, 15));
 				
-				showMessage("\nSchismTD is a multiplayer tower defense game.\n\nBuild custom waves of creeps and play in a competive\nenvironment to prove you are the best tower defeneder!\n\n", 0);
+				showMessage("\nSchismTD is a multiplayer tower defense game.\n\nBuild custom waves of creeps and play in a competive\nenvironment to prove you are the best tower defender!\n\n", 0);
 				
 			}
 			// Use the token we have

@@ -1910,6 +1910,7 @@ package schism.worlds
 			else
 			{
 				t.tween(incomingArrow, "alpha", 1, 0.5);
+				new Sfx(Assets.SFX_START_HIGHLIGHT).play();
 			}
 			addTween(t);
 		}

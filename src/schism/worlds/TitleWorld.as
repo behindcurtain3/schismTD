@@ -47,12 +47,16 @@ package schism.worlds
 		{
 			super.begin();
 			
+			// For kong specifically
+			FP.world = new KongTitleWorld(error);
+			/*
 			var url:String = FP.stage.loaderInfo.url;
 			
 			if (url.indexOf("kongregate") != -1)
 				FP.world = new KongTitleWorld(error);
 			else
 				FP.world = new FacebookTitleWorld(error);
+			*/
 		}
 		
 	}

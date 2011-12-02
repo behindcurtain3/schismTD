@@ -34,8 +34,6 @@ package schism
 		private var stunDuration:Number;
 		private var stunPosition:Number;
 		
-		private var sfx_highlight:Sfx = new Sfx(Assets.SFX_START_HIGHLIGHT);
-		
 		public function Cell(i:int, _x:int, _y:int, w:int, h:int, mine:Boolean) 
 		{
 			index = i;
@@ -90,7 +88,6 @@ package schism
 				}
 				else if (setupImage.alpha == 1)
 				{
-					sfx_highlight.play();
 					alphaTween = new VarTween();
 					alphaTween.tween(setupImage, "alpha", 0, 0.75);
 					addTween(alphaTween, true);
